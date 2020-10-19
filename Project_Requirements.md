@@ -30,4 +30,3 @@ Santa Clara Menus will utilize [TECH STACK GOES HERE] to realize an on-demand de
 ### Usage Scenarios
 
 ### Flow Diagrams
-

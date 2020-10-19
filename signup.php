@@ -13,21 +13,21 @@ if ($conn->connect_error)
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
- 
+
     if(isset($_POST["name"]))
     {   // Sanitize name eventually
-        $name = $_POST['name'];    
+        $name = $_POST['name'];
     }
-    if(isset($_POST["username"])) 
+    if(isset($_POST["username"]))
     {   // Sanitize username eventually
         $username = $_POST['username'];
     }
-    
+
     if(isset($_POST["password"]))
     {   // Sanitize, salt & hash password eventually
         $password = $_POST['password'];
-        //$password = 'saltstring' . $password;        
-        $token = hash('ripemd128', "$password");    
+        //$password = 'saltstring' . $password;
+        $token = hash('ripemd128', "$password");
     }
 
     if(isset($_POST["role"]))
@@ -36,18 +36,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     	// if (role == restaurant), isRestaurant = true
     	$isRestaurant = ($role == 'restaurant') ? TRUE : FALSE;
 	}
-    
-    
+
+
     // TODO: For now, username is used in place of name
     // Attempt to insert
     $query = "INSERT INTO user (username, name, encrypted_password, isRestaurant) VALUES('$name', '$username', '$token', '$isRestaurant')";
     $result = $conn->query($query);
     if(!$result) die($conn->error);
-    
+
     if(mysqli_affected_rows($conn))
     {   // Redirect to login page after signup is successful
         header("location: login.php");
-    } 
+    }
 }
 ?>
 

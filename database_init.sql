@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS transaction (
     start_loc VARCHAR(64),
     end_loc VARCHAR(64),
     timestamp TIMESTAMP,
-    duration BIGINT, 
+    duration BIGINT,
     price DECIMAL(5,2),
     PRIMARY KEY (t_id)
 );

@@ -3,6 +3,12 @@ DROP DATABASE IF EXISTS santa_clara_menus;
 CREATE DATABASE santa_clara_menus;
 USE santa_clara_menus;
 
+/*
+CREATE USER 'scmuser'@'localhost' IDENTIFIED BY 'p123456d';
+GRANT ALL PRIVILEGES ON santa_clara_menus . * TO 'scmuser'@'localhost';
+FLUSH PRIVILEGES;
+*/
+
 --- ENTITIES ---
 CREATE TABLE IF NOT EXISTS user (
 	user_id	INT(3) UNSIGNED AUTO_INCREMENT,

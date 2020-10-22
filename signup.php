@@ -1,14 +1,5 @@
 <?php
-$hn = 'localhost';
-$un = 'root';
-$pw = '';
-$db = 'santa_clara_menus';
-$port = 3307;
-
-// Connect to DB
-$conn = new mysqli($hn, $un, $pw, $db, $port);
-if ($conn->connect_error)
-    die($conn->connect_error);
+require 'conn.php';
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST")

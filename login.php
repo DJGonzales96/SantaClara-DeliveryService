@@ -1,48 +1,43 @@
 <?php
-$hn = 'localhost';
-$un = 'root';
-$pw = '';
-$db = 'santa_clara_menus';
-$port = 3307;
-
-// Connect to DB
-$conn = new mysqli($hn, $un, $pw, $db, $port);
-if ($conn->connect_error)
-    die($conn->connect_error);
-
+require 'conn.php';
+require 'session.php';
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-
+    
     if(isset($_POST["username"]))
     {   // Sanitize username eventually
-        $username = $_POST['username'];
+        $username = $_POST['username'];   
     }
-
+    
     if(isset($_POST["password"]))
     {   // Sanitize, salt & hash password eventually
         $password = $_POST['password'];
         $token = hash('ripemd128', "$password");
     }
-
+    
     // Validate username exists
     $query = "SELECT * FROM user WHERE username = '$username'";
     $result = $conn->query($query);
     if(!$result) die($conn->error);
 
     elseif($result->num_rows)
-    {
+    {   
         $row = $result->fetch_array(MYSQLI_NUM);
         $result->close();
-
+        
         // Validate password is correct
         if($token == $row[3])
         {
         	// password is correct
+          $_SESSION['authenticated'] = true;
+          $salt = substr (md5($password), 0, 2);
+          $cookie = base64_encode ("$username:" . md5 ($token, $salt));
+          setcookie ('scd-secret-cookie', $cookie, time() + (86400 * 30), '/');
         	// Redirect to main page
             header("location: index.php");
         }
-         else
+         else 
         {
             die("Invalid username/password combination.");
         }
@@ -53,7 +48,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     }
 }
 ?>
-
+    
 
 <html>
     <head>

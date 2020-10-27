@@ -3,10 +3,10 @@ require 'includes/conn.php';
 require 'includes/session.php';
 require 'includes/auth.php';
 
-$str = 'BLUH';
+$str = 'BLUH_ILAN';
 
 $commState = (object) [
-    'isRestaurant' => 'BLUH',
+    'isRestaurant' => 'BLUH_NATHAN',
     'anArray' => array('status' => '1',
     'string_key' => $str,
     'string_value' => $str,

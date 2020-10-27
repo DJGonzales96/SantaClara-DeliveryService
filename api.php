@@ -1,7 +1,7 @@
 <?php
-require 'conn.php';
-require 'session.php';
-require 'auth.php';
+require 'includes/conn.php';
+require 'includes/session.php';
+require 'includes/auth.php';
 
 $str = 'BLUH';
 

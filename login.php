@@ -1,6 +1,6 @@
 <?php
-require 'conn.php';
-require 'session.php';
+require 'includes/conn.php';
+require 'includes/session.php';
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {

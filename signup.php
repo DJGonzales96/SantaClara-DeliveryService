@@ -1,5 +1,5 @@
 <?php
-require 'conn.php';
+require 'includes/conn.php';
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST")

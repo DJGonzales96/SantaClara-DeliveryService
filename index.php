@@ -1,12 +1,4 @@
 <?php
-<<<<<<< HEAD
-require 'conn.php';
-require 'session.php';
-require 'auth.php';
-
-  echo "Welcome " . $username;
-  
-=======
 require 'includes/conn.php';
 require 'includes/session.php';
 require 'includes/auth.php';
@@ -41,5 +33,4 @@ include 'includes/header.php';
     </main>
 <?php
 include 'includes/footer.php';
->>>>>>> ilan-new
 ?>

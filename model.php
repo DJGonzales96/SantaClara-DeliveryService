@@ -1,6 +1,6 @@
 <?php
-require 'conn.php';
-require 'session.php';
+require 'includes/conn.php';
+require 'includes/session.php';
 
 $user_id = $_SESSION["user_id"];
 $isRestaurant = $_SESSION["isRestaurant"];
@@ -17,7 +17,10 @@ else
   echo("Error: unauthorized user type: $isRestaurant, are you sure you're signed in?");
 }
 
-functi
+function getUserInformation()
+{
+
+}
 
 function updateLocation(String $newLoc)
 {
@@ -40,7 +43,7 @@ function getLocation()
 }
 
 //TODO: we need a way to determine what deliveries are active or expired
-function getDeliveries()
+function getCurrentDeliveries(String $user_id)
 {
 
 }

@@ -19,4 +19,23 @@ $commState = (object) [
 // Read from commState, pass string into -> updateLocation()
 
 echo json_encode($commState);
+
+// Contains useful information about driver/restaurant state needed
+class UserState
+{
+  public $isRestaurant;
+  public $status; //TODO: This will be an enum for {0, 1, 2}
+  public $currLoc;
+  public $activeDeliveries; // array of Delivery objects
+}
+
+// Contains useful information about deliveries
+class Delivery
+{
+  public $deliveryID;
+  public $destination;
+  public $driverID;
+  public $restaurantID;
+  public $timestamp;
+}
 ?>

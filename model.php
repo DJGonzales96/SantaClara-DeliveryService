@@ -1,4 +1,5 @@
 <?php
+//TODO: Functions need to be tested
 require 'includes/conn.php';
 require 'includes/session.php';
 
@@ -17,35 +18,53 @@ else
   echo("Error: unauthorized user type: $isRestaurant, are you sure you're signed in?");
 }
 
-function getUserInformation()
+function getUserInformation($conn, String $user_id)
 {
+  $query = "SELECT * FROM user WHERE user_id = '$user_id'";
+  $result = $conn->query($query);
+  if(!$result) die($conn->error);
 
+  $info = $result->fetch_array(MYSQLI_NUM);
+  $result->close();
+
+  return $info;
 }
 
-function updateLocation(String $newLoc)
+function updateLocation($conn, String $loc_id, String $newLat, String $newLong)
 {
-  $query = "UPDATE location SET address = '$newLoc' WHERE user_id = '$user_id'";
+  $query = "UPDATE location SET latitude = '$newLat', longitude = '$newLong' WHERE loc_id = '$loc_id'";
   $result = $conn->query($query);
   if(!$result) die($conn->error);
 }
 
-function getLocation()
+function getLocation($conn, String $loc_id)
 {
-  $query = "SELECT address FROM location WHERE user_id = '$user_id'";
+  $query = "SELECT * FROM location WHERE loc_id = '$loc_id'";
   $result = $conn->query($query);
   if(!$result) die($conn->error);
 
   $row = $result->fetch_array(MYSQLI_NUM);
   $result->close();
 
-  $currentLoc = $row[0];
-  return $currentLoc;
+  $currLat = $row[1];
+  $currLong = $row[2];
+  $currAddr = $row[3];
+
+  return array($currLat, $currLong, $currAddr);
 }
 
-//TODO: we need a way to determine what deliveries are active or expired
-function getCurrentDeliveries(String $user_id)
-{
 
+function getCurrentDeliveries($conn, String $user_id)
+{
+  // We only want deliveries that are active
+  $query = "SELECT * FROM transaction WHERE $id_type = '$user_id' AND active = true";
+  $result = $conn->query($query);
+  if(!$result) die($conn->error);
+
+  $deliveryInfo = $result->fetch_array(MYSQLI_NUM);
+  $result->close();
+
+  return $deliveryInfo;
 }
 
 function updateDeliveries()
@@ -58,3 +77,8 @@ function calculateCost(String $start, String $end)
 {
 
 }
+
+//TODO: Need this functionality eventually
+function requestDelivery() {}
+function acceptDelivery() {}
+function driverDelivered() {}

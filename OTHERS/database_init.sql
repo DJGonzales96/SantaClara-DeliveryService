@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS user (
     name VARCHAR(64),
     encrypted_password VARCHAR(64) NOT NULL,
     isRestaurant BOOLEAN,
-    loc INT(3) UNSIGNED,
+    loc_id INT(3) UNSIGNED,
     PRIMARY KEY (user_id)
 );
 

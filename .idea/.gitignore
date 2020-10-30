@@ -1,5 +1,9 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+# Eclipse
+.settings
+.buildpath
+.project
 # Editor-based HTTP Client requests
 /httpRequests/

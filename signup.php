@@ -1,4 +1,5 @@
 <?php
+$title="SIGNUP - Santa Clara Menus";
 require 'includes/conn.php';
 
 // Processing form data when form is submitted

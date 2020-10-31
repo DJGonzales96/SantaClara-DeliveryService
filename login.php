@@ -1,4 +1,5 @@
 <?php
+$title="Login - Santa Clara Menus";
 require 'includes/conn.php';
 require 'includes/session.php';
 
@@ -74,7 +75,7 @@ include 'includes/header.php';
                 <div class="form-group"><label for="password">Password</label><input class="form-control" type="text" name="password"></div>
                 <div class="form-group">
                     <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox"><label class="form-check-label" for="checkbox">Remember me</label></div>
-                </div><button class="btn btn-primary btn-block" type="submit" value="Login">Log In</button>
+                </div><button class="btn btn-primary btn-block" type="submit" value="Login">Log In</button><br>
                 <div class="etc-login-form">
                    <p>forgot your password? <a href="#">click here</a></p>
                    <p>new user? <a href="signup.php">create new account</a></p>

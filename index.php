@@ -1,5 +1,6 @@
 <?php
 $highlight="HOME";
+$title="Home - Santa Clara Menus";
 require 'includes/conn.php';
 require 'includes/session.php';
 require 'includes/auth.php';

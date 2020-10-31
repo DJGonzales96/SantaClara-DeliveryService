@@ -19,14 +19,17 @@
             <div class="collapse navbar-collapse"
                 id="navcol-1">
                 <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link active" href="index.php">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($highlight == "HOME") echo "active"; ?> " href="index.php">HOME</a></li>
                     <?php
                     if ($_SESSION['authenticated'] == true){
-                       echo '<li class="nav-item"><a class="nav-link" href="app.php">APP</a></li>
+                      $active = ($highlight == "APP") ? 'active' : '';
+                       echo '<li class="nav-item"><a class="nav-link "' . $active . 'href="app.php">APP</a></li>
                             <li class="nav-item"><a class="nav-link" href="logout.php">LOGOUT</a></li>';
                     } else {
-                    echo '<li class="nav-item"><a class="nav-link" href="signup.php">SIGN UP</a></li>
-                          <li class="nav-item"><a class="nav-link" href="login.php">LOGIN</a></li>';
+                    $active =($highlight =="SIGN UP")? 'active' : '';
+                    $active2=($highlight == "LOGIN")? 'active' :'';
+                    echo '<li class="nav-item"><a class="nav-link ' . $active . '" href="signup.php">SIGN UP</a></li>
+                          <li class="nav-item"><a class="nav-link ' . $active2 . '" href="login.php">LOGIN</a></li>';
                     }
                     ?>
                 </ul>

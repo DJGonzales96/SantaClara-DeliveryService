@@ -9,27 +9,45 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL)
     die("Not logged in");
 
 
-function getUserInformation(String $user_id)
+function getUserInformation(String $username)
 {
   global $conn;
-  $query = "SELECT * FROM user WHERE username = '$user_id'"; // changed to username TEMPORARILY
+  $query = "SELECT * FROM user WHERE username = '$username'"; //
   $result = $conn->query($query);
   if(!$result) die($conn->error);
   $info = $result->fetch_array(MYSQLI_NUM);
   $result->close();
-  echo getGeocode("34655 Skylark Dr."); //->{"lat"}
   return $info;
 }
 
-function updateLocation(String $loc_id, String $newLat, String $newLong)
+function setLocationTransaction(String $user_id, String $newLat, String $newLong, String $newAddr)
 {
   global $conn;
-  $query = "UPDATE location SET latitude = '$newLat', longitude = '$newLong' WHERE loc_id = '$loc_id'";
-  $result = $conn->query($query);
-  if(!$result) die($conn->error);
+  // notice user has a t_id to show CURRENT location
+  // t_id and loc_id is AUTO-INCREMENT
+  // - this needs to be changed accordingly
+  // INSERT to transactions - a location update is a transaction with TIME_STAMP
+  // INSERT to location ....
+  // previous code:
+//  $query = "UPDATE location SET latitude = '$newLat', longitude = '$newLong' WHERE loc_id = '$loc_id'"; // CHANGE
+//  // get the new loc_id and set it as the user's location
+//  $result = $conn->query($query);
+//  if(!$result) die($conn->error);
 }
 
-function getLocation(String $loc_id)
+
+// JUST AN EXAMPLE OF GETTING SOMETHING FROM MAPS API - REMOVE LATER
+function getFromMapsApiDemo($friendlyName){
+    return getGeocode($friendlyName);
+}
+
+
+function getLocationByTid($t_id){
+
+}
+
+// helper function
+function getLocationById(String $loc_id)
 {
   global $conn;
   $query = "SELECT * FROM location WHERE loc_id = '$loc_id'";

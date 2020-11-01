@@ -23,44 +23,94 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
     $request = explode("/", substr(@$_SERVER['PATH_INFO'], 1));
 
     switch ($method) {
-      case 'POST':
-            echo "POST";
-            $_POST["name"];
-            echo $request;
-            break;
-      case 'GET':
-            // print_r($request) . "<br/>";
-            // Create and prepare JSON empty communication object
-            // Request is GET for api.php/driver or api.php/restaurant
-            $comm = new Comm();
-            if ($request[0] == 'driver')
-                prepareDriverComm($comm);
-            else if ($request[0] == 'restaurant')
-                echo "deal with restaurant"; //prepareDriverComm();
-
-            //send JSON
+      case 'POST': // Request is POST
+            // print_r($request) . "<br/>";  // uncomment to see request structure
+            $comm = new Comm(); // Create JSON empty communication object
+            // check api.php/driver or api.php/restaurant
+            if ($request[0] == 'driver'){
+                if ($request[1] == 'location'){
+                    updateDriverLocation($comm);
+                } else if ($request[1] == 'accept'){
+                    //driverAccepted($comm);
+                } else {
+                      $comm->setError("not set POST operation");
+                }
+            }
+            else if ($request[0] == 'restaurant'){
+                echo "do something with restaurant"; //prepareDriverComm();
+            } else {
+                $comm->setError("not set if to POST to driver or to restaurant");
+            }
+            // JSON will show if operation is successful
             echo json_encode($comm);
             break;
-        case 'PUT':
-            echo "PUT";
-            echo $request;
+      case 'GET': // Request is GET
+            // print_r($request) . "<br/>";  // uncomment to see request structure
+            $comm = new Comm(); // Create JSON empty communication object
+            // check api.php/driver or api.php/restaurant
+            if ($request[0] == 'driver')
+                prepareDriverComm($comm);
+            else if ($request[0] == 'restaurant'){
+                echo "do something with restaurant"; //prepareDriverComm();
+            } else {
+                $comm->setError("not set if to GET from driver or restaurant");
+            }
+            // JSON will show content with status READY
+            echo json_encode($comm);
             break;
       default:
-            echo "ERROR";
-            echo $request;
+            $comm = new Comm(); // Create JSON empty communication object
+            echo json_encode($comm); // Shows JSON with INVALID status
             break;
     }
 }
 
-function prepareDriverComm($comm){
+function driverAccepted($comm){
+    // get user
     $user_info = getUserInformation($_SESSION["username"]);
-//    if ($user_info[4]) // if isRestaurant - exit
+//    if ($user_info[4]) // NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - exit
+//        return;
+    // triggerSomething($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
+
+    $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
+}
+
+function updateDriverLocation($comm){
+    // get user
+    $user_info = getUserInformation($_SESSION["username"]);
+//    if ($user_info[4]) // NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - exit
 //        return;
     $user_id = $user_info[0];
     $friendly_name = $user_info[2];
+    $currentTransactionId = $user_info[5];
+    // update the comm to reflect user's state
+    $comm->setUserId($user_id);
+    $comm->setFriendlyName($friendly_name);
 
-    
-    // when everything is finished mark with status READY
-    $comm->setStatus(CommStatus::READY);
+    setLocationTransaction($user_info[0],$_POST['lat'],$_POST['long'],$_POST['address']);
+    //$comm->setLocation(getLocationByTid($currentTransactionId)); // set in COMM the user's current location to reflect change
+
+    // NEXT LINE IS JUST AN EXAMPLE OF GETTING SOMETHING FROM MAPS API - JUST FOR DEMO DELETE LATER
+    $comm->setLocation(getFromMapsApiDemo($_POST['address'])); // set in COMM the user's current location
+
+    $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
+}
+
+function prepareDriverComm($comm){ // gets an empty comm and sets it to valid one
+    // get the state of the user
+    $user_info = getUserInformation($_SESSION["username"]);
+//    if ($user_info[4]) // NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - exit
+//        return;
+    $user_id = $user_info[0];
+    $friendly_name = $user_info[2];
+    $currentTransactionId = $user_info[5];
+    // update the comm to reflect user's state
+    $comm->setUserId($user_id);
+    $comm->setFriendlyName($friendly_name);
+
+    // USE AFTER SQL AND MODEL ARE IMPLEMENTED
+    //$comm->setLocation(getLocationByTid($currentTransactionId)); // set in COMM the user's current location
+
+    $comm->setStatus(CommStatus::STATUS_OK); // when everything is finished mark it STATUS_OK
 }
 ?>

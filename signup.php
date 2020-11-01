@@ -1,4 +1,5 @@
 <?php
+$title="SIGNUP - Santa Clara Menus";
 require 'includes/conn.php';
 
 // Processing form data when form is submitted
@@ -40,28 +41,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         header("location: login.php");
     }
 }
+$highlight="SIGN UP";
+include 'includes/header.php';
 ?>
 
  <html>
- 	<head>
- 		<title>Sign Up</title>
- 	</head>
-
- 	<body>
-    <form method="post" action="signup.php" enctype="multipart form-data">
-    Enter your name:
-    <input type="text" name="name"><br>
-    Choose a username:
-    <input type="text" name="username"><br>
-    Choose a password:
-    <input type="text" name="password"><br>
-    Are you a restaurant or a driver?
-    <input type="radio" id="restaurant" name="role" value="restaurant">
-    <label for="restaurant">Restaurant</label>
-    <input type="radio" id="driver" name="role" value="driver">
-    <label for="driver">Driver</label><br><br>
-    <input type="submit" value="Submit">
-    <p>Already have an account? <a href="login.php">Login here</a>.</p>
-    </form>
-	</body>
+ <main class="page registration-page" style= "height: 100%;">
+   <section class="clean-block clean-form dark" style="height: 100%;">
+       <div class="container">
+           <div class="block-heading">
+               <h2 class="text-info">Sign Up</h2>
+           </div>
+           <form method="post" action="signup.php" enctype="multipart form-data">
+               <div class="form-group"><label for="name">Enter Your Name</label><input class="form-control item" type="text" name="name"></div>
+               <div class="form-group"><label for="email">Choose User Name</label><input class="form-control item"type="text" name="username"></div>
+               <div class="form-group"><label for="password">Choose Password</label><input class="form-control item" type="text" name="password"></div>
+               Are you a restaurant or a driver?<br>
+               <div class="form-check form-check-inline">
+                       <input type="radio" class="form-check-input" id="restaurant" name="role" value="restaurant">
+                       <label class="form-check-label" for="restaurant">Restaurant</label>
+                     </div>
+                     <div class="form-check form-check-inline">
+                       <input type="radio" class="form-check-input" id="driver" name="role" value="driver">
+                       <label class="form-check-label" for="driver">Driver</label>
+                     </div>
+               <button class="btn btn-primary btn-block" type="submit" value="Submit">Submit</button>
+               <div class="etc-login-form">
+                <p>Already have an account?  <a href="login.php">Login here</a></p>
+               </div>
+             </form>
+       </div>
+   </section>
+</main>
 </html>

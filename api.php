@@ -5,16 +5,6 @@ require 'includes/auth.php';
 require 'includes/comm.php';
 require 'model.php';
 
-// $str = 'BLUH_ILAN';
-// $commState = (object) [
-//     'isRestaurant' => 'BLUH_NATHAN',
-//     'anArray' => array('status' => '1',
-//     'string_key' => $str,
-//     'string_value' => $str,
-//     'string_extra' => $str,
-//     'is_public' => $str,
-//     'is_public_for_contacts' => $str)
-// ];
 
 if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
     die("Not logged in");
@@ -51,7 +41,7 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
             if ($request[0] == 'driver')
                 prepareDriverComm($comm);
             else if ($request[0] == 'restaurant'){
-                echo "do something with restaurant"; //prepareDriverComm();
+                echo "do something with restaurant"; //CHANGES...  prepareDriverComm();
             } else {
                 $comm->setError("not set if to GET from driver or restaurant");
             }
@@ -69,7 +59,7 @@ function driverAccepted($comm){
     // get user
     $user_info = getUserInformation($_SESSION["username"]);
 //    if ($user_info[4]) // NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - exit
-//        return;
+//        return;  ... $comm->setError( .. );
     // triggerSomething($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
 
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
@@ -87,7 +77,7 @@ function updateDriverLocation($comm){
     $comm->setUserId($user_id);
     $comm->setFriendlyName($friendly_name);
 
-    setLocationTransaction($user_info[0],$_POST['lat'],$_POST['long'],$_POST['address']);
+    setLocationTransaction($user_id,$_POST['lat'],$_POST['long'],$_POST['address']);
     //$comm->setLocation(getLocationByTid($currentTransactionId)); // set in COMM the user's current location to reflect change
 
     // NEXT LINE IS JUST AN EXAMPLE OF GETTING SOMETHING FROM MAPS API - JUST FOR DEMO DELETE LATER

@@ -54,7 +54,7 @@ include 'includes/header.php';
            </div>
            <form method="post" action="signup.php" enctype="multipart form-data">
                <div class="form-group"><label for="name">Enter Your Name</label><input class="form-control item" type="text" name="name"></div>
-               <div class="form-group"><label for="email">Choose User Name</label><input class="form-control item"type="text" name="username"></div>
+               <div class="form-group"><label for="username">Choose User Name</label><input class="form-control item"type="text" name="username"></div>
                <div class="form-group"><label for="password">Choose Password</label><input class="form-control item" type="text" name="password"></div>
                Are you a restaurant or a driver?<br>
                <div class="form-check form-check-inline">

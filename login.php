@@ -7,26 +7,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 
     if(isset($_POST["username"]))
+<<<<<<< HEAD
+    {
+        $username = $_POST['username'];   
+=======
     {   // Sanitize username eventually
         $username = $_POST['username'];
+>>>>>>> master
     }
 
     if(isset($_POST["password"]))
-    {   // Sanitize, salt & hash password eventually
+    {
         $password = $_POST['password'];
         $token = hash('ripemd128', "$password");
     }
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
     // Validate username exists
     $query = "SELECT * FROM user WHERE username = '$username'";
     $result = $conn->query($query);
-    if(!$result) die($conn->error);
+    if(!$result)
+        die($conn->error);
 
     elseif($result->num_rows)
     {
         $row = $result->fetch_array(MYSQLI_NUM);
         $result->close();
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
         // Validate password is correct
         if($token == $row[3])
         {
@@ -40,7 +52,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
           $cookie = base64_encode ("$username:" . md5 ($token, $salt));
           setcookie ('scd-secret-cookie', $cookie, time() + (86400 * 30), '/');
         	// Redirect to main page
-            header("location: index.php");
+          header("location: index.php");
         }
          else
         {
@@ -61,8 +73,12 @@ else {
 $highlight="LOGIN";
 include 'includes/header.php';
 ?>
+<<<<<<< HEAD
+    
+=======
 
 
+>>>>>>> master
 <html>
 <main class="page login-page" style= "height: 100%;">
     <section class="clean-block clean-form dark" style="height: 100%;">
@@ -71,7 +87,7 @@ include 'includes/header.php';
                 <h2 class="text-info">Welcome! Login with your credentials below.</h2>
             </div>
             <form method="post" action="login.php" enctype="multipart/form-data">
-                <div class="form-group"><label for="email">Email</label><input class="form-control item" type="text" name="username"></div>
+                <div class="form-group"><label for="username">User Name</label><input class="form-control item" type="text" name="username"></div>
                 <div class="form-group"><label for="password">Password</label><input class="form-control" type="text" name="password"></div>
                 <div class="form-group">
                     <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox"><label class="form-check-label" for="checkbox">Remember me</label></div>

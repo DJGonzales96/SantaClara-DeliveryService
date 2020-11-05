@@ -7,13 +7,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 
     if(isset($_POST["username"]))
-<<<<<<< HEAD
     {
-        $username = $_POST['username'];   
-=======
-    {   // Sanitize username eventually
         $username = $_POST['username'];
->>>>>>> master
     }
 
     if(isset($_POST["password"]))
@@ -21,10 +16,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $password = $_POST['password'];
         $token = hash('ripemd128', "$password");
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> master
     // Validate username exists
     $query = "SELECT * FROM user WHERE username = '$username'";
     $result = $conn->query($query);
@@ -35,10 +26,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         $row = $result->fetch_array(MYSQLI_NUM);
         $result->close();
-<<<<<<< HEAD
-=======
-
->>>>>>> master
         // Validate password is correct
         if($token == $row[3])
         {
@@ -73,12 +60,7 @@ else {
 $highlight="LOGIN";
 include 'includes/header.php';
 ?>
-<<<<<<< HEAD
-    
-=======
 
-
->>>>>>> master
 <html>
 <main class="page login-page" style= "height: 100%;">
     <section class="clean-block clean-form dark" style="height: 100%;">

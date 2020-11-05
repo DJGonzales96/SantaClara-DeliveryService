@@ -8,7 +8,6 @@ CREATE USER 'scmuser'@'localhost' IDENTIFIED BY 'p123456d';
 GRANT ALL PRIVILEGES ON santa_clara_menus . * TO 'scmuser'@'localhost';
 FLUSH PRIVILEGES;
 
-<<<<<<< HEAD
 
 /* ENTITIES */
 CREATE TABLE IF NOT EXISTS user (
@@ -45,9 +44,6 @@ CREATE TABLE IF NOT EXISTS transaction (
 
 
 /* TODO: NEW TEST DATA
-=======
-/* ENTITIES */
->>>>>>> master
 CREATE TABLE IF NOT EXISTS user (
 	user_id	INT(3) UNSIGNED AUTO_INCREMENT,
     username VARCHAR(64) UNIQUE,
@@ -79,8 +75,6 @@ CREATE TABLE IF NOT EXISTS transaction (
     PRIMARY KEY (t_id)
 );
 
-<<<<<<< HEAD
-
 INSERT INTO user (username, name, encrypted_password, isRestaurant) VALUES
 	('testDriver1', 'driver1Name', '$1$O3JMY.Tw$AdLnLjQ/5jXF9.MTp3gHv/', FALSE),
     ('testDriver2', 'driver2Name', '$1$O3JMY.Tw$AdLnLjQ/5jXF9.MTp3gHv/', FALSE),
@@ -97,7 +91,3 @@ INSERT INTO transaction (driver_id, restaurant_id, start_loc, end_loc, timestamp
 	(001, 003, '1234 Test Restaurant Address Rd', '4321 Customer Addr Rd', '1970-01-01 00:00:01', 3600, 24.99);
 
 */
-=======
-
-/* TODO: NEW TEST DATA */
->>>>>>> master

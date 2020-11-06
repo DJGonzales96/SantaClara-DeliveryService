@@ -52,7 +52,7 @@ include 'includes/header.php';
             </div>
         </section>
     </main>
-<script src="assets/js/app.js"></script>
+<script src="assets/js/driverapp.js"></script>
 <?php
 include 'includes/footer.php';
 ?>

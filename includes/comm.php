@@ -39,8 +39,11 @@ class Comm implements JsonSerializable {
     use JsonSerializeTrait;
     private $status;
     private $user_id;
+    private $isRestaurant;
     private $friendlyName;
     private $location;
+    private $driverStatus;
+    private $currentTransactions;
 
     private $error;
 
@@ -63,6 +66,18 @@ class Comm implements JsonSerializable {
 
     function setLocation($location) {
         $this->location = $location;
+    }
+
+    function setIsRestaurant($isRestaurant) {
+        $this->isRestaurant = $isRestaurant;
+    }
+
+    function setCurrentTransactions($currentTransactions) {
+        $this->currentTransactions = $currentTransactions;
+    }
+
+    function setDriverStatus($driverStatus){
+        $this->driverStatus = $driverStatus;
     }
 
     function setError($errorStr){

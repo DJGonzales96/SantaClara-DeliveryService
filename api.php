@@ -97,8 +97,13 @@ function prepareDriverComm($comm){ // gets an empty comm and sets it to valid on
     // update the comm to reflect user's state
     $comm->setUserId($user_id);
     $comm->setFriendlyName($friendly_name);
+    $comm->setIsRestaurant($user_info[4]);
 
-    // USE AFTER SQL AND MODEL ARE IMPLEMENTED
+
+    // CHANGE AFTER SQL AND MODEL ARE IMPLEMENTED CORRECTLY
+    $comm->setLocation("1 Washington Sq, San Jose, CA, 95192");
+    $comm->setDriverStatus(DriverStatus::IDLE);
+    $comm->setCurrentTransactions(array("1 Empty","2 Empty"));
     //$comm->setLocation(getLocationByTid($currentTransactionId)); // set in COMM the user's current location
 
     $comm->setStatus(CommStatus::STATUS_OK); // when everything is finished mark it STATUS_OK

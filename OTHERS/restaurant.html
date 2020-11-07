@@ -14,20 +14,20 @@
 
 <body>
     <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
-        <div class="container"><a class="navbar-brand logo" href="#">Santa Clara Menus</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse"
-                id="navcol-1">
-                <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">HOME</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about-us.html">ABOUT US</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="product-page.html">APP</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html">SIGN OUT</a></li>
-                </ul>
-            </div>
-        </div>
+      <div class="container"><a class="navbar-brand logo" href="#">Santa Clara Menus</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+          <div class="collapse navbar-collapse"
+              id="navcol-1">
+              <ul class="nav navbar-nav ml-auto">
+                  <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="product-page.html">Client_Side_Name_holder</a></li>
+                  <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                  <li class="nav-item"><a class="nav-link" href="registration.html">Register</a></li>
+              </ul>
+          </div>
+      </div>
     </nav>
     <main class="page login-page" style="height:100%">
-        <section class="clean-block clean-form dark" style="height: 100%">
+        <section class="clean-block clean-form dark" style="min-height: 100%">
             <div class="container">
                 <div class="block-heading" style="margin-left:auto;margin-right:auto">
                   <h2 class="text-info" style="display:inline-block">Welcome</h2>
@@ -36,34 +36,94 @@
                 <form style="max-width:75%">
                     <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">
                       <label for="status" style="margin-right:5%">Client address:</label>
-                      <h6 class="status" style="display:inline-block; color:#343a40">1 Washington Sq, San Jose, CA 95192</h6>
-                      <button class="btn btn-primary" style=" height: calc(1.5em + .75rem + 2px); margin-left: 100px" type="submit">Calculate Cost</button>
+                      <input class="form-control form-control-lg" type="text" id="clientAddress" name="clientAddress" style="width: 400px">
+                      <button class="btn btn-primary" style=" height: calc(1.5em + .75rem + 2px); margin-left: 50px" type="submit" onclick="getCost(event)">Calculate Cost</button>
                     </div>
 
                     <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">
                       <label for="status" style="margin-right:5%">Cost:</label>
-                      <h6 class="status" style="display:inline-block; color:#343a40">$32.00</h6>
-                      <button class="btn btn-primary" style=" height: calc(1.5em + .75rem + 2px); margin-left: 40px" type="submit">Request</button>
+                      <h6 class="status" style="display:inline-block; color:#343a40">$0.00</h6>
+                      <button class="btn btn-primary" style=" height: calc(1.5em + .75rem + 2px); margin-left: 40px" type="submit" onclick="requestdriver(event)">Request</button>
                     </div>
 
                     <div style="display:inline-block">
                       <span style="margin-right: 20px">Current deliveries:</span>
                     </div>
-                    <table class="table table-bordered">
-                        <tr>
-                          <th scope="row">1</th>
-                          <td colspan="2">1 Washington Sq, San Jose, CA 95192</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td colspan="2"></td>
-                        </tr>
+                    <table class="table table-bordered" id="deliveries">
+                      <tbody>
+                      <tr>
+                          <th>Delivery</th>
+                          <th>Address</th>
+                          <th>Order</th>
+                          <th>Total Cost</th>
+                      </tr>
+                      <tr>
+                        <th scope="row">1</th>
+                        <td> </td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">2</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
                       </tbody>
                     </table>
                     </form>
             </div>
         </section>
     </main>
+    <script>
+        // setInterval()
+        /*setTimeout(function() {
+        location.reload();
+      }, 5000);*/
+        function getCost(e){
+            e.preventDefault();
+            console.log(document.getElementById("clientAddress").value);
+            var xhttp = new XMLHttpRequest();
+            var obj;
+
+            xhttp.open("GET", "http://localhost/scm/api.php", true);
+
+            xhttp.onload = () => {
+                const data = xhttp.responseText;//JSON.parse(xhttp.responseText);
+                // Object.keys(data).forEach(key => {
+                //     console.log(key, data[key]);
+                // });
+                console.log(data);
+            };
+
+            xhttp.send();
+        }
+        function requestdriver(e){
+            e.preventDefault();
+            // table data
+            var table = document.getElementById("deliveries");
+            var nextDelivery = table.rows.length;
+            var currRow = table.insertRow(-1);
+
+            // create new entry in table
+            var delivery = currRow.insertCell(0);
+            var address = currRow.insertCell(1);
+            var order = currRow.insertCell(2);
+            var cost = currRow.insertCell(3);
+
+            // create values for new table entry
+            delivery.innerHTML = nextDelivery; // row/delivery number
+            address.innerHTML = document.getElementById("clientAddress").value;
+            order.innerHTML = "also something";
+
+            // Note: should actually be calculated by google api
+            cost.innerHTML = document.getElementById("cost").value;
+
+
+            //send request to backend
+
+        }
+    </script>
     <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>

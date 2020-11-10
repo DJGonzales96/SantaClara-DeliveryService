@@ -20,7 +20,7 @@ function getUserInformation(String $username)
   return $info;
 }
 
-function setLocationTransaction(String $user_id, String $newLat, String $newLong, String $newAddr)
+function setLocationTransaction(String $username, String $newLat, String $newLong, String $newAddr)
 {
   global $conn;
   // notice user has a t_id to show CURRENT location
@@ -28,13 +28,45 @@ function setLocationTransaction(String $user_id, String $newLat, String $newLong
   // - this needs to be changed accordingly
   // INSERT to transactions - a location update is a transaction with TIME_STAMP
   // INSERT to location ....
-  // previous code:
-//  $query = "UPDATE location SET latitude = '$newLat', longitude = '$newLong' WHERE loc_id = '$loc_id'"; // CHANGE
-//  // get the new loc_id and set it as the user's location
-//  $result = $conn->query($query);
-//  if(!$result) die($conn->error);
+  $user_id = getUserInformation($username)[0];
+
+  // Create a new location
+  $query = "INSERT INTO location(lat, lon, address) VALUES('$newLat', '$newLong', '$newAddr')";
+  $result = $conn->query($query);
+  if(!$result) die($conn->error);
+
+  $new_loc_id = $conn->insert_id; // the location id is the most recently inserted
+  $t_type = "loc update";
+  $start_location = $new_loc_id;
+  // Create a new transaction
+  $query = "INSERT INTO transaction(t_type, restaurant_id, start_loc) VALUES('$t_type', '$user_id', '$start_location')";
+  $result = $conn->query($query);
+  if(!$result) die($conn->error);
 }
 
+function updateDriverLocation(String $username, String $newLat, String $newLong, String $newAddr)
+{
+  global $conn;
+  $t_id = getUserInformation($username)[5];
+  $loc_to_update = getLocationByTid($t_id);
+
+  // Update location
+  $query = "UPDATE location SET lat = '$newLat', lon = '$newLong', address = '$newAddr' WHERE loc_id = '$loc_to_update'";
+  $result = $conn->query($query);
+  if(!$result) die($conn->error);
+}
+
+function RestaurantUpdateAddress(String $user_id, String $newLat, String $newLong, String $newAddr)
+{
+  // Create new location and transaction
+  setLocationTransaction($user_id, $newLat, $newLong, $newAddr);
+  $new_t_id = $conn->insert_id;
+
+  // Restaurant's t_id is updated to the new values
+  $query = "UPDATE user SET t_id = '$new_t_id' WHERE user_id = '$user_id'";
+  $result = $conn->query($query);
+  if(!$result) die($conn->error);
+}
 
 // JUST AN EXAMPLE OF GETTING SOMETHING FROM MAPS API - REMOVE LATER
 function getFromMapsApiDemo($friendlyName){
@@ -43,7 +75,14 @@ function getFromMapsApiDemo($friendlyName){
 
 
 function getLocationByTid($t_id){
+  $query = "SELECT start_loc FROM transaction WHERE t_id = '$t_id'"
+  $result = $conn->query($query);
+  if(!$result) die($conn->error);
 
+  $row = $result->fetch_array(MYSQLI_NUM);
+  $loc = $row[4];
+
+  return $loc;
 }
 
 // helper function
@@ -90,8 +129,14 @@ function calculateCost(String $start, String $end)
 }
 
 //TODO: Need this functionality eventually
-function requestDelivery() {}
-function acceptDelivery() {}
-function driverDelivered() {}
-?>
+function requestDelivery()
+{
 
+}
+function acceptDelivery() {
+
+}
+function driverDelivered(String $user_id) {
+
+}
+?>

@@ -24,8 +24,8 @@ abstract class CommStatus {
     const STATUS_ERROR = 'STATUS_ERROR';
 }
 
-// Enum for driver status
-abstract class DriverStatus {
+// Enum for Client status - can be either driver or restaurant
+abstract class ClientStatus {
     const OFFLINE = 'OFFLINE'; // off the grid - location not set
     const IDLE = 'IDLE'; // waiting for request
     const INCOMING = 'INCOMING'; // incoming request
@@ -42,7 +42,7 @@ class Comm implements JsonSerializable {
     private $isRestaurant;
     private $friendlyName;
     private $location;
-    private $driverStatus;
+    private $clientStatus;
     private $currentTransactions;
 
     private $error;
@@ -76,8 +76,8 @@ class Comm implements JsonSerializable {
         $this->currentTransactions = $currentTransactions;
     }
 
-    function setDriverStatus($driverStatus){
-        $this->driverStatus = $driverStatus;
+    function setClientStatus($clientStatus){
+        $this->clientStatus = $clientStatus;
     }
 
     function setError($errorStr){

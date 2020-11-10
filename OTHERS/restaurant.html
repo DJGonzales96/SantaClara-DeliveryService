@@ -76,7 +76,7 @@
         </section>
     </main>
     <script>
-        // setInterval()
+        //setInterval(requestdriver,5000);
         /*setTimeout(function() {
         location.reload();
       }, 5000);*/
@@ -86,7 +86,7 @@
             var xhttp = new XMLHttpRequest();
             var obj;
 
-            xhttp.open("GET", "http://localhost/scm/api.php", true);
+            xhttp.open("GET", "http://localhost/scm/api.php/restaurant", true);
 
             xhttp.onload = () => {
                 const data = xhttp.responseText;//JSON.parse(xhttp.responseText);

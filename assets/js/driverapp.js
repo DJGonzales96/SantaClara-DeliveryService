@@ -2,6 +2,8 @@
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
 var commState;
+var dels;
+var numOfDeliveries = 0;
 
 
 var i = 1;
@@ -28,9 +30,79 @@ var geoLocate = function() {
 
 // setup UI to hide some elements
 document.getElementById("incomingRequest").style.visibility = "hidden";
+// document.getElementById("incomingRequest").addEventListener("click", AcceptDelivery);
 
-// bind buttons of the UI to functions
-document.getElementById("buttonLocation").addEventListener("click", geoLocate, true);
+// add delivery to current deliveries
+document.getElementById("buttonAccept").addEventListener("click", geoLocate, true);
+
+
+function AcceptDelivery(){
+    //POST method with delivery addr
+
+
+    // call updateDeliveries()
+    console.log("accepted")
+
+}
+//checks to see if there are any incoming requests
+setInterval(showIncoming,3000);
+
+function showIncoming(){
+    var incoming = document.getElementById("incomingRequest");
+    doGet();
+    if(dels != null){
+        var driverStatus = dels['driverStatus'];
+        // if incoming set accept/reject visisble
+        if(driverStatus == "INCOMING"){
+            // console.log(driverStatus);
+            // TODO:
+            // SET FIELDS:
+                // - ADDR
+                // - $$
+
+            incoming.style.visibility = "visible";
+       }
+       else{
+        // console.log("not incoming");
+        incoming.style.visibility = "hidden";
+       }
+    }
+
+}
+//get deliveries + update table every n secs
+setInterval(updateDeliveries,2000);
+
+function updateDeliveries(){
+    doGet();
+    if(dels != null){
+        var deliveries = dels['currentTransactions'];
+        var numDels = dels['currentTransactions'].length;
+
+        console.log(deliveries,numDels);
+
+        // only update table if new deliveries
+        if(numDels > numOfDeliveries){
+             //Update table of deliveries
+            for(i = 0; i < numDels; i++){
+                var table = document.getElementById("delivery-table");
+                var tableLen = table.rows.length;
+                var currRow = table.insertRow(-1);
+
+                // add addresss of delivery
+                var deliveryNum = currRow.insertCell(0);
+                var delivery = currRow.insertCell(1);
+                deliveryNum.style.fontWeight = "bold";
+                deliveryNum.innerHTML = tableLen + 1;
+                delivery.innerHTML = deliveries[i];
+
+            }
+            //UPDATE number of deliveries in table
+            numOfDeliveries = numDels;
+        }
+    }
+    else
+        console.log("nothing yet");
+}
 
 // set UI updating mechanism on GET
 xhrGet.onreadystatechange = function() {
@@ -71,20 +143,24 @@ xhrPost.onreadystatechange = function() {
 // POST request to update the model, route is the url of the request
 var doPost = function(route,data){
     console.log(data);
-    xhrPost.open("POST", "http://localhost/cs160/scd/api.php/driver/" + route, true);
+    xhrPost.open("POST", "http://localhost/scm/api.php/driver/" + route, true);
     xhrPost.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhrPost.send(data);
 }
 
 // GET request
-var doGet = function(){
-    xhrGet.open("GET", "http://localhost/cs160/scd/api.php/driver", true);
+function doGet(){
+    xhrGet.open("GET", "http://localhost/scm/api.php/driver", true);
+    xhrGet.onload = () => {
+        var resp = xhrGet.responseText;
+        dels = JSON.parse(resp);
+        //console.log(dels);
+    }
     xhrGet.send();
 }
-// call doGet update every 5 seconds
-var intervalGet = setInterval(doGet, 5000);
 // call doGet first time
-doGet();
+//doGet();
+
 
 
 

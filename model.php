@@ -58,6 +58,7 @@ function updateDriverLocation(String $username, String $newLat, String $newLong,
 
 function RestaurantUpdateAddress(String $user_id, String $newLat, String $newLong, String $newAddr)
 {
+  global $conn;
   // Create new location and transaction
   setLocationTransaction($user_id, $newLat, $newLong, $newAddr);
   $new_t_id = $conn->insert_id;
@@ -75,7 +76,8 @@ function getFromMapsApiDemo($friendlyName){
 
 
 function getLocationByTid($t_id){
-  $query = "SELECT start_loc FROM transaction WHERE t_id = '$t_id'"
+  global $conn;
+  $query = "SELECT start_loc FROM transaction WHERE t_id = '$t_id'";
   $result = $conn->query($query);
   if(!$result) die($conn->error);
 

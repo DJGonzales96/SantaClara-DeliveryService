@@ -20,7 +20,7 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
             // check api.php/driver or api.php/restaurant
             if ($request[0] == 'driver'){
                 if ($request[1] == 'location'){
-                    updateDriverLocation($comm);
+                    setCommDriverLocation($comm);
                 } else
                     if ($request[1] == 'accept'){
                         //driverAccepted($comm);
@@ -79,7 +79,7 @@ function driverAccepted($comm){
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
-function updateDriverLocation($comm){
+function setCommDriverLocation($comm){
     // get user
     $user_info = getUserInformation($_SESSION["username"]);
 //    if ($user_info[4]) // NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - exit

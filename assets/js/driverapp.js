@@ -1,12 +1,10 @@
 // globals
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
+const baseUrl = "http://localhost/scm";
 var commState;
 var dels;
 var numOfDeliveries = 0;
-
-
-var i = 1;
 
 var geoLocate = function() {
     function success(position) {
@@ -113,13 +111,15 @@ xhrGet.onreadystatechange = function() {
             if (commState.location)
                 document.getElementById("CurrentLocation").value = commState.location;
 
-            console.log("Call number:" + i++); // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
+            // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
+            var i = 1;
+            console.log("Call number:" + i++);
         } else {
             console.log("Error getting JSON");
             Object.keys(commState).forEach(key => {
                 console.log(key, commState[key]);
             });
-            clearInterval(intervalGet);
+            clearInterval(intervalGet); // stops AJAX on error
         }
     }
 };
@@ -130,7 +130,7 @@ xhrPost.onreadystatechange = function() {
         console.log(this.responseText);
         commState = JSON.parse(this.responseText);
         if(commState.status.valueOf() == "UPDATE_OK" ) {
-            console.log("Update okay."); // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
+            console.log("Update okay."); // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
         } else {
             console.log("Error with update");
             Object.keys(commState).forEach(key => {
@@ -143,14 +143,14 @@ xhrPost.onreadystatechange = function() {
 // POST request to update the model, route is the url of the request
 var doPost = function(route,data){
     console.log(data);
-    xhrPost.open("POST", "http://localhost/scm/api.php/driver/" + route, true);
+    xhrPost.open("POST", baseUrl + "/api.php/driver/" + route, true);
     xhrPost.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhrPost.send(data);
 }
 
 // GET request
 function doGet(){
-    xhrGet.open("GET", "http://localhost/scm/api.php/driver", true);
+    xhrGet.open("GET", baseUrl + "/api.php/driver/", true);
     xhrGet.onload = () => {
         var resp = xhrGet.responseText;
         dels = JSON.parse(resp);

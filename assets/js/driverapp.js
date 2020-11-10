@@ -9,7 +9,8 @@ var geoLocate = function() {
         const latitude  = position.coords.latitude;
         const longitude = position.coords.longitude;
         let inputLocation = document.getElementById("CurrentLocation").value || "NULL";
-        let postRequest = "lat="+latitude+"&long="+longitude+"&address="+encodeURIComponent(inputLocation);
+        let postRequest = "lat=" + latitude + "&long=" + longitude
+            + "&address=" + encodeURIComponent(inputLocation);
         doPost("location", postRequest);
         console.log(latitude + " " + longitude);
     }
@@ -40,8 +41,7 @@ xhrGet.onreadystatechange = function() {
                 document.getElementById("CurrentLocation").value = commState.location;
 
             // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
-            var i = 1;
-            console.log("Call number:" + i++);
+            console.log("AJAX Get call");
         } else {
             console.log("Error getting JSON");
             Object.keys(commState).forEach(key => {
@@ -58,7 +58,11 @@ xhrPost.onreadystatechange = function() {
         console.log(this.responseText);
         commState = JSON.parse(this.responseText);
         if(commState.status.valueOf() == "UPDATE_OK" ) {
-            console.log("Update okay."); // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
+            // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
+            console.log("Update okay.");
+            Object.keys(commState).forEach(key => {
+                console.log(key, commState[key]);
+            });
         } else {
             console.log("Error with update");
             Object.keys(commState).forEach(key => {

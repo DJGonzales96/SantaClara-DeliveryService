@@ -1,7 +1,7 @@
 <?php
 // make sure no unauthorized access
 if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL)
-    die("Not logged in");
+    die("{'status':'STATUS_ERROR','error':'Not logged in'}");
 
 // This Maps API GeoCoding service will probably not be used
 function getGeocode(String $address)
@@ -11,7 +11,7 @@ function getGeocode(String $address)
     $curl = curl_init();
     $data = ["address" => $address,"key" => $api_key];
     $url = sprintf("%s?%s", $base_url, http_build_query($data));
-     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_URL, $url);
     $response = curl_exec($curl);
     curl_close($curl);

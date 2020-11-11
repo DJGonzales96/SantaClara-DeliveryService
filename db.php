@@ -23,10 +23,10 @@ function insertNewLocationToDb(String $newLat, String $newLong, String $newAddr)
 }
 
 // Inserts a new transaction
-function insertNewTransactionToDb($user_id, $start_location, $t_type){
+function insertNewTransactionToDb($user_id, $start_location, $t_type){ //TODO: generalize this function
     global $conn;
     // echo "t_type: " . $t_type . ", user_id: ". $user_id . ", start_location: ". $start_location; // REMOVE DEBUG  REMOVE DEBUG  REMOVE DEBUG  REMOVE DEBUG  REMOVE DEBUG  REMOVE DEBUG  REMOVE DEBUG
-    $query = "INSERT INTO transaction(t_type, restaurant_id, start_loc) VALUES('$t_type', '$user_id', '$start_location')";
+    $query = "INSERT INTO transaction(t_type, primary_user_id, start_loc) VALUES('$t_type', '$user_id', '$start_location')";
     $result = $conn->query($query);
     if(!$result)
         dbQueryError($conn, "insertNewTransactionToDb");

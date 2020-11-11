@@ -40,9 +40,31 @@ function getUserInformation(String $username) {
 
 function updateLocation(String $user_id, String $newLat, String $newLong, String $newAddr) {
   $new_loc_id = insertNewLocationToDb($newLat, $newLong, $newAddr);
-  $t_type = "loc update";
+  $t_type = "loc_update";
   $new_t_id = insertNewTransactionToDb($user_id, $new_loc_id, $t_type);
   updateUserTransactionInDb($user_id, $new_t_id);
+}
+
+//TODO: eventually error check types
+function restaurantCreateNewDelivery(String $user_id, String $address, String $food) {
+  // getLatLong($addr)
+  // $in_range = isDestinationWithin40($Lat, $Long)
+  // $nearby_driver_ids = getDriversNearby($lat,$long)
+  // if($in_range && $nearby_driver_ids > 0)
+      $new_loc_id = insertNewLocationToDb($newLat, $newLong, $newAddr);
+      $new_t_id = insertNewTransactionToDb($user_id, $new_loc);
+      $t_type = "delivery_req";
+      $t_status = "pending";
+      //TODO: notify drivers of pending transactions
+
+  // else (not succeed case)
+      $t_status = "failed";
+}
+
+function checkDriverLocations() {
+
+  //TODO: Need Maps API for functionality
+  // getSurroundingDriversArray($)
 }
 
 function getCurrentUserLocationByTid($t_id){
@@ -72,17 +94,54 @@ function getCurrentUserLocationByTid($t_id){
 //  $query = "UPDATE user SET t_id = '$new_t_id' WHERE user_id = '$user_id'";
 //  $result = $conn->query($query);
 //  if(!$result) die($conn->error);
-//}
+//
+
+//TODO: rework this logic for syncronization from Restaurant
+function driverAcceptDelivery() {
+  $active_deliveries = getCurrentDeliveries($username);
+
+  // Check how many active deliveries driver is servicing
+  $num_deliveries = count($active_deliveries);
+  switch($num_deliveries) {
+    case 0:
+      //TODO: create new delivery()
+        // insert new location to DB
+        // insert new transaction to DB
+      $comm->setClientStatus(ClientStatus::SERVICING_1);
+      break;
+    case 1:
+      //TODO: create new delivery()
+        // insert new location to DB
+        // insert new transaction to DB
+      $comm->setClientStatus(ClientStatus::SERVICING_2);
+      break;
+    case 2:
+      //TODO: Driver is full on deliveries! Cannot queue more
+      break;
+  }
+
+  $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
+
+}
 
 
 
-
-
+//TODO: fix this later
 function getCurrentDeliveries(String $user_id)
 {
   global $conn;
+  $user_info = getUserInformation($username);
+  $user_id = $_user_info[0];
+  $isRestaurant = $user_info[4];
+  // Check if we have a restaurant or driver
+  $id_type;
+  if($isRestaurant == false)
+    $id_type = "driver_id";
+  else
+    $id_type = "restaurant_id";
+
   // We only want deliveries that are active
-  $query = "SELECT * FROM transaction WHERE $id_type = '$user_id' AND active = true";
+  $query = "SELECT * FROM transaction WHERE '$id_type' = '$user_id' AND active = true";
   $result = $conn->query($query);
   if(!$result) die($conn->error);
 

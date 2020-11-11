@@ -33,6 +33,18 @@ function insertNewTransactionToDb($user_id, $start_location, $t_type){ //TODO: g
     return $conn->insert_id;
 }
 
+// TODO: eventually this function wil take $price as a param
+// Note, TIMESTAMP is auto generated for us by SQL
+// Inserts a new transaction for RESTAURANTS delivery
+function insertNewRestTransactionToDb($user_id, $t_type, $destination, $t_status) {
+    global $conn;
+    $query = "INSERT INTO transaction(t_type, primary_user_id, end_loc, t_status) VALUES('$t_type', '$user_id', '$destination', '$t_status')";
+    $result = $conn->query($query);
+    if(!$result)
+        dbQueryError($conn, "insertNewTransactionToDb");
+    return $conn->insert_id;
+}
+
 function updateUserTransactionInDb($user_id,$new_t_id){
     global $conn;
     $query = "UPDATE User SET t_id=' $new_t_id' WHERE user_id='$user_id'";

@@ -31,7 +31,7 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
             // RESTAURANT
             else if ($request[0] == 'restaurant'){
                 if ($request[1] == 'request'){
-                    // setCommRestaurantRequest($comm)
+                    setCommRestaurantRequest($comm);
                 } else {
                     $comm->setError("not set POST operation"); // error no operation
                 }
@@ -68,8 +68,10 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
 
 function setCommRestaurantRequest($comm){
   $user_info = getUserInformation($_SESSION["username"]);
-  restaurantCreateNewDelivery($user_info[0], $_POST["address"], $_POST["food"]);
-  $comm->setCurrentTransactions(/*TODO: Eventually need an array of current deliveries by user_id*/);
+  $user_id = $user_info[0];
+  restaurantCreateNewDelivery($user_id, $_POST["address"], $_POST["food"]);
+  $current_deliveries = getCurrentRestaurantDeliveries($user_id); // this is an array of "pending" transactions
+  $comm->setCurrentTransactions($current_deliveries);
   $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 

@@ -46,14 +46,20 @@ function updateLocation($user_id, $newLat, $newLong, $newAddr) {
 }
 
 function restaurantCreateNewDelivery($user_id, $address, $food) {
+  //TODO: Need maps API for functionality
   // getLatLong($addr)
   // $in_range = isDestinationWithin40($Lat, $Long)
   // $nearby_driver_ids = getDriversNearby($lat,$long)
   // if($in_range && $nearby_driver_ids > 0)
-      $new_loc_id = insertNewLocationToDb($newLat, $newLong, $newAddr);
-      $new_t_id = insertNewTransactionToDb($user_id, $new_loc);
+    // for now we hard code values and assume every delivery request is valid
+      $newLat = 1.1;
+      $newLong = 2.2;
+      $newAddr = "1 Washington Square SJ";
       $t_type = "delivery_req";
       $t_status = "pending";
+      $new_loc_id = insertNewLocationToDb($newLat, $newLong, $newAddr);
+      $new_t_id = insertNewRestTransactionToDb($user_id, $t_type, $new_loc_id, $t_status);
+
       //TODO: notify drivers of pending transactions
 
   // else (not succeed case)
@@ -120,27 +126,29 @@ function driverAcceptDelivery() {
   }
 
   $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
-
 }
 
-
-
-//TODO: fix this later
-function getCurrentDeliveries($user_id)
+// Gets current in progress deliveries of a driver
+function getCurrentDriverDeliveries($user_id)
 {
   global $conn;
-  $user_info = getUserInformation($username);
-  $user_id = $_user_info[0];
-  $isRestaurant = $user_info[4];
-  // Check if we have a restaurant or driver
-  $id_type;
-  if($isRestaurant == false)
-    $id_type = "driver_id";
-  else
-    $id_type = "restaurant_id";
-
   // We only want deliveries that are active
-  $query = "SELECT * FROM transaction WHERE '$id_type' = '$user_id' AND active = true";
+  $query = "SELECT * FROM transaction WHERE 'secondary_user_id' = '$user_id' AND t_status = 'in_progress'";
+  $result = $conn->query($query);
+  if(!$result) die($conn->error);
+
+  $deliveryInfo = $result->fetch_array(MYSQLI_NUM);
+  $result->close();
+
+  return $deliveryInfo;
+}
+
+// Gets current pending deliveries of a restaurant
+function getCurrentRestaurantDeliveries($user_id)
+{
+  global $conn;
+  // We only want deliveries that are active
+  $query = "SELECT * FROM transaction WHERE 'primary_user_id' = '$user_id' AND t_status = 'pending'";
   $result = $conn->query($query);
   if(!$result) die($conn->error);
 

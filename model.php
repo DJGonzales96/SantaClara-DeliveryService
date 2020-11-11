@@ -28,7 +28,7 @@ function getFromMapsApiDemo($friendlyName){
   return getGeocode($friendlyName);
 }
 
-function getUserInformation(String $username) {
+function getUserInformation($username) {
   global $conn;
   $query = "SELECT * FROM user WHERE username = '$username'"; //
   $result = $conn->query($query);
@@ -38,15 +38,14 @@ function getUserInformation(String $username) {
   return $info;
 }
 
-function updateLocation(String $user_id, String $newLat, String $newLong, String $newAddr) {
+function updateLocation($user_id, $newLat, $newLong, $newAddr) {
   $new_loc_id = insertNewLocationToDb($newLat, $newLong, $newAddr);
   $t_type = "loc_update";
   $new_t_id = insertNewTransactionToDb($user_id, $new_loc_id, $t_type);
   updateUserTransactionInDb($user_id, $new_t_id);
 }
 
-//TODO: eventually error check types
-function restaurantCreateNewDelivery(String $user_id, String $address, String $food) {
+function restaurantCreateNewDelivery($user_id, $address, $food) {
   // getLatLong($addr)
   // $in_range = isDestinationWithin40($Lat, $Long)
   // $nearby_driver_ids = getDriversNearby($lat,$long)
@@ -63,7 +62,7 @@ function restaurantCreateNewDelivery(String $user_id, String $address, String $f
 
 function checkDriverLocations() {
 
-  //TODO: Need Maps API for functionality
+  //TODO: Need Maps API for functionality   @Ilan
   // getSurroundingDriversArray($)
 }
 
@@ -127,7 +126,7 @@ function driverAcceptDelivery() {
 
 
 //TODO: fix this later
-function getCurrentDeliveries(String $user_id)
+function getCurrentDeliveries($user_id)
 {
   global $conn;
   $user_info = getUserInformation($username);

@@ -13,7 +13,7 @@ function dbQueryError($conn, $where){
 }
 
 // Inserts a new location
-function insertNewLocationToDb(String $newLat, String $newLong, String $newAddr) {
+function insertNewLocationToDb($newLat, $newLong, $newAddr) {
     global $conn;
     $query = "INSERT INTO location(lat, lon, address) VALUES('$newLat', '$newLong', '$newAddr')";
     $result = $conn->query($query);
@@ -52,7 +52,7 @@ function getLocationIdByTid($t_id){
     return $loc;
 }
 
-function getLocationByLocId(String $loc_id)
+function getLocationByLocId($loc_id)
 {
     global $conn;
     $query = "SELECT * FROM location WHERE loc_id = '$loc_id'";

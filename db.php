@@ -52,7 +52,7 @@ function getLocationIdByTid($t_id){
     return $loc;
 }
 
-function getLocationByLocId(String $loc_id)
+function getLocationByLocId($loc_id)
 {
     global $conn;
     $query = "SELECT * FROM location WHERE loc_id = '$loc_id'";

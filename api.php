@@ -7,7 +7,7 @@ require 'model.php';
 
 
 if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
-    die("Not logged in");
+    die("{'status':'STATUS_ERROR','error':'Not logged in'}");
 } else {
     $method = $_SERVER['REQUEST_METHOD'];
     $request = explode("/", substr(@$_SERVER['PATH_INFO'], 1));
@@ -90,7 +90,7 @@ function setCommDriverLocation($comm){
     $comm->setUserId($user_id);
     $comm->setFriendlyName($friendly_name);
 
-    setLocationTransaction($user_id,$_POST['lat'],$_POST['long'],$_POST['address']);
+    updateLocation($user_id,$_POST['lat'],$_POST['long'],$_POST['address']);
     //$comm->setLocation(getLocationByTid($currentTransactionId)); // set in COMM the user's current location to reflect change
 
     // NEXT LINE IS JUST AN EXAMPLE OF GETTING SOMETHING FROM MAPS API - JUST FOR DEMO DELETE LATER
@@ -99,6 +99,8 @@ function setCommDriverLocation($comm){
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
+
+// builds a Communication object
 function getCommDriver($comm){ // gets an empty comm and sets it to valid one
     // get the state of the user
     $user_info = getUserInformation($_SESSION["username"]);
@@ -106,15 +108,13 @@ function getCommDriver($comm){ // gets an empty comm and sets it to valid one
 //        return;
     $user_id = $user_info[0];
     $friendly_name = $user_info[2];
-    $currentTransactionId = $user_info[5];
+    $userCurrentLocationByTransactionId = $user_info[5];
     // update the comm to reflect user's state
     $comm->setUserId($user_id);
     $comm->setFriendlyName($friendly_name);
     $comm->setIsRestaurant($user_info[4]);
 
-
-    // CHANGE AFTER SQL AND MODEL ARE IMPLEMENTED CORRECTLY
-    $comm->setLocation("1 Washington Sq, San Jose, CA, 95192");
+    $comm->setLocation(getCurrentUserLocationByTid($userCurrentLocationByTransactionId));
     $comm->setClientStatus(ClientStatus::IDLE);
     $comm->setCurrentTransactions(array("1 Empty","2 Empty"));
     //$comm->setLocation(getLocationByTid($currentTransactionId)); // set in COMM the user's current location

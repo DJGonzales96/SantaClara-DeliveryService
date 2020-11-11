@@ -1,9 +1,8 @@
 // globals
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
-const baseUrl = "http://localhost/scm";
+const baseUrl = "http://localhost//SantaClara-DeliveryService";
 var commState;
-var dels;
 var numOfDeliveries = 0;
 
 var geoLocate = function() {
@@ -11,7 +10,8 @@ var geoLocate = function() {
         const latitude  = position.coords.latitude;
         const longitude = position.coords.longitude;
         let inputLocation = document.getElementById("CurrentLocation").value || "NULL";
-        let postRequest = "lat="+latitude+"&long="+longitude+"&address="+encodeURIComponent(inputLocation);
+        let postRequest = "lat=" + latitude + "&long=" + longitude
+            + "&address=" + encodeURIComponent(inputLocation);
         doPost("location", postRequest);
         console.log(latitude + " " + longitude);
     }
@@ -25,62 +25,18 @@ var geoLocate = function() {
         navigator.geolocation.getCurrentPosition(success, error);
     }
 }
-
-// setup UI to hide some elements
-document.getElementById("incomingRequest").style.visibility = "hidden";
-// document.getElementById("incomingRequest").addEventListener("click", AcceptDelivery);
-
-// add delivery to current deliveries
-document.getElementById("buttonAccept").addEventListener("click", geoLocate, true);
-
-
-function AcceptDelivery(){
-    //POST method with delivery addr
-
-
-    // call updateDeliveries()
-    console.log("accepted")
-
-}
-//checks to see if there are any incoming requests
-setInterval(showIncoming,3000);
-
-function showIncoming(){
-    var incoming = document.getElementById("incomingRequest");
-    doGet();
-    if(dels != null){
-        var driverStatus = dels['driverStatus'];
-        // if incoming set accept/reject visisble
-        if(driverStatus == "INCOMING"){
-            // console.log(driverStatus);
-            // TODO:
-            // SET FIELDS:
-                // - ADDR
-                // - $$
-
-            incoming.style.visibility = "visible";
-       }
-       else{
-        // console.log("not incoming");
-        incoming.style.visibility = "hidden";
-       }
-    }
-
-}
-//get deliveries + update table every n secs
-setInterval(updateDeliveries,2000);
-
-function updateDeliveries(){
-    doGet();
-    if(dels != null){
-        var deliveries = dels['currentTransactions'];
-        var numDels = dels['currentTransactions'].length;
+// updates deilvery table and for new 
+// transactions/deliveries in drivers queue
+var updateDeliveryTable = function() {
+    if(commState != null){
+        var deliveries = commState['currentTransactions'];
+        var numDels = deliveries.length;
 
         console.log(deliveries,numDels);
 
         // only update table if new deliveries
         if(numDels > numOfDeliveries){
-             //Update table of deliveries
+                //Update table of deliveries
             for(i = 0; i < numDels; i++){
                 var table = document.getElementById("delivery-table");
                 var tableLen = table.rows.length;
@@ -90,7 +46,7 @@ function updateDeliveries(){
                 var deliveryNum = currRow.insertCell(0);
                 var delivery = currRow.insertCell(1);
                 deliveryNum.style.fontWeight = "bold";
-                deliveryNum.innerHTML = tableLen + 1;
+                deliveryNum.innerHTML = tableLen;
                 delivery.innerHTML = deliveries[i];
 
             }
@@ -100,7 +56,53 @@ function updateDeliveries(){
     }
     else
         console.log("nothing yet");
+   
 }
+var hideIncoming = function(){
+    var incoming = document.getElementById("incomingRequest");
+    incoming.style.visibility = "hidden";
+}
+var showIncoming = function(){
+    if(commState != null){
+        var incoming = document.getElementById("incomingRequest");
+        // TODO:
+             // SET FIELDS:
+                // - ADDR - document.getElementById("destAddr").innerHTML;
+                // - $$ -   document.getElementById("deliveryCash").innerHTML;
+        incoming.style.visibility = "visible";
+
+    }
+}
+// rejects delivery
+//Post - addr rejecting
+var reject = function(){
+    var rejAddr = document.getElementById("destAddr").innerHTML;
+    doPost("reject",rejAddr)
+}
+//post -> accept 
+// why does it reload the page?
+var accept = function(){
+    //POST method with delivery addr
+    var dstAddr = document.getElementById("destAddr").innerHTML; // send to Post
+
+    var cost = document.getElementById("deliveryCash").innerHTML;
+
+    // data => address of delivery
+    doPost("accept",dstAddr)
+
+    console.log("accepted");
+}
+
+// setup UI to hide some elements
+document.getElementById("incomingRequest").style.visibility = "hidden";
+
+//accept/reject a delivery to your route
+document.getElementById("buttonAccept").addEventListener("click", accept);
+document.getElementById("buttonReject").addEventListener("click", reject);
+
+//get driver curr location
+document.getElementById("buttonLocation").addEventListener("click", geoLocate, true);
+
 
 // set UI updating mechanism on GET
 xhrGet.onreadystatechange = function() {
@@ -108,13 +110,33 @@ xhrGet.onreadystatechange = function() {
         commState = JSON.parse(this.responseText);
         if(commState.status.valueOf() == "STATUS_OK" ) {
             document.getElementById("friendlyName").innerHTML = commState.friendlyName;
+            // show incoming message
+            updateDeliveryTable();
             if (commState.location)
+                // keeps updating location
                 document.getElementById("CurrentLocation").value = commState.location;
+            if(commState.clientStatus.valueOf() == "INCOMING"){ 
+                // checks they can only service 2 at a time
+                if(numOfDeliveries <= 2){
+                    // show incoming message
+                    showIncoming();
+                }
+                else{
+                    console.log("cannot get new requests");
+                    // post to server, driver rejected
+                    // doPost("reject",data); ------
+                }
+            }
+            else if(commState.clientStatus.valueOf() == "IDLE"){
+                console.log("waiting...");
+                hideIncoming();
+            } 
+        }
+        else if(commState.status.valueOf() == "UPDATE_OK"){
+            console.log("update ok");
 
-            // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
-            var i = 1;
-            console.log("Call number:" + i++);
-        } else {
+        }
+        else {
             console.log("Error getting JSON");
             Object.keys(commState).forEach(key => {
                 console.log(key, commState[key]);
@@ -130,7 +152,11 @@ xhrPost.onreadystatechange = function() {
         console.log(this.responseText);
         commState = JSON.parse(this.responseText);
         if(commState.status.valueOf() == "UPDATE_OK" ) {
-            console.log("Update okay."); // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
+            // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
+            console.log("Update okay.");
+            Object.keys(commState).forEach(key => {
+                console.log(key, commState[key]);
+            });
         } else {
             console.log("Error with update");
             Object.keys(commState).forEach(key => {
@@ -149,17 +175,14 @@ var doPost = function(route,data){
 }
 
 // GET request
-function doGet(){
+var doGet = function(){
     xhrGet.open("GET", baseUrl + "/api.php/driver/", true);
-    xhrGet.onload = () => {
-        var resp = xhrGet.responseText;
-        dels = JSON.parse(resp);
-        //console.log(dels);
-    }
     xhrGet.send();
 }
+// call doGet update every 5 seconds
+var intervalGet = setInterval(doGet, 5000);
 // call doGet first time
-//doGet();
+doGet();
 
 
 

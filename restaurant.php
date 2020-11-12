@@ -5,6 +5,7 @@ require 'includes/conn.php';
 require 'includes/session.php';
 require 'includes/auth.php';
 include 'includes/header.php';
+var_dump($_COOKIE);
 ?>
 <main class="page login-page" style="height:100%">
     <section class="clean-block clean-form dark" style="min-height: 100%">
@@ -57,6 +58,7 @@ include 'includes/header.php';
         </div>
     </section>
 </main>
+<script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/restaurantapp.js"></script>
 <?php
 include 'includes/footer.php';

@@ -101,31 +101,29 @@ function getCurrentUserLocationByTid($t_id){
 //  if(!$result) die($conn->error);
 //
 
-//TODO: rework this logic for syncronization from Restaurant
-function driverAcceptDelivery() {
-  $active_deliveries = getCurrentDeliveries($username);
+function driverAcceptDelivery($user_id, $t_id) {
+  $active_deliveries = getCurrentDriverDeliveries($user_id);
 
   // Check how many active deliveries driver is servicing
   $num_deliveries = count($active_deliveries);
   switch($num_deliveries) {
     case 0:
-      //TODO: create new delivery()
-        // insert new location to DB
-        // insert new transaction to DB
-      $comm->setClientStatus(ClientStatus::SERVICING_1);
-      break;
+      assignDriverToDelivery($user_id, $t_id);
+      return ClientStatus::SERVICING_1;
     case 1:
-      //TODO: create new delivery()
-        // insert new location to DB
-        // insert new transaction to DB
-      $comm->setClientStatus(ClientStatus::SERVICING_2);
-      break;
+      assignDriverToDelivery($user_id, $t_id);
+      return ClientStatus::SERVICING_2;
     case 2:
       //TODO: Driver is full on deliveries! Cannot queue more
-      break;
+      return ClientStatus::SERVICING_2;
   }
+}
 
-  $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
+function assignDriverToDelivery($user_id, $t_id) {
+  updateUserTransactionInDb($user_id, $t_id);   // Assign driver to this transaction
+  updateTransactionSecondaryId($t_id, $user_id);// Assign transaction it's correct driver
+  $t_status = "in_progress";
+  updateTransactionStatus($t_status);         // Mark the transaction as an in_progress delivery
 }
 
 // Gets current in progress deliveries of a driver
@@ -144,6 +142,7 @@ function getCurrentDriverDeliveries($user_id)
 }
 
 // Gets current pending deliveries of a restaurant
+//TODO: probably need to grab in-progress as well?
 function getCurrentRestaurantDeliveries($user_id)
 {
   global $conn;

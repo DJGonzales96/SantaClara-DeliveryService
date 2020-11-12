@@ -70,7 +70,7 @@ function setCommRestaurantRequest($comm){
   $user_info = getUserInformation($_SESSION["username"]);
   $user_id = $user_info[0];
   restaurantCreateNewDelivery($user_id, $_POST["address"], $_POST["food"]);
-  $current_deliveries = getCurrentRestaurantDeliveries($user_id); // this is an array of "pending" transactions
+  $current_deliveries = getCurrentRestaurantDeliveries($user_id); //this is an array of "pending" transactions
   $comm->setCurrentTransactions($current_deliveries);
   $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
@@ -78,11 +78,10 @@ function setCommRestaurantRequest($comm){
 function setCommDriverAccepted($comm){
     // get user
     $user_info = getUserInformation($_SESSION["username"]);
-//    if ($user_info[4]) // NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - exit
-//        return;  ... $comm->setError( .. );
-    // triggerSomething($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
-    $user_id = $user_info[0];
-    $username = $user_info[1];
+    $new_driver_status = driverAcceptDelivery($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
+    $comm->setClientStatus($new_driver_status);
+
+    $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
 function setCommDriverLocation($comm){

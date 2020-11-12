@@ -12,6 +12,8 @@ function dbQueryError($conn, $where){
     die("{'status':'STATUS_ERROR','error':'". $dumpStr . "'}");
 }
 
+
+
 // Inserts a new location
 function insertNewLocationToDb($newLat, $newLong, $newAddr) {
     global $conn;
@@ -90,7 +92,7 @@ function getTransactionByID($t_id){
     if(!$result)
         dbQueryError($conn, "getTransactionByTid");
     $row = $result->fetch_array(MYSQLI_NUM);
-    $id = $row[0];
+    $loc = $row[0];
     return $loc;
 }
 

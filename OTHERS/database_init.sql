@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS transaction (
 	t_id INT(10) UNSIGNED AUTO_INCREMENT,
 	t_type VARCHAR(30),
 	primary_user_id INT(10) UNSIGNED NOT NULL,
-  secondary_user_id INT(10) UNSIGNED,
+    secondary_user_id INT(10) UNSIGNED,
     start_loc INT(10) UNSIGNED,
     end_loc INT(10) UNSIGNED,
     timestamp TIMESTAMP,

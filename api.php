@@ -47,13 +47,10 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
             // print_r($request) . "<br/>";  // uncomment to see request structure
             $comm = new Comm(); // Create JSON empty communication object
             // DRIVER / RESTAURANT
-            if ($request[0] == 'driver')
-                getCommDriver($comm);
-            else if ($request[0] == 'restaurant'){
-                getCommRestaurant($comm);
-            } else {
+            if ($request[0] == 'driver' || $request[0] == 'restaurant')
+                getComm($comm, $request[0]);
+            else
                 $comm->setError("not set if to GET from driver or restaurant");
-            }
             // JSON will show content with status READY
             echo json_encode($comm);
             break;
@@ -67,73 +64,48 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
 }
 
 function setCommRestaurantRequest($comm){
-  $user_info = getUserInformation($_SESSION["username"]);
-  $user_id = $user_info[0];
-  restaurantCreateNewDelivery($user_id, $_POST["address"], $_POST["food"]);
-  $current_deliveries = getCurrentRestaurantDeliveries($user_id); //this is an array of "pending" transactions
-  $comm->setCurrentTransactions($current_deliveries);
-  $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
+    $user_info = userGetInformation($_SESSION["username"]);
+    restaurantCreateNewDelivery($user_info[0], $_POST["address"], $_POST["food"]);
+    getComm($comm,'driver'); // shortcut to get back all info
+    $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
 function setCommDriverAccepted($comm){
-    // get user
-    $user_info = getUserInformation($_SESSION["username"]);
-    $new_driver_status = driverAcceptDelivery($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
-    $comm->setClientStatus($new_driver_status);
-
+    $user_info = userGetInformation($_SESSION["username"]);
+    driverAcceptDelivery($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
+    getComm($comm,'driver'); // shortcut to get back all info
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
 function setCommDriverLocation($comm){
-    // get user
-    $user_info = getUserInformation($_SESSION["username"]);
-    $user_id = $user_info[0];
-    updateLocation($user_id,$_POST['lat'],$_POST['long'],$_POST['address']);
-    $comm->setLocation(getCurrentUserLocationByTid($userCurrentLocationByTransactionId));
+    $user_info = userGetInformation($_SESSION["username"]);
+    driverUpdateLocation($user_info[0],$_POST['lat'],$_POST['long'],$_POST['address']);
+    getComm($comm,'driver'); // shortcut to get back all info
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
 
 // builds a Communication object
-function getCommDriver($comm){ // gets an empty comm and sets it to valid one
-    // get the state of the user
-    $user_info = getUserInformation($_SESSION["username"]);
-//    if ($user_info[4]) // NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - exit
+function getComm($comm, $identityString){ // gets an empty comm and sets it to valid one
+    $user_info = userGetInformation($_SESSION["username"]);
+    $isRestaurant = (strcmp($user_info[4],"1") == 0);
+// NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - and exit if wrong
+//        if ( ($user_info[4] && ...identityString == ...) )
 //        return;
-    $user_id = $user_info[0];
-    $friendly_name = $user_info[2];
-    $userCurrentLocationByTransactionId = $user_info[5];
-    // update the comm to reflect user's state
-    $comm->setUserId($user_id);
-    $comm->setFriendlyName($friendly_name);
-    $comm->setIsRestaurant($user_info[4]);
 
-    $comm->setLocation(getCurrentUserLocationByTid($userCurrentLocationByTransactionId));
-    //TODO: Call a function that checks for pending transactions
-      // Client status will be updated based on stuff
-    $comm->setClientStatus(ClientStatus::IDLE);
-    //TODO: This will be a function call = getStatusByUserId()
-    $comm->setCurrentTransactions(array("1 Empty","2 Empty"));
-    //$comm->setLocation(getLocationByTid($currentTransactionId)); // set in COMM the user's current location
+    $comm->setUserId($user_info[0]);
+    $comm->setFriendlyName($user_info[2]);
+    $comm->setIsRestaurant($isRestaurant);
+    $comm->setLocation(getLocationByLocId(getLocationIdByTid($user_info[5]))); // $user_info[5] currentTid
+
+    $comm->setClientStatus(ClientStatus::IDLE); //TODO: This will be a function call = getStatusByUserId() which a function that checks for pending transactions
+
+    if ($isRestaurant)
+        $currentTransactions = restaurantGetCurrentDeliveries($user_info[0]);
+    else
+        $currentTransactions = driverGetCurrentDeliveries($user_info[0]);
+    $comm->setCurrentTransactions($currentTransactions);
 
     $comm->setStatus(CommStatus::STATUS_OK); // when everything is finished mark it STATUS_OK
-}
-
-function getCommRestaurant($comm){ // gets an empty comm and sets it to valid one
-  $user_info = getUserInformation($_SESSION["username"]);
-
-  $user_id = $user_info[0];
-  $friendly_name = $user_info[2];
-  $userCurrentLocationByTransactionId = $user_info[5];
-
-  $comm->setUserId($user_id);
-  $comm->setFriendlyName($friendly_name);
-  $comm->setIsRestaurant($user_info[4]);
-
-  $comm->setLocation(getCurrentUserLocationByTid($userCurrentLocationByTransactionId));
-  $comm->setClientStatus(ClientStatus::IDLE);
-  $comm->setCurrentTransactions(array("1 Empty","2 Empty"));
-
-  $comm->setStatus(CommStatus::STATUS_OK); // when everything is finished mark it STATUS_OK
 }
 ?>

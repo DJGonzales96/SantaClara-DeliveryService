@@ -65,6 +65,25 @@ function restaurantCreateNewDelivery($user_id, $address, $food) {
   // else (not succeed case)
       $t_status = "failed";
 }
+//TODO: Using array of drivers, for each driver set his t_status to incoming_call
+function notifyNearbyDrivers() {
+  retur
+}
+
+//TODO: Doesnt include drivers with >1 deliveries
+function getValidDrivers() {
+  switch($num_deliveries) {
+    case 0:
+      assignDriverToDelivery($user_id, $t_id);
+      return ClientStatus::SERVICING_1;
+    case 1:
+      assignDriverToDelivery($user_id, $t_id);
+      return ClientStatus::SERVICING_2;
+    case 2:
+      //TODO: Driver is full on deliveries! Cannot queue more
+      return ClientStatus::SERVICING_2;
+  }
+}
 
 function checkDriverLocations() {
 
@@ -101,26 +120,18 @@ function getCurrentUserLocationByTid($t_id){
 //  if(!$result) die($conn->error);
 //
 
+//TODO: Own the request,
 function driverAcceptDelivery($user_id, $t_id) {
   $active_deliveries = getCurrentDriverDeliveries($user_id);
-
+  assignDriverToDelivery($user_id, $t_id);
+  //TODO: Cancel notification for all other drivers, they are IDLE now
   // Check how many active deliveries driver is servicing
   $num_deliveries = count($active_deliveries);
-  switch($num_deliveries) {
-    case 0:
-      assignDriverToDelivery($user_id, $t_id);
-      return ClientStatus::SERVICING_1;
-    case 1:
-      assignDriverToDelivery($user_id, $t_id);
-      return ClientStatus::SERVICING_2;
-    case 2:
-      //TODO: Driver is full on deliveries! Cannot queue more
-      return ClientStatus::SERVICING_2;
-  }
+
 }
 
 function assignDriverToDelivery($user_id, $t_id) {
-  updateUserTransactionInDb($user_id, $t_id);   // Assign driver to this transaction
+  updateUserTransactionInDb($user_id, $t_id);   // Assign driver to this transaction TODO: be sure not to lose location
   updateTransactionSecondaryId($t_id, $user_id);// Assign transaction it's correct driver
   $t_status = "in_progress";
   updateTransactionStatus($t_status);         // Mark the transaction as an in_progress delivery
@@ -142,7 +153,7 @@ function getCurrentDriverDeliveries($user_id)
 }
 
 // Gets current pending deliveries of a restaurant
-//TODO: probably need to grab in-progress as well?
+//TODO: probably need to grab in-progress as well? AND status = open
 function getCurrentRestaurantDeliveries($user_id)
 {
   global $conn;

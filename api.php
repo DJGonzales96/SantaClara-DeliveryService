@@ -112,6 +112,7 @@ function getCommDriver($comm){ // gets an empty comm and sets it to valid one
     //TODO: Call a function that checks for pending transactions
       // Client status will be updated based on stuff
     $comm->setClientStatus(ClientStatus::IDLE);
+    //TODO: This will be a function call = getStatusByUserId()
     $comm->setCurrentTransactions(array("1 Empty","2 Empty"));
     //$comm->setLocation(getLocationByTid($currentTransactionId)); // set in COMM the user's current location
 

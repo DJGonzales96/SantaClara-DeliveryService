@@ -34,6 +34,7 @@ function insertNewTransactionToDb($user_id, $start_location, $t_type){ //TODO: g
 }
 
 // TODO: eventually this function wil take $price as a param
+//TODO: add FOOD to DB
 // Note, TIMESTAMP is auto generated for us by SQL
 // Inserts a new transaction for RESTAURANTS delivery
 function insertNewRestTransactionToDb($user_id, $t_type, $destination, $t_status) {

@@ -30,10 +30,8 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
             }
             // RESTAURANT
             else if ($request[0] == 'restaurant'){
-                if ($request[1] == 'inquiry'){
-                    // Check about a possible delivery
-                } else if ($request[1] == 'request'){
-                    // Request that delivery
+                if ($request[1] == 'request'){
+                    setCommRestaurantRequest($comm);
                 } else {
                     $comm->setError("not set POST operation"); // error no operation
                 }
@@ -68,12 +66,20 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
     }
 }
 
+function setCommRestaurantRequest($comm){
+  $user_info = getUserInformation($_SESSION["username"]);
+  $user_id = $user_info[0];
+  restaurantCreateNewDelivery($user_id, $_POST["address"], $_POST["food"]);
+  $current_deliveries = getCurrentRestaurantDeliveries($user_id); //this is an array of "pending" transactions
+  $comm->setCurrentTransactions($current_deliveries);
+  $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
+}
+
 function setCommDriverAccepted($comm){
     // get user
     $user_info = getUserInformation($_SESSION["username"]);
-//    if ($user_info[4]) // NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - exit
-//        return;  ... $comm->setError( .. );
-    // triggerSomething($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
+    $new_driver_status = driverAcceptDelivery($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
+    $comm->setClientStatus($new_driver_status);
 
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
@@ -81,21 +87,9 @@ function setCommDriverAccepted($comm){
 function setCommDriverLocation($comm){
     // get user
     $user_info = getUserInformation($_SESSION["username"]);
-//    if ($user_info[4]) // NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - exit
-//        return;
     $user_id = $user_info[0];
-    $friendly_name = $user_info[2];
-    $currentTransactionId = $user_info[5];
-    // update the comm to reflect user's state
-    $comm->setUserId($user_id);
-    $comm->setFriendlyName($friendly_name);
-
     updateLocation($user_id,$_POST['lat'],$_POST['long'],$_POST['address']);
-    //$comm->setLocation(getLocationByTid($currentTransactionId)); // set in COMM the user's current location to reflect change
-
-    // NEXT LINE IS JUST AN EXAMPLE OF GETTING SOMETHING FROM MAPS API - JUST FOR DEMO DELETE LATER
-    $comm->setLocation(getFromMapsApiDemo($_POST['address'])); // set in COMM the user's current location
-
+    $comm->setLocation(getCurrentUserLocationByTid($userCurrentLocationByTransactionId));
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
@@ -115,7 +109,10 @@ function getCommDriver($comm){ // gets an empty comm and sets it to valid one
     $comm->setIsRestaurant($user_info[4]);
 
     $comm->setLocation(getCurrentUserLocationByTid($userCurrentLocationByTransactionId));
+    //TODO: Call a function that checks for pending transactions
+      // Client status will be updated based on stuff
     $comm->setClientStatus(ClientStatus::IDLE);
+    //TODO: This will be a function call = getStatusByUserId()
     $comm->setCurrentTransactions(array("1 Empty","2 Empty"));
     //$comm->setLocation(getLocationByTid($currentTransactionId)); // set in COMM the user's current location
 
@@ -123,6 +120,20 @@ function getCommDriver($comm){ // gets an empty comm and sets it to valid one
 }
 
 function getCommRestaurant($comm){ // gets an empty comm and sets it to valid one
+  $user_info = getUserInformation($_SESSION["username"]);
 
+  $user_id = $user_info[0];
+  $friendly_name = $user_info[2];
+  $userCurrentLocationByTransactionId = $user_info[5];
+
+  $comm->setUserId($user_id);
+  $comm->setFriendlyName($friendly_name);
+  $comm->setIsRestaurant($user_info[4]);
+
+  $comm->setLocation(getCurrentUserLocationByTid($userCurrentLocationByTransactionId));
+  $comm->setClientStatus(ClientStatus::IDLE);
+  $comm->setCurrentTransactions(array("1 Empty","2 Empty"));
+
+  $comm->setStatus(CommStatus::STATUS_OK); // when everything is finished mark it STATUS_OK
 }
 ?>

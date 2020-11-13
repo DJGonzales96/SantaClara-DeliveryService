@@ -83,8 +83,8 @@ function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
 function driverGetCurrentDeliveries($user_id)
 {
   global $conn;
-  $allTransactions = dbTransactionsGetBy();
-  $filteredTransactions = 0;
+  $allTransactions = 0; // deleted
+  $filteredTransactions = 0; // deleted
   for($i=0; $i < count($allTransactions); $i++) {
     $aDriverTransaction = $allTransactions[i];
   //TODO: filter allTransactions for the ones we want

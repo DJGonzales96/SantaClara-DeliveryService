@@ -38,7 +38,6 @@ function driverDelivered(String $user_id) {}
 //}
 
 
-
 require_once 'includes/conn.php';
 require_once 'includes/session.php';
 require_once 'includes/auth.php';
@@ -55,24 +54,23 @@ function getFromMapsApiDemo($friendlyName){
 }
 
 function getCurrentLocation($user_current_tid){
-  $currentLoc = dbQuery("SELECT start_loc FROM Transaction WHERE t_id='$user_current_tid'")[0];
+  $currentLoc = dbQuery("SELECT start_loc FROM transaction WHERE t_id='$user_current_tid'")[0];
     return dbQuery("SELECT * FROM Location WHERE loc_id=".$currentLoc);
 }
 
 function getLocations($user_id, $isRestaurant){
   if ($isRestaurant)
-    $locations = dbQuery("SELECT start_loc FROM Transaction WHERE primary_user_id=".$user_id.
+    $locations = dbQuery("SELECT start_loc FROM transaction WHERE primary_user_id=".$user_id.
       " AND t_type='request'");
   else
-    $locations = dbQuery("SELECT start_loc FROM Transaction WHERE secondary_user_id=".$user_id.
+    $locations = dbQuery("SELECT start_loc FROM transaction WHERE secondary_user_id=".$user_id.
         " AND t_type='request'");
   return $locations;
 }
 
 
-
 function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
-  $new_loc_id = dbInsert("INSERT INTO Location(lat,lon,address) VALUES ('$newLat',' $newLong',' $newAddr')");
+  $new_loc_id = dbInsert("INSERT INTO location(lat,lon,address) VALUES ('$newLat',' $newLong',' $newAddr')");
   $new_t_id = dbInsert("INSERT INTO transaction(t_type, primary_user_id, start_loc) 
                 VALUES ('loc_update', '$user_id',$new_loc_id )");
   dbUserUpdate($user_id, $new_t_id);

@@ -42,7 +42,7 @@ function driverDelivered(String $user_id) {}
 require_once 'includes/conn.php';
 require_once 'includes/session.php';
 require_once 'includes/auth.php';
-include 'db.php';
+include 'db2.php';
 include 'maps.php';
 
 // prevent unauthorized access
@@ -67,10 +67,10 @@ function userGetInformation($username) {
 
 
 function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
-  $new_loc_id = insertNewLocationToDb($newLat, $newLong, $newAddr);
+  $new_loc_id = insertLocation($newLat, $newLong, $newAddr);
   $t_type = "loc_update";
-  $new_t_id = insertNewTransactionToDb($user_id, $new_loc_id, $t_type);
-  updateUserTransactionInDb($user_id, $new_t_id);
+  $new_t_id = insertTransaction($t_type, $user_id, null, null, null, null, null); //TODO: how to insert a transaction as a location? No associated restaurant?
+  updateUser($user_id, $new_t_id);
 }
 
 
@@ -78,17 +78,13 @@ function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
 function driverGetCurrentDeliveries($user_id)
 {
   global $conn;
-  // We only want deliveries that are active
-  $query = "SELECT * FROM transaction WHERE 'secondary_user_id' = '$user_id' AND t_status = 'in_progress'";
-  $result = $conn->query($query);
-  if(!$result)
-    die($conn->error);
-
-  $deliveryInfo = $result->fetch_array(MYSQLI_NUM);
-  $result->close();
-  if (is_null($deliveryInfo))
-    $deliveryInfo = array(); // if no deliveries create empty array
-  return $deliveryInfo;
+  $allTransactions = getTransactions();
+  $filteredTransactions;
+  for($i=0; $i < count($allTransactions); $i++) {
+    $aDriverTransaction = $allTransactions[i];
+  //TODO: filter allTransactions for the ones we want
+}
+  return $filteredTransactions;
 }
 
 

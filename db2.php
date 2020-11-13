@@ -64,7 +64,7 @@ function updateUser($user_id_to_update, $new_t_id) {
 }
 
 /* READ OPERATIONS */
-// Gets all locations
+// Returns a 2D array of locations
 function getLocations() {
     global $conn;
     $query = "SELECT * FROM location";
@@ -72,12 +72,16 @@ function getLocations() {
     if(!$result)
         dbQueryError($conn, "getLocation");
 
-    $locations = $result->fetch_array(MYSQLI_NUM);
+    $locations = array();
+    $index = 0;
+    while($row = mysqli_fetch_row($result)) {
+        $locations[$index++] = $row;
+    }
     $result->close();
     return $locations;
 }
 
-// Gets all transactions
+// Returns a 2D array of transactions
 function getTransactions() {
     global $conn;
     $query = "SELECT * FROM transaction";
@@ -85,7 +89,11 @@ function getTransactions() {
     if(!$result)
         dbQueryError($conn, "getTransaction");
 
-    $transactions = $result->fetch_array(MYSQLI_NUM);
+    $transactions = array();
+    $index = 0;
+    while($row = mysqli_fetch_row($result)) {
+        $transactions[$index++] = $row;
+    }
     $result->close();
     return $transactions;
 }

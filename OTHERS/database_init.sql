@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS transaction (
     timestamp TIMESTAMP,
     food VARCHAR(30),
     price DECIMAL(5,2),
+    duration DECIMAL,
     t_status VARCHAR(30),
     PRIMARY KEY (t_id)
 );

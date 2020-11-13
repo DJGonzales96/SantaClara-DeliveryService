@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS transaction (
     start_loc INT(10) UNSIGNED,
     end_loc INT(10) UNSIGNED,
     timestamp TIMESTAMP,
-    duration BIGINT,
+    food VARCHAR(30),
     price DECIMAL(5,2),
     t_status VARCHAR(30),
     PRIMARY KEY (t_id)

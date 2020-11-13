@@ -42,7 +42,7 @@ function driverDelivered(String $user_id) {}
 require_once 'includes/conn.php';
 require_once 'includes/session.php';
 require_once 'includes/auth.php';
-include 'db2.php';
+include 'db.php';
 include 'maps.php';
 
 // prevent unauthorized access
@@ -54,23 +54,28 @@ function getFromMapsApiDemo($friendlyName){
   return getGeocode($friendlyName);
 }
 
-// User info
-function userGetInformation($username) {
-  global $conn;
-  $query = "SELECT * FROM user WHERE username = '$username'"; //
-  $result = $conn->query($query);
-  if(!$result) die($conn->error);
-  $info = $result->fetch_array(MYSQLI_NUM);
-  $result->close();
-  return $info;
+function getCurrentLocation($user_current_tid){
+  $currentLoc = dbQuery("SELECT start_loc FROM Transaction WHERE t_id='$user_current_tid'")[0];
+    return dbQuery("SELECT * FROM Location WHERE loc_id=".$currentLoc);
+}
+
+function getLocations($user_id, $isRestaurant){
+  if ($isRestaurant)
+    $locations = dbQuery("SELECT start_loc FROM Transaction WHERE primary_user_id=".$user_id.
+      " AND t_type='request'");
+  else
+    $locations = dbQuery("SELECT start_loc FROM Transaction WHERE secondary_user_id=".$user_id.
+        " AND t_type='request'");
+  return $locations;
 }
 
 
+
 function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
-  $new_loc_id = insertLocation($newLat, $newLong, $newAddr);
-  $t_type = "loc_update";
-  $new_t_id = insertTransaction($t_type, $user_id, null, null, null, null, null); //TODO: how to insert a transaction as a location? No associated restaurant?
-  updateUser($user_id, $new_t_id);
+  $new_loc_id = dbInsert("INSERT INTO Location(lat,lon,address) VALUES ('$newLat',' $newLong',' $newAddr')");
+  $new_t_id = dbInsert("INSERT INTO transaction(t_type, primary_user_id, start_loc) 
+                VALUES ('loc_update', '$user_id',$new_loc_id )");
+  dbUserUpdate($user_id, $new_t_id);
 }
 
 
@@ -78,8 +83,8 @@ function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
 function driverGetCurrentDeliveries($user_id)
 {
   global $conn;
-  $allTransactions = getTransactions();
-  $filteredTransactions;
+  $allTransactions = dbTransactionsGetBy();
+  $filteredTransactions = 0;
   for($i=0; $i < count($allTransactions); $i++) {
     $aDriverTransaction = $allTransactions[i];
   //TODO: filter allTransactions for the ones we want

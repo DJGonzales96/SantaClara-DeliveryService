@@ -42,4 +42,6 @@ CREATE TABLE IF NOT EXISTS transaction (
     PRIMARY KEY (t_id)
 );
 
-/* TODO: NEW TEST DATA
+/* POPULATE DEFAULT DATA */
+INSERT INTO Location(lat,lon,address) VALUES (0,0,'None');
+INSERT INTO transaction(t_type,start_loc) VALUES ('loc_update',1);

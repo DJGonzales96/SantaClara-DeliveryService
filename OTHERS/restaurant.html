@@ -42,7 +42,7 @@
 
                     <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">
                       <label for="status" style="margin-right:5%">Cost:</label>
-                      <h6 class="status" style="display:inline-block; color:#343a40">$0.00</h6>
+                      <h6 class="status" id="cost" style="display:inline-block; color:#343a40">$0.00</h6>
                       <button class="btn btn-primary" style=" height: calc(1.5em + .75rem + 2px); margin-left: 40px" type="submit" onclick="requestdriver(event)">Request</button>
                     </div>
 
@@ -50,13 +50,15 @@
                       <span style="margin-right: 20px">Current deliveries:</span>
                     </div>
                     <table class="table table-bordered" id="deliveries">
+                      <thead>
+                        <tr>
+                            <th>Delivery</th>
+                            <th>Address</th>
+                            <th>Order</th>
+                            <th>Total Cost</th>
+                        </tr>
+                      </thead>
                       <tbody>
-                      <tr>
-                          <th>Delivery</th>
-                          <th>Address</th>
-                          <th>Order</th>
-                          <th>Total Cost</th>
-                      </tr>
                       <tr>
                         <th scope="row">1</th>
                         <td> </td>
@@ -76,23 +78,53 @@
         </section>
     </main>
     <script>
-        //setInterval(requestdriver,5000);
-        /*setTimeout(function() {
-        location.reload();
-      }, 5000);*/
+
         function getCost(e){
             e.preventDefault();
-            console.log(document.getElementById("clientAddress").value);
+            var address = document.getElementById("clientAddress").value;
             var xhttp = new XMLHttpRequest();
-            var obj;
 
-            xhttp.open("GET", "http://localhost/scm/api.php/restaurant", true);
+            xhttp.open("POST", "/app/api.php/restaurant/inquiry", true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhttp.onload= function(){
+              const data = xhttp.responseText;
+              var response = JSON.parse(xhttp.responseText);
+              //to do
+              $("#cost").text("$10");//pass in real data from the response
+              console.log(data);
+            };
+            // xhttp.onreadystatechange= function(){
+            //   if(this.readyState == XMLHttpRequest.DONE && this.status == 200)
+            //   {
+            //     const data = xhttp.responseText;
+            //     var response = JSON.parse(xhttp.responseText);
+            //     //to do
+            //     console.log(data);
+            //   }
+            //   else{
+            //     alert("Invalid response");
+            //     console.log(xhttp);
+            //   }
+            // };
+
+            xhttp.send(encodeURIComponent("address=" + address));
+        }
+
+        setInterval(getStatus,5000);
+        function getStatus(e){
+            if (e) {
+              e.preventDefault();
+            }
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.open("GET", "/app/api.php/restaurant", true);
 
             xhttp.onload = () => {
-                const data = xhttp.responseText;//JSON.parse(xhttp.responseText);
-                // Object.keys(data).forEach(key => {
-                //     console.log(key, data[key]);
-                // });
+                const data = xhttp.responseText;
+                var response = JSON.parse(xhttp.responseText);
+                //to do
+                $("#deliveries tbody").empty();
+                $('#deliveries tbody').append("<tr><th scope=\"row\">1</th> <td> </td><td> </td><td> </td></tr>");//when real data is avaiable change this
                 console.log(data);
             };
 
@@ -100,27 +132,31 @@
         }
         function requestdriver(e){
             e.preventDefault();
-            // table data
-            var table = document.getElementById("deliveries");
-            var nextDelivery = table.rows.length;
-            var currRow = table.insertRow(-1);
+            var xhttp = new XMLHttpRequest();
+            var address = document.getElementById("clientAddress").value;
+            xhttp.open("POST", "/app/api.php/restaurant/request", true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhttp.onload= function(){
+              const data = xhttp.responseText;
+              var response = JSON.parse(xhttp.responseText);
+              //to do
+              console.log(data);
+            };
+            // xhttp.onreadystatechange= function(){
+            //   if(this.readyState == XMLHttpRequest.DONE && this.status == 200)
+            //   {
+            //     const data = xhttp.responseText;
+            //     var response = JSON.parse(xhttp.responseText);
+            //     //to do
+            //     console.log(data);
+            //   }
+            //   else{
+            //     alert("Invalid response");
+            //     console.log(xhttp);
+            //   }
+            // };
 
-            // create new entry in table
-            var delivery = currRow.insertCell(0);
-            var address = currRow.insertCell(1);
-            var order = currRow.insertCell(2);
-            var cost = currRow.insertCell(3);
-
-            // create values for new table entry
-            delivery.innerHTML = nextDelivery; // row/delivery number
-            address.innerHTML = document.getElementById("clientAddress").value;
-            order.innerHTML = "also something";
-
-            // Note: should actually be calculated by google api
-            cost.innerHTML = document.getElementById("cost").value;
-
-
-            //send request to backend
+            xhttp.send(encodeURIComponent("address=" + address));
 
         }
     </script>

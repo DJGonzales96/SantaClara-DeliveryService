@@ -38,6 +38,7 @@ function driverDelivered(String $user_id) {}
 //}
 
 
+const MAXIMUM_DISTANCE_FROM_RESTAURANT = 15; // max. distance allowed between driver & restaurant
 require_once 'includes/conn.php';
 require_once 'includes/session.php';
 require_once 'includes/auth.php';
@@ -84,8 +85,9 @@ function driverGetPendingRequests($user_id) {
   if (!is_null($pendingRequestInfo)){
     $currentUserTid = dbQuery("SELECT t_id From User WHERE user_id='$user_id'");
     $currentUserLocation = getCurrentLocation($currentUserTid[0]); // array with lat[1],lon[2]
-    if (getMapsDistanceDurationTwoPts($currentUserLocation[1],$currentUserLocation[2],
-        $pendingRequestInfo[1],$pendingRequestInfo[2]) < 1000)
+    $mapsMatrixData = getMapsDistanceDurationTwoPts($currentUserLocation[1],$currentUserLocation[2],
+        $pendingRequestInfo[1],$pendingRequestInfo[2]);
+    if ($mapsMatrixData[0] <= MAXIMUM_DISTANCE_FROM_RESTAURANT) // $mapsMatrixData -> [0] distance Mi, [1] time min.
       $result = $pendingRequestInfo;
   }
   return $result;

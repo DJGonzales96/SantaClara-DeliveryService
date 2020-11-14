@@ -39,13 +39,12 @@ function getMapsDistanceDurationTwoPts($o_lat,$o_lon,$d_lat,$d_lon)
     curl_setopt($curl, CURLOPT_URL, $url);
     $response = curl_exec($curl);
     curl_close($curl);
-    $json = json_decode($response);
+    $json = json_decode($response,true);
     $result = array(
-//        $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'},
-//        $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'},
-//        $json->{'results'}[0]->{'formatted_address'}
+        $json['rows'][0]['elements'][0]['distance']['value']/1600,
+        $json['rows'][0]['elements'][0]['duration']['value']/60
     );
-    var_dump($json); //->{"results"}[0]
+//    var_dump($json);
 //    print_r($result);
     return $result;
 }

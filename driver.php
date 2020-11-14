@@ -25,25 +25,26 @@ include 'includes/header.php';
                     <div id="incomingRequest" class="form-group" style="display:inline-block; width:100%">
                       <div style="display:inline-block;width:60%">
                       <br/>
-  				             <span>New dispatch avaiable to </span><span id="destAddr" style="color:#ffc107">[destination address]</span> <span>for </span><span id="deliveryCash" style="color:#3b99e0">$37</span><span>, what would you like to do?</span>
+  				             <span>New dispatch avaiable to </span><span style="color:#ffc107">[destination address]</span> <span>for </span><span style="color:#3b99e0">$37</span><span>,what would you like to do?</span>
                      </div>
                       <div style="display:inline-block">
-                       <button id="buttonAccept" class="btn btn-primary" style="height: calc(1.5em + .75rem + 2px); margin-right: 15px" type="button">Accept</button>
-                         <button id="buttonReject" class="btn btn-primary" style=" height: calc(1.5em + .75rem + 2px); margin-right: 15px" type="button">Reject</button>
+                       <button id="buttonAccept" class="btn btn-primary" style="height: calc(1.5em + .75rem + 2px); margin-right: 15px" type="submit">Accept</button>
+                         <button id="buttonReject" class="btn btn-primary" style=" height: calc(1.5em + .75rem + 2px); margin-right: 15px" type="submit">Reject</button>
                        </div>
                     </div>
 
                     <div style="display:inline-block">
                       <span style="margin-right: 20px">Current deliveries:</span>
                     </div>
-                    <table id="delivery-table", class="table table-bordered">
-                      <!-- add table headers -->
-                      <tbody>
+                    <table class="table table-bordered">
                         <tr>
-                          <th>Delivery Number</th>
-                          <th>Delivery Address</th>
-                          <!-- TODO: <th>Status</th> -->
-                        </tr>                      
+                          <th scope="row">1</th>
+                          <td colspan="2">1 Washington Sq, San Jose, CA 95192</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">2</th>
+                          <td colspan="2"></td>
+                        </tr>
                       </tbody>
                     </table>
                     </form>

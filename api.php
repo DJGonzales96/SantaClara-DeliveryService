@@ -92,13 +92,14 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
 // NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - and exit if wrong
 //        if ( ($user_info[4] && ...identityString == ...) )
 //        return;
+    getMapsDistanceDurationTwoPts(37.5845392678438,-122.02117578086362,40.6905615,-73.9976592);
     $comm->setUserId($user_info[0]);
     $comm->setFriendlyName($user_info[2]);
     $comm->setIsRestaurant($isRestaurant);
     $comm->setLocation(getCurrentLocation($user_info[5])); // $user_info[5] currentTid
     $currentTransactions = getCurrentTransactions($user_info[0],$isRestaurant);
-    $pendingDeliveryRequests = driverGetPendingRequests($user_info[0]);
     if (!$isRestaurant) {
+        $pendingDeliveryRequests = driverGetPendingRequests($user_info[0]);
         if ( (count($currentTransactions) < 2 ) && (!is_null($pendingDeliveryRequests)) ) { // there is an incoming request for the driver
             $comm->setClientStatus(ClientStatus::INCOMING);
             $comm->setDeliveryRequestInfo($pendingDeliveryRequests);

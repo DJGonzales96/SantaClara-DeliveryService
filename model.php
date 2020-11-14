@@ -84,8 +84,6 @@ function driverGetPendingRequests($user_id) {
   if (!is_null($pendingRequestInfo)){
     $currentUserTid = dbQuery("SELECT t_id From User WHERE user_id='$user_id'");
     $currentUserLocation = getCurrentLocation($currentUserTid[0]); // array with lat[1],lon[2]
-    echo 1;print_r($pendingRequestInfo);
-    echo 2;print_r($currentUserLocation);
     if (getMapsDistanceDurationTwoPts($currentUserLocation[1],$currentUserLocation[2],
         $pendingRequestInfo[1],$pendingRequestInfo[2]) < 1000)
       $result = $pendingRequestInfo;
@@ -174,7 +172,7 @@ function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
 // IN-PROGRESS for v0.1
 function restaurantCreateNewDelivery($user_id, $friendlyName, $food) {
   // 1. GET LAT, LON from google
-  $destinationArray = getMapsLocationFromFriendlyAddress($friendlyName);
+  $destinationAddressArray = getMapsLocationFromFriendlyAddress($friendlyName);
   // 2. CHECK if within 40 min. drive
   // 3. Get list of drivers within range
 
@@ -183,7 +181,7 @@ function restaurantCreateNewDelivery($user_id, $friendlyName, $food) {
   $start_loc = dbQuery($query)[0];
 
   $query = "INSERT INTO Location(lat,lon, address) 
-    VALUES ($destinationArray[0],$destinationArray[1],'$destinationArray[2]')";
+    VALUES ($destinationAddressArray[0],$destinationAddressArray[1],'$destinationAddressArray[2]')";
   $end_loc_id = dbInsert($query);
 
   $query = "INSERT INTO Transaction(t_type, primary_user_id, start_loc, end_loc, food, price, duration, t_status)

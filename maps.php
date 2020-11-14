@@ -32,8 +32,8 @@ function getMapsDistanceDurationTwoPts($o_lat,$o_lon,$d_lat,$d_lon)
     $base_url = "https://maps.googleapis.com/maps/api/distancematrix/json";
     $api_key = "AIzaSyByH9xCzlvuJOBZkKgJgLnCn2xe9mFd-Tg";
     $curl = curl_init();
-    $data = ["units" => "imperial","origins" => $o_lat,$o_lon,
-        "destinations" => $d_lat,$d_lon ,"key" => $api_key];
+    $data = ["units" => "imperial","origins" => $o_lat.','.$o_lon,
+        "destinations" => $d_lat.','.$d_lon ,"key" => $api_key];
     $url = sprintf("%s?%s", $base_url, http_build_query($data));
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_URL, $url);
@@ -46,7 +46,7 @@ function getMapsDistanceDurationTwoPts($o_lat,$o_lon,$d_lat,$d_lon)
 //        $json->{'results'}[0]->{'formatted_address'}
     );
     var_dump($json); //->{"results"}[0]
-    print_r($result);
+//    print_r($result);
     return $result;
 }
 ?>

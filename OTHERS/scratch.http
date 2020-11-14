@@ -25,9 +25,9 @@
 ###
 
 # RESTAURANT CREATE REQUEST
-POST http://localhost/cs160/scd/api.php/restaurant/request
-Content-Type: application/x-www-form-urlencoded
-
-address=1%20Washington%20Sq%2C%20San%20Jose&food=pizza
+#POST http://localhost/cs160/scd/api.php/restaurant/request
+#Content-Type: application/x-www-form-urlencoded
+#
+#address=1%20Washington%20Sq%2C%20San%20Jose&food=pizza
 
 

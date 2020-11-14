@@ -1,7 +1,7 @@
 // globals
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
-const baseUrl = "http://localhost//SantaClara-DeliveryService";
+const baseUrl = "http://localhost/cs160/scd";
 var commState;
 var numOfDeliveries = 0;
 

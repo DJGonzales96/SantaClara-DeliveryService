@@ -1,0 +1,33 @@
+# curl --data "username=ilan&password=123456" http://localhost/cs160/scd/login.php
+#POST http://localhost/cs160/scd/login.php
+#
+#Content-Type: application/x-www-form-urlencoded
+#username=ilan&password=123456
+
+###
+
+# GET DRIVER OR RESTAURANT
+
+#GET http://localhost/cs160/scd/api.php/restaurant
+
+#GET http://localhost/cs160/scd/api.php/driver
+
+###
+
+# DRIVER UPDATE LOCATION
+
+#POST http://localhost/cs160/scd/api.php/driver/location
+#Content-Type: application/x-www-form-urlencoded
+#
+#lat=222&long=333&address=1%20Washington%20Sq%2C%20San%20Jose%2C%20CA%2C%2095192
+
+
+###
+
+# RESTAURANT CREATE REQUEST
+POST http://localhost/cs160/scd/api.php/restaurant/request
+Content-Type: application/x-www-form-urlencoded
+
+address=1%20Washington%20Sq%2C%20San%20Jose&food=pizza
+
+

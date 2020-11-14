@@ -92,14 +92,25 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
 // NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - and exit if wrong
 //        if ( ($user_info[4] && ...identityString == ...) )
 //        return;
-
     $comm->setUserId($user_info[0]);
     $comm->setFriendlyName($user_info[2]);
     $comm->setIsRestaurant($isRestaurant);
     $comm->setLocation(getCurrentLocation($user_info[5])); // $user_info[5] currentTid
-    $comm->setClientStatus(ClientStatus::IDLE); //TODO: This will be a function call = getStatusByUserId() which a function that checks for pending transactions
-
-    $comm->setCurrentTransactions(getLocations($user_info[0],$isRestaurant));
+    $currentTransactions = getCurrentTransactions($user_info[0],$isRestaurant);
+    $pendingDeliveryRequests = driverGetPendingRequests($user_info[0]);
+    if (!$isRestaurant) {
+        if ( (count($currentTransactions) < 2 ) && (!is_null($pendingDeliveryRequests)) ) { // there is an incoming request for the driver
+            $comm->setClientStatus(ClientStatus::INCOMING);
+            $comm->setDeliveryRequestInfo($pendingDeliveryRequests);
+        } else if (count($currentTransactions) == 0 ){
+            $comm->setClientStatus(ClientStatus::IDLE);
+        } else {
+            $comm->setClientStatus(ClientStatus::DELIVERING);
+        }
+    } else {
+        // DEAL WITH RESTAURANT PENDING TRANSACTION - LIMIT TO 1 PENDING TRANSACTION AT A TIME
+    }
+    $comm->setCurrentTransactions($currentTransactions);
 
     $comm->setStatus(CommStatus::STATUS_OK); // when everything is finished mark it STATUS_OK
 }

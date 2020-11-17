@@ -148,13 +148,9 @@ xhrGet.onreadystatechange = function() {
                 map.style.visibility = "hidden";
             }
             // updating status of driver
-            // MAY NEED TO CHANGE
-            else if(commState.clientStatus.valueOf() == "SERVICING_1"){
-                document.getElementById("servicing").innerHTML = "SERVICING_1";
-                map.style.visibility = "visible";
-            }
-            else if(commState.clientStatus.valueOf() == "SERVICING_2"){
-                document.getElementById("servicing").innerHTML = "SERVICING_2";
+            // MAY NEED TO CHANGE ---------------> "DELIVERING" instead of below
+            else if(commState.clientStatus.valueOf() == "DELIVERING"){
+                document.getElementById("servicing").innerHTML = "en route";
                 map.style.visibility = "visible";
             }
         }

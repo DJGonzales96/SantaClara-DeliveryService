@@ -7,6 +7,12 @@ require 'includes/auth.php';
 include 'includes/header.php';
 var_dump($_COOKIE);
 ?>
+<style>
+@media (min-width: 576px)
+.clean-navbar.fixed-top+.page {
+    padding-top: 0;
+}
+</style>
 <main class="page login-page" style="height:100%">
     <section class="clean-block clean-form dark" style="min-height: 100%">
         <div class="container">

@@ -29,8 +29,7 @@ abstract class ClientStatus {
     const OFFLINE = 'OFFLINE'; // off the grid - location not set
     const IDLE = 'IDLE'; // waiting for request
     const INCOMING = 'INCOMING'; // incoming request
-    const SERVICING_1 = 'SERVICING_1'; // servicing 1 delivery
-    const SERVICING_2 = 'SERVICING_2'; // servicing 2 deliveries
+    const DELIVERING = 'DELIVERING'; // driver servicing 1 or 2 deliveries
 }
 
 // Comm is encapsulated and should only be written to by the server
@@ -44,6 +43,7 @@ class Comm implements JsonSerializable {
     private $location;
     private $clientStatus;
     private $currentTransactions;
+    private $deliveryRequestInfo;
 
     private $error;
 
@@ -78,6 +78,10 @@ class Comm implements JsonSerializable {
 
     function setClientStatus($clientStatus){
         $this->clientStatus = $clientStatus;
+    }
+
+    function setDeliveryRequestInfo($deliveryRequestInfoArr){
+        $this->deliveryRequestInfo = $deliveryRequestInfoArr;
     }
 
     function setError($errorStr){

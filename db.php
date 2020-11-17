@@ -47,8 +47,13 @@ function dbUserGetByUsername($username) {
     return $info;
 }
 
+<<<<<<< Updated upstream
 // Update user
 function dbUserUpdate($user_id_to_update, $new_t_id) {
+=======
+function getLocationByLocId( $loc_id)
+{
+>>>>>>> Stashed changes
     global $conn;
     $query = "UPDATE user SET t_id=' $new_t_id' WHERE user_id='$user_id_to_update'";
     $result = $conn->query($query);

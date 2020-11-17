@@ -19,9 +19,13 @@ include 'includes/header.php';
                       <h6 class="status" style="display:inline-block; color:#007bff">Servicing 1 delivery</h6>
                     </div>
 
-                    <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center"><label for="currentLocation" style="margin-right:5%; min-width: 140px">Current Location:</label><input class="form-control item" type="currentLocation" id="CurrentLocation" placeholder="Enter location (or leave empty) and click Set Location"></div>
-                    <button id="buttonLocation" class="btn btn-primary" style="height: calc(1.5em + .75rem + 2px); margin-right: 15px" type="button">Set Location</button>
-
+                    <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center"><label for="currentLocation" style="margin-right:5%; min-width: 140px">Current Location:</label><div id="Location">--</div></div>
+                    
+                    <div>
+                      <input class="form-control item" type="currentLocation" id="CurrentLocation" placeholder="Enter location (or leave empty) and click Set Location" style="width:75%; float:left; margin-right: 10px;">
+                      <button id="buttonLocation" class="btn btn-primary" style="height: calc(1.5em + .75rem + 2px); margin-right: 15px;" type="button">Set Location</button>
+                    </div>
+                    
                     <div id="incomingRequest" class="form-group" style="display:inline-block; width:100%">
                       <div style="display:inline-block;width:60%">
                       <br/>

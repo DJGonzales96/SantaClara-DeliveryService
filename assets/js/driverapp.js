@@ -1,7 +1,7 @@
 // globals
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
-const baseUrl = "http://localhost/cs160/scd";
+const baseUrl = "http://localhost/SantaClara-DeliveryService";
 var commState;
 var numOfDeliveries = 0;
 
@@ -85,7 +85,7 @@ var accept = function(){
     //POST method with delivery addr
     var dstAddr = document.getElementById("destAddr").innerHTML; // send to Post
 
-    var cost = document.getElementById("deliveryCash").innerHTML;
+    // var cost = document.getElementById("deliveryCash").innerHTML;
 
     // data => address of delivery
     doPost("accept",dstAddr)

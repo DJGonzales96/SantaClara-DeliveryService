@@ -1,7 +1,7 @@
 <?php
 $hn = 'localhost';
-$un = 'scmuser';  // Change this to the username you use for your DB
-$pw = 'p123456d'; // Change this to the password you use for your DB
+$un = 'root';  // Change this to the username you use for your DB
+$pw = ''; // Change this to the password you use for your DB
 $db = 'santa_clara_menus';
 $port = 3306;     // Change this to the port you use for your DB
 

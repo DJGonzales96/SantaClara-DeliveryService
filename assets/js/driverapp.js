@@ -22,7 +22,7 @@ var geoLocate = function() {
 
         }
         else{
-            postRequest = "lat=" + latitude + "&long=" + longitude + "&address=" + encodeURIComponent(inputLocation);
+            postRequest = "address=" + encodeURIComponent(inputLocation);
         }
         doPost("location", postRequest);
         console.log(latitude + " " + longitude);

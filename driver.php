@@ -6,17 +6,24 @@ require 'includes/session.php';
 require 'includes/auth.php';
 include 'includes/header.php';
 ?>
-<main class="page login-page" style="height: 100%">
+<main class="page login-page" style="height:85% background:white;">
         <section class="clean-block clean-form dark" style="height: 100%">
             <div class="container">
                 <div class="block-heading" style="margin-left:auto;margin-right:auto">
                   <h2 class="text-info" style="display:inline-block">Welcome </h2>
                   <h2 id="friendlyName" class="text-info" style="display:inline-block"></h2>
                 </div>
+                <!-- maps -->
+                <div id="map" style="height: 400px; margin:0; text-align:center;">
+                  <iframe width="85%"
+                          height="350"
+                          src="https://www.google.com/maps/embed/v1/directions?origin=41.43206,-81.38992&destination=41.41206,-81.32992&key=AIzaSyByH9xCzlvuJOBZkKgJgLnCn2xe9mFd-Tg"  allowfullscreen>
+                  </iframe>
+              </div>
                 <form style="max-width:75%">
                     <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">
                       <label for="status" style="margin-right:5%">Status:</label>
-                      <h6 class="status" style="display:inline-block; color:#007bff">Servicing 1 delivery</h6>
+                      <h6 id="servicing" class="status" style="display:inline-block; color:#007bff">--</h6>
                     </div>
 
                     <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center"><label for="currentLocation" style="margin-right:5%; min-width: 140px">Current Location:</label><div id="Location">--</div></div>

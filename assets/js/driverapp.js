@@ -4,14 +4,26 @@ const xhrPost = new XMLHttpRequest();
 const baseUrl = "http://localhost/SantaClara-DeliveryService";
 var commState;
 var numOfDeliveries = 0;
+var ignore = false;
+
+// global var to hide/show map for driver
+// TODO: Show route of first delivery in table
+var map = document.getElementById("map");
+
 
 var geoLocate = function() {
     function success(position) {
         const latitude  = position.coords.latitude;
         const longitude = position.coords.longitude;
         let inputLocation = document.getElementById("CurrentLocation").value || "NULL";
-        let postRequest = "lat=" + latitude + "&long=" + longitude
-            + "&address=" + encodeURIComponent(inputLocation);
+        let postRequest;
+        if(inputLocation == "NULL"){
+            postRequest = "lat=" + latitude + "&long=" + longitude;
+
+        }
+        else{
+            postRequest = "lat=" + latitude + "&long=" + longitude + "&address=" + encodeURIComponent(inputLocation);
+        }
         doPost("location", postRequest);
         console.log(latitude + " " + longitude);
     }
@@ -76,8 +88,13 @@ var showIncoming = function(){
 // rejects delivery
 //Post - addr rejecting
 var reject = function(){
-    var rejAddr = document.getElementById("destAddr").innerHTML;
-    doPost("reject",rejAddr)
+    // var rejAddr = document.getElementById("destAddr").innerHTML;
+    // doPost("reject",rejAddr)
+
+    // set incoming to hidden and 
+    // ignore to true               -- dont even think we need var ignore ?? 
+    ignore = true;
+    hideIncoming();
 }
 //post -> accept 
 // why does it reload the page?
@@ -101,7 +118,7 @@ document.getElementById("buttonAccept").addEventListener("click", accept);
 document.getElementById("buttonReject").addEventListener("click", reject);
 
 //get driver curr location
-document.getElementById("buttonLocation").addEventListener("click", geoLocate, true);
+document.getElementById("buttonLocation").addEventListener("click", geoLocate, true); // TODO: How do i get addr from this?
 
 
 // set UI updating mechanism on GET
@@ -116,21 +133,30 @@ xhrGet.onreadystatechange = function() {
                 // keeps updating location
                 document.getElementById("CurrentLocation").value = commState.location;
             if(commState.clientStatus.valueOf() == "INCOMING"){ 
-                // checks they can only service 2 at a time
-                if(numOfDeliveries <= 2){
-                    // show incoming message
-                    showIncoming();
+                if(ignore){
+                    hideIncoming();
                 }
                 else{
-                    console.log("cannot get new requests");
-                    // post to server, driver rejected
-                    // doPost("reject",data); ------
+                    showIncoming();
                 }
             }
+            // map is hidden in IDLE state only
             else if(commState.clientStatus.valueOf() == "IDLE"){
                 console.log("waiting...");
+                document.getElementById("servicing").innerHTML = "waiting";
                 hideIncoming();
-            } 
+                map.style.visibility = "hidden";
+            }
+            // updating status of driver
+            // MAY NEED TO CHANGE
+            else if(commState.clientStatus.valueOf() == "SERVICING_1"){
+                document.getElementById("servicing").innerHTML = "SERVICING_1";
+                map.style.visibility = "visible";
+            }
+            else if(commState.clientStatus.valueOf() == "SERVICING_2"){
+                document.getElementById("servicing").innerHTML = "SERVICING_2";
+                map.style.visibility = "visible";
+            }
         }
         else if(commState.status.valueOf() == "UPDATE_OK"){
             console.log("update ok");

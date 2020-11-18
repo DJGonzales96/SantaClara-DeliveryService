@@ -19,7 +19,7 @@ function getFromMapsApiDemo($friendlyName){
 // OK for v0.1
 function getCurrentLocation($user_current_tid){
   $currentLoc = dbQuery("SELECT start_loc FROM transaction WHERE t_id='$user_current_tid'")[0];
-  return dbQuery("SELECT * FROM Location WHERE loc_id='$currentLoc'");
+  return dbQuery("SELECT * FROM location WHERE loc_id='$currentLoc'");
 }
 
 // CHECK for v0.1 (meaning it's working but may get name changed etc.)
@@ -40,7 +40,7 @@ function getCurrentTransactions($user_id, $isRestaurant){
 function driverGetPendingRequests($user_id) {
   $result = null;
   $query = "SELECT t_id, lat, lon, address, food, price FROM 
-        (Transaction JOIN Location ON Transaction.end_loc=Location.loc_id) 
+        (transaction JOIN Location ON transaction.end_loc=Location.loc_id) 
         WHERE 
          t_type='delivery_req' AND t_status='pending'"; // ... WHERE... secondary_user_id='$user_id'
   $pendingRequestInfo = dbQuery($query); // array with lat[1], lon[2]
@@ -58,6 +58,12 @@ function driverGetPendingRequests($user_id) {
 
 // OK for v0.1
 function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
+  // Case: we are passed only a friendlyAddress and have missing lat/long
+  if(strlen($newLat) < 2 || strlen($newLong) < 2) {
+    $mapsArray = getMapsLocationFromFriendlyAddress($newAddr);
+    $newLat = $mapsArray[0];
+    $newLong = $mapsArray[1];
+  }
   $new_loc_id = dbInsert("INSERT INTO location(lat,lon,address) VALUES ('$newLat',' $newLong',' $newAddr')");
   $new_t_id = dbInsert("INSERT INTO transaction(t_type, primary_user_id, start_loc) 
                 VALUES ('loc_update', '$user_id',$new_loc_id )");
@@ -67,7 +73,7 @@ function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
 // IN-PROGRESS for v0.1
 function restaurantCreateNewDelivery($user_id, $friendlyName, $food) {
   // get the restaurant's address
-  $query = "SELECT start_loc FROM Transaction WHERE t_id IN 
+  $query = "SELECT start_loc FROM transaction WHERE t_id IN 
             (SELECT t_id FROM User WHERE user_id = '$user_id') ";
   $start_loc = dbQuery($query)[0];
 
@@ -83,11 +89,11 @@ function restaurantCreateNewDelivery($user_id, $friendlyName, $food) {
   $price = calculateCost($distanceTimeArray[0], $duration);
   // 3. CHECK if within 40 min. drive
   if(deliveryInRange($duration)) {
-    $query = "INSERT INTO Location(lat,lon, address) 
+    $query = "INSERT INTO location(lat,lon, address) 
         VALUES ($destinationAddressArray[0],$destinationAddressArray[1],'$destinationAddressArray[2]')";
     $end_loc_id = dbInsert($query);
 
-    $query = "INSERT INTO Transaction(t_type, primary_user_id, start_loc, end_loc, food, price, duration, t_status)
+    $query = "INSERT INTO transaction(t_type, primary_user_id, start_loc, end_loc, food, price, duration, t_status)
           VALUES('delivery_req', '$user_id', '$start_loc', '$end_loc_id', '$food', '$price' , '$duration' ,'pending')";
     $new_t_id = dbInsert($query);
 

@@ -1,6 +1,5 @@
 // globals
 const xhrGet = new XMLHttpRequest();
-const xhrGetCost = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
 //const baseUrl = "http://localhost/cs160/scd";
 const baseUrl = "http://localhost:8080/cs160/scd";
@@ -40,8 +39,6 @@ xhrGet.onreadystatechange = function() {
                 document.getElementById("CurrentLocation").value = commState.location;
 
             // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
-            const data = xhttp.responseText;
-            var response = JSON.parse(xhttp.responseText);
             //to do
             $("#deliveries tbody").empty();
             $('#deliveries tbody').append("<tr><th scope=\"row\">1</th> <td> </td><td> </td><td> </td></tr>"); // when real data is avaiable change this
@@ -57,32 +54,6 @@ xhrGet.onreadystatechange = function() {
     }
 };
 
-//Getting the cost
-xhrGetCost.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        commState = JSON.parse(this.responseText);
-        if(commState.status.valueOf() == "STATUS_OK" ) {
-            document.getElementById("friendlyName").innerHTML = commState.friendlyName;
-            if (commState.location)
-                document.getElementById("CurrentLocation").value = commState.location;
-
-            // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
-            const data = xhttp.responseText;
-            var response = JSON.parse(xhttp.responseText);
-            //to do
-
-            $("#cost").text("$10");//pass in real data from the response
-            console.log(data);
-            console.log("AJAX Get call");
-        } else {
-            console.log("Error getting JSON");
-            Object.keys(commState).forEach(key => {
-                console.log(key, commState[key]);
-            });
-            clearInterval(intervalGet); // stops AJAX on error
-        }
-    }
-};
 // POST result
 xhrPost.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -90,8 +61,6 @@ xhrPost.onreadystatechange = function() {
         commState = JSON.parse(this.responseText);
         if(commState.status.valueOf() == "UPDATE_OK" ) {
             // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
-            const data = xhttp.responseText;
-            var response = JSON.parse(xhttp.responseText);
             //to do
 
             console.log(data);
@@ -111,11 +80,11 @@ xhrPost.onreadystatechange = function() {
 var doPost = function(e){
     e.preventDefault();
     var address = document.getElementById("clientAddress").value;
-
+    var food = document.querySelector('input[name="food"]:checked').value;
     //console.log(data);
     xhrPost.open("POST", baseUrl + "/api.php/restaurant/request" ,true);
     xhrPost.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhrPost.send(encodeURIComponent("address=" + address));
+    xhrPost.send(encodeURIComponent("address=" + address +"&food="+food));
 }
 
 // GET request for the Table
@@ -123,12 +92,30 @@ var doGet = function(){
     xhrGet.open("GET", baseUrl + "/api.php/restaurant/", true);
     xhrGet.send();
 }
-// GET request for the calculation
-var doGetCost = function(){
-    xhrGetCost.open("GET", baseUrl + "/api.php/restaurant/cost", true);
-    xhrGetCost.send();
-}
+
 // call doGet update every 5 seconds
 var intervalGet = setInterval(doGet, 5000);
 // call doGet first time
 doGet();
+
+var $radio = $("input:radio");
+$radio.change(function () {
+    if ($radio.filter(':checked').length == 1) {
+      if ($address.val().length > 0 )
+      {
+        $("#request").removeAttr("disabled");
+      }
+    } else {
+        $("#request").attr("disabled", "disabled");
+    }
+});
+var $address = $("#clientAddress");
+$address.change(function () {
+    if ($address.val().length > 0 ) {
+      if($radio.filter(':checked').length == 1){
+        $("#request").removeAttr("disabled");
+      }
+    } else {
+        $("#request").attr("disabled", "disabled");
+    }
+});

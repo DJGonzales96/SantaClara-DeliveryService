@@ -58,6 +58,12 @@ function driverGetPendingRequests($user_id) {
 
 // OK for v0.1
 function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
+  // Case: we are passed only a friendlyAddress and have missing lat/long
+  if(strlen($newLat) < 2 || strlen($newLong) < 2) {
+    $mapsArray = getMapsLocationFromFriendlyAddress($newAddr);
+    $newLat = $mapsArray[0];
+    $newLong = $mapsArray[1];
+  }
   $new_loc_id = dbInsert("INSERT INTO location(lat,lon,address) VALUES ('$newLat',' $newLong',' $newAddr')");
   $new_t_id = dbInsert("INSERT INTO transaction(t_type, primary_user_id, start_loc) 
                 VALUES ('loc_update', '$user_id',$new_loc_id )");

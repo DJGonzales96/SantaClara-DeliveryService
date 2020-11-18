@@ -63,6 +63,7 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
     }
 }
 
+//NOTE: Cost calculation occurs here, in restaurantCreateNewDelivery()
 function setCommRestaurantRequest($comm){
     $user_info = dbUserGetByUsername($_SESSION["username"]);
     restaurantCreateNewDelivery($user_info[0], $_POST["address"], $_POST["food"]);
@@ -70,6 +71,7 @@ function setCommRestaurantRequest($comm){
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
+//TODO: test that it appears in drivers current deliveries and restaurant's active requests
 function setCommDriverAccepted($comm){
     $user_info = dbUserGetByUsername($_SESSION["username"]);
     driverAcceptDelivery($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id

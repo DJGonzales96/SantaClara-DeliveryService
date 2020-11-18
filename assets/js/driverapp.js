@@ -4,14 +4,26 @@ const xhrPost = new XMLHttpRequest();
 const baseUrl = "http://localhost/cs160/scd";
 var commState;
 var numOfDeliveries = 0;
+var ignore = false;
+
+// global var to hide/show map for driver
+// TODO: Show route of first delivery in table
+var map = document.getElementById("map");
+
 
 var geoLocate = function() {
     function success(position) {
         const latitude  = position.coords.latitude;
         const longitude = position.coords.longitude;
         let inputLocation = document.getElementById("CurrentLocation").value || "NULL";
-        let postRequest = "lat=" + latitude + "&long=" + longitude
-            + "&address=" + encodeURIComponent(inputLocation);
+        let postRequest;
+        if(inputLocation == "NULL"){
+            postRequest = "lat=" + latitude + "&long=" + longitude;
+
+        }
+        else{
+            postRequest = "address=" + encodeURIComponent(inputLocation);
+        }
         doPost("location", postRequest);
         console.log(latitude + " " + longitude);
     }
@@ -25,7 +37,7 @@ var geoLocate = function() {
         navigator.geolocation.getCurrentPosition(success, error);
     }
 }
-// updates deilvery table and for new 
+// updates deilvery table and for new
 // transactions/deliveries in drivers queue
 var updateDeliveryTable = function() {
     if(commState != null){
@@ -36,7 +48,7 @@ var updateDeliveryTable = function() {
 
         // only update table if new deliveries
         if(numDels > numOfDeliveries){
-                //Update table of deliveries
+            //Update table of deliveries
             for(i = 0; i < numDels; i++){
                 var table = document.getElementById("delivery-table");
                 var tableLen = table.rows.length;
@@ -56,7 +68,7 @@ var updateDeliveryTable = function() {
     }
     else
         console.log("nothing yet");
-   
+
 }
 var hideIncoming = function(){
     var incoming = document.getElementById("incomingRequest");
@@ -66,9 +78,9 @@ var showIncoming = function(){
     if(commState != null){
         var incoming = document.getElementById("incomingRequest");
         // TODO:
-             // SET FIELDS:
-                // - ADDR - document.getElementById("destAddr").innerHTML;
-                // - $$ -   document.getElementById("deliveryCash").innerHTML;
+        // SET FIELDS:
+        // - ADDR - document.getElementById("destAddr").innerHTML;
+        // - $$ -   document.getElementById("deliveryCash").innerHTML;
         incoming.style.visibility = "visible";
 
     }
@@ -76,16 +88,21 @@ var showIncoming = function(){
 // rejects delivery
 //Post - addr rejecting
 var reject = function(){
-    var rejAddr = document.getElementById("destAddr").innerHTML;
-    doPost("reject",rejAddr)
+    // var rejAddr = document.getElementById("destAddr").innerHTML;
+    // doPost("reject",rejAddr)
+
+    // set incoming to hidden and
+    // ignore to true               -- dont even think we need var ignore ??
+    ignore = true;
+    hideIncoming();
 }
-//post -> accept 
+//post -> accept
 // why does it reload the page?
 var accept = function(){
     //POST method with delivery addr
     var dstAddr = document.getElementById("destAddr").innerHTML; // send to Post
 
-    var cost = document.getElementById("deliveryCash").innerHTML;
+    // var cost = document.getElementById("deliveryCash").innerHTML;
 
     // data => address of delivery
     doPost("accept",dstAddr)
@@ -101,7 +118,7 @@ document.getElementById("buttonAccept").addEventListener("click", accept);
 document.getElementById("buttonReject").addEventListener("click", reject);
 
 //get driver curr location
-document.getElementById("buttonLocation").addEventListener("click", geoLocate, true);
+document.getElementById("buttonLocation").addEventListener("click", geoLocate, true); // TODO: How do i get addr from this?
 
 
 // set UI updating mechanism on GET
@@ -115,22 +132,27 @@ xhrGet.onreadystatechange = function() {
             if (commState.location)
                 // keeps updating location
                 document.getElementById("CurrentLocation").value = commState.location;
-            if(commState.clientStatus.valueOf() == "INCOMING"){ 
-                // checks they can only service 2 at a time
-                if(numOfDeliveries <= 2){
-                    // show incoming message
-                    showIncoming();
+            if(commState.clientStatus.valueOf() == "INCOMING"){
+                if(ignore){
+                    hideIncoming();
                 }
                 else{
-                    console.log("cannot get new requests");
-                    // post to server, driver rejected
-                    // doPost("reject",data); ------
+                    showIncoming();
                 }
             }
+            // map is hidden in IDLE state only
             else if(commState.clientStatus.valueOf() == "IDLE"){
                 console.log("waiting...");
+                document.getElementById("servicing").innerHTML = "waiting";
                 hideIncoming();
-            } 
+                map.style.visibility = "hidden";
+            }
+                // updating status of driver
+            // MAY NEED TO CHANGE ---------------> "DELIVERING" instead of below
+            else if(commState.clientStatus.valueOf() == "DELIVERING"){
+                document.getElementById("servicing").innerHTML = "en route";
+                map.style.visibility = "visible";
+            }
         }
         else if(commState.status.valueOf() == "UPDATE_OK"){
             console.log("update ok");
@@ -183,7 +205,3 @@ var doGet = function(){
 var intervalGet = setInterval(doGet, 5000);
 // call doGet first time
 doGet();
-
-
-
-

@@ -1,7 +1,7 @@
 // globals
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
-const baseUrl = "http://localhost/cs160/scd";
+const baseUrl = "http://localhost/SantaClara-DeliveryService";
 var commState;
 var numOfDeliveries = 0;
 var ignore = false;
@@ -24,6 +24,8 @@ var geoLocate = function() {
         else{
             postRequest = "address=" + encodeURIComponent(inputLocation);
         }
+        document.getElementById("CurrentLocation").value = "";
+        document.getElementById("CurrentLocation").placeholder = "Enter location (or leave empty) and click Set Location"; // set txt box to empty
         doPost("location", postRequest);
         console.log(latitude + " " + longitude);
     }
@@ -46,24 +48,37 @@ var updateDeliveryTable = function() {
 
         console.log(deliveries,numDels);
 
-        // only update table if new deliveries
-        if(numDels > numOfDeliveries){
-            //Update table of deliveries
-            for(i = 0; i < numDels; i++){
-                var table = document.getElementById("delivery-table");
-                var tableLen = table.rows.length;
-                var currRow = table.insertRow(-1);
+        //Update table of deliveries
+        for(i = 0; i < numDels; i++){
+            var table = document.getElementById("delivery-table");
+            var tableLen = table.rows.length;
+            var currRow = table.insertRow(-1);
 
-                // add addresss of delivery
-                var deliveryNum = currRow.insertCell(0);
-                var delivery = currRow.insertCell(1);
-                deliveryNum.style.fontWeight = "bold";
-                deliveryNum.innerHTML = tableLen;
-                delivery.innerHTML = deliveries[i];
+            // add addresss of delivery
+            var deliveryNum = currRow.insertCell(0);
+            var delivery = currRow.insertCell(1);
+            var cost = currRow.insertCell(2);
+            var button = currRow.insertCell(3);
 
+            // delivery number
+            deliveryNum.style.fontWeight = "bold";
+            deliveryNum.innerHTML = tableLen;
+
+            // update delivery
+            delivery.innerHTML = deliveries[i];
+
+            // cost
+            cost.innerHTML = "$static";
+
+            // button to mark delivery as done
+            button = document.createElement('input');
+            button.type = "button";
+            button.className = "markdone-btn";
+            button.onclick = function(){
+                let markdone = 1;                   //TODO: delivery id
+                doPost("done",markdone);
             }
-            //UPDATE number of deliveries in table
-            numOfDeliveries = numDels;
+            // td.appenChild(button); --> idk if i need this?
         }
     }
     else
@@ -99,13 +114,17 @@ var reject = function(){
 //post -> accept
 // why does it reload the page?
 var accept = function(){
-    //POST method with delivery addr
-    var dstAddr = document.getElementById("destAddr").innerHTML; // send to Post
+    // get post data from commstate
+    let request_ID = commState.deliveryRequestInfo[0];
+    let cost = commState.deliveryRequestInfo[5];
+    let post = "request_ID=" + request_ID + "&cost=" + cost;
+    
+    // send post
+    doPost("accept",post);
 
-    // var cost = document.getElementById("deliveryCash").innerHTML;
+    // hide message
+    hideIncoming();
 
-    // data => address of delivery
-    doPost("accept",dstAddr)
 
     console.log("accepted");
 }
@@ -129,9 +148,17 @@ xhrGet.onreadystatechange = function() {
             document.getElementById("friendlyName").innerHTML = commState.friendlyName;
             // show incoming message
             updateDeliveryTable();
-            if (commState.location)
-                // keeps updating location
-                document.getElementById("CurrentLocation").value = commState.location;
+            if (commState.location){
+                // update addr if there
+                if(commState.location[3] != " "){
+                    document.getElementById("Location").innerHTML = commState.location[3];
+                }
+                else{
+                    // update coords if no addresss
+                    document.getElementById("Location").innerHTML = [commState.location[1],commState.location[2]];
+
+                }
+            }
             if(commState.clientStatus.valueOf() == "INCOMING"){
                 if(ignore){
                     hideIncoming();
@@ -145,13 +172,14 @@ xhrGet.onreadystatechange = function() {
                 console.log("waiting...");
                 document.getElementById("servicing").innerHTML = "waiting";
                 hideIncoming();
-                map.style.visibility = "hidden";
+                // visibility = "hidden" -->
+                map.style.display = "none";
             }
                 // updating status of driver
             // MAY NEED TO CHANGE ---------------> "DELIVERING" instead of below
             else if(commState.clientStatus.valueOf() == "DELIVERING"){
                 document.getElementById("servicing").innerHTML = "en route";
-                map.style.visibility = "visible";
+                map.style.display = "inline";
             }
         }
         else if(commState.status.valueOf() == "UPDATE_OK"){

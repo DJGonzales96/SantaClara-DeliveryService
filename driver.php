@@ -26,7 +26,10 @@ include 'includes/header.php';
                     <h6 id="servicing" class="status" style="display:inline-block; color:#007bff">--</h6>
                 </div>
 
-                <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center"><label for="currentLocation" style="margin-right:5%; min-width: 140px">Current Location:</label><div id="Location">--</div></div>
+                <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">
+                  <div style="margin-right:5%; min-width: 140px">Current Location:</div>
+                  <div id="Location" style="display:inline-block; color:#007bff">--</div>
+                </div>
 
                 <div>
                     <input class="form-control item" type="currentLocation" id="CurrentLocation" placeholder="Enter location (or leave empty) and click Set Location" style="width:75%; float:left; margin-right: 10px;">
@@ -53,6 +56,8 @@ include 'includes/header.php';
                     <tr>
                         <th>Delivery Number</th>
                         <th>Delivery Address</th>
+                        <th>Cost</th>
+                        <th>Mark as done</th>
                         <!-- TODO: <th>Status</th> -->
                     </tr>
                     </tbody>

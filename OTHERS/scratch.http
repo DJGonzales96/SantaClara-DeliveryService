@@ -10,7 +10,7 @@
 
 #GET http://localhost/cs160/scd/api.php/restaurant
 
-GET http://localhost/cs160/scd/api.php/driver
+#GET http://localhost/cs160/scd/api.php/driver
 
 ###
 
@@ -28,6 +28,14 @@ GET http://localhost/cs160/scd/api.php/driver
 #POST http://localhost/cs160/scd/api.php/restaurant/request
 #Content-Type: application/x-www-form-urlencoded
 #
-#address=1%20Washington%20Sq%2C%20San%20Jose&food=pizza
+#address=decoto%20road%20union%20city&food=hamburger
 
 
+###
+
+# DRIVER ACCEPT REQUEST
+
+#POST http://localhost/cs160/scd/api.php/driver/accept
+#Content-Type: application/x-www-form-urlencoded
+#
+#request_ID=48

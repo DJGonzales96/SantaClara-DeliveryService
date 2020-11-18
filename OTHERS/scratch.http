@@ -10,7 +10,7 @@
 
 #GET http://localhost/cs160/scd/api.php/restaurant
 
-GET http://localhost/cs160/scd/api.php/driver
+#GET http://localhost/cs160/scd/api.php/driver
 
 ###
 
@@ -31,3 +31,11 @@ GET http://localhost/cs160/scd/api.php/driver
 #address=1%20Washington%20Sq%2C%20San%20Jose&food=pizza
 
 
+###
+
+# DRIVER UPDATE LOCATION
+
+POST http://localhost/cs160/scd/api.php/driver/accept
+Content-Type: application/x-www-form-urlencoded
+
+request_ID=42

@@ -29,7 +29,7 @@ function getCurrentTransactions($user_id, $isRestaurant){
        AND t_type='delivery_req'");
   else
     $transactions = dbQuery("SELECT * FROM transaction WHERE secondary_user_id='$user_id'
-         AND t_type='delivery_req' AND t_status='active'");
+         AND t_type='delivery_req' AND t_status='in-progress'");
   if (is_null($transactions))
     $transactions = array();
   return $transactions;
@@ -101,7 +101,7 @@ function restaurantCreateNewDelivery($user_id, $friendlyName, $food) {
 
 function driverAcceptDelivery($user_id, $delivery_t_id) {
   $query = "UPDATE transaction SET secondary_user_id = '$user_id', t_status = 'in-progress' WHERE t_id = '$delivery_t_id'";
-  dbQuery($query);
+  dbInsert($query);
 }
 
 

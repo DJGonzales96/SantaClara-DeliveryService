@@ -30,6 +30,7 @@ abstract class ClientStatus {
     const IDLE = 'IDLE'; // waiting for request
     const INCOMING = 'INCOMING'; // incoming request
     const DELIVERING = 'DELIVERING'; // driver servicing 1 or 2 deliveries
+    const PENDING = 'PENDING'; // restaurant is waiting for answer
 }
 
 // Comm is encapsulated and should only be written to by the server

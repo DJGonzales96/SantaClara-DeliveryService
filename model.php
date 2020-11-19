@@ -63,6 +63,7 @@ function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
     $mapsArray = getMapsLocationFromFriendlyAddress($newAddr);
     $newLat = $mapsArray[0];
     $newLong = $mapsArray[1];
+    $newAddr = getMapsFriendlyAddressFromLatLng($newLat, $newLong);
   }
   $new_loc_id = dbInsert("INSERT INTO location(lat,lon,address) VALUES ('$newLat',' $newLong',' $newAddr')");
   $new_t_id = dbInsert("INSERT INTO transaction(t_type, primary_user_id, start_loc) 

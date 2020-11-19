@@ -69,6 +69,6 @@ function getMapsFriendlyAddressFromLatLng($lat, $lon)
     );
 //    var_dump($json); //->{"results"}[0]
 //    print_r($result);
-    return $result;
+    return $result[0];
 }
 ?>

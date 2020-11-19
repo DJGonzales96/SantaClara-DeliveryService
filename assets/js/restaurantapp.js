@@ -32,11 +32,13 @@ var geoLocate = function() {
 // set UI updating mechanism on GET
 xhrGet.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
+      console.log(this.responseText);
         commState = JSON.parse(this.responseText);
+
         if(commState.status.valueOf() == "STATUS_OK" ) {
             document.getElementById("friendlyName").innerHTML = commState.friendlyName;
             if (commState.location)
-                document.getElementById("CurrentLocation").value = commState.location;
+                document.getElementById("CurrentLocation").value = commState.location[2];
 
             // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
             //to do
@@ -84,7 +86,7 @@ var doPost = function(e){
     //console.log(data);
     xhrPost.open("POST", baseUrl + "/api.php/restaurant/request" ,true);
     xhrPost.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhrPost.send(encodeURIComponent("address=" + address +"&food="+food));
+    xhrPost.send("address=" + encodeURIComponent(address) +"&food="+food);
 }
 
 // GET request for the Table

@@ -110,7 +110,7 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
         if ( ( count($currentTransactions) < 2 ) && (!is_null($pendingDeliveryRequests)) ) { // there is an incoming request for the driver
             $comm->setClientStatus(ClientStatus::INCOMING);
             $comm->setDeliveryRequestInfo($pendingDeliveryRequests);
-        } else if (count($currentTransactions)[0] == null ){
+        } else if ($currentTransactions[0] == null ){
             $comm->setClientStatus(ClientStatus::IDLE);
         } else {
             $comm->setClientStatus(ClientStatus::DELIVERING);

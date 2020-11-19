@@ -30,7 +30,9 @@ function dbQueryMultiRow($query) {
     if(!$result)
         dbQueryError($conn, "dbQuery, query:".$query);
     $info = array();
-    $info[] = $result->fetch_array(MYSQLI_NUM);
+    while ($row = $result->fetch_array(MYSQLI_NUM)){
+        $info[] = $row;
+    }
     $result->close();
     return $info;
 }

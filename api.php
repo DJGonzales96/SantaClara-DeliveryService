@@ -91,9 +91,15 @@ function setCommDriverLocation($comm){
 function getComm($comm, $identityString){ // gets an empty comm and sets it to valid one
     $user_info = dbUserGetByUsername($_SESSION["username"]);
     $isRestaurant = (strcmp($user_info[4],"1") == 0);
-// NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - and exit if wrong
-//        if ( ($user_info[4] && ...identityString == ...) )
-//        return;
+    // Checking if restaurant <=> driver malfunction
+        if ( ($isRestaurant && strcmp($identityString,"driver") == 0) ||
+            (!$isRestaurant) && strcmp($identityString,"restaurant") == 0)
+        {
+            $comm->setIsRestaurant($isRestaurant);
+            $comm->setError("Calling driver\restaurant with wrong user type");
+            return;
+        }
+
     $comm->setUserId($user_info[0]);
     $comm->setFriendlyName($user_info[2]);
     $comm->setIsRestaurant($isRestaurant);
@@ -101,7 +107,7 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
     $currentTransactions = getCurrentTransactions($user_info[0],$isRestaurant);
     if (!$isRestaurant) {
         $pendingDeliveryRequests = driverGetPendingRequests($user_info[0]);
-        if ( (count($currentTransactions) < 2 ) && (!is_null($pendingDeliveryRequests)) ) { // there is an incoming request for the driver
+        if ( (count($currentTransactions)[0] < 2 ) && (!is_null($pendingDeliveryRequests)) ) { // there is an incoming request for the driver
             $comm->setClientStatus(ClientStatus::INCOMING);
             $comm->setDeliveryRequestInfo($pendingDeliveryRequests);
         } else if (count($currentTransactions) == 0 ){

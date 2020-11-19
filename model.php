@@ -25,13 +25,13 @@ function getCurrentLocation($user_current_tid){
 // CHECK for v0.1 (meaning it's working but may get name changed etc.)
 function getCurrentTransactions($user_id, $isRestaurant){
   if ($isRestaurant)
-    $transactions = dbQuery("SELECT * FROM transaction WHERE primary_user_id='$user_id'
+    $transactions = dbQueryMultiRow("SELECT * FROM transaction WHERE primary_user_id='$user_id'
        AND t_type='delivery_req'");
   else
-    $transactions = dbQuery("SELECT * FROM transaction WHERE secondary_user_id='$user_id'
+    $transactions = dbQueryMultiRow("SELECT * FROM transaction WHERE secondary_user_id='$user_id'
          AND t_type='delivery_req' AND t_status='in-progress'");
   if (is_null($transactions))
-    $transactions = array();
+    $transactions = array(array());
   return $transactions;
 }
 

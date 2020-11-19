@@ -23,6 +23,17 @@ function dbQuery($query) {
     return $info;
 }
 
+// General DB query
+function dbQueryMultiRow($query) {
+    global $conn;
+    $result = $conn->query($query);
+    if(!$result)
+        dbQueryError($conn, "dbQuery, query:".$query);
+    $info = array();
+    $info[] = $result->fetch_array(MYSQLI_NUM);
+    $result->close();
+    return $info;
+}
 
 // Inserts new transaction
 function dbInsert($query) {

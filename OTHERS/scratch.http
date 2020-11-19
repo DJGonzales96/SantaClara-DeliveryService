@@ -28,7 +28,7 @@ GET http://localhost/cs160/scd/api.php/driver
 #POST http://localhost/cs160/scd/api.php/restaurant/request
 #Content-Type: application/x-www-form-urlencoded
 #
-#address=decoto%20road%20union%20city&food=hamburger
+#address=1250decoto%20road%20union%20city&food=pizza
 
 
 ###

@@ -32,6 +32,8 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
             else if ($request[0] == 'restaurant'){
                 if ($request[1] == 'request'){
                     setCommRestaurantRequest($comm);
+                } else if ($request[1] == 'cancel'){
+                    // setCommRestaurantCancel($comm); // TODO: Create a pending transaction cancellation
                 } else {
                     $comm->setError("not set POST operation"); // error no operation
                 }
@@ -86,34 +88,41 @@ function setCommDriverLocation($comm){
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
-
 // builds a Communication object
 function getComm($comm, $identityString){ // gets an empty comm and sets it to valid one
     $user_info = dbUserGetByUsername($_SESSION["username"]);
     $isRestaurant = (strcmp($user_info[4],"1") == 0);
-// NEEDS TO BE CHECKED CHECK CHECK CHECK if isRestaurant - and exit if wrong
-//        if ( ($user_info[4] && ...identityString == ...) )
-//        return;
+    // Checking if restaurant <=> driver malfunction
+        if ( ($isRestaurant && strcmp($identityString,"driver") == 0) ||
+            (!$isRestaurant) && strcmp($identityString,"restaurant") == 0)
+        {
+            $comm->setIsRestaurant($isRestaurant);
+            $comm->setError("Calling driver\restaurant with wrong user type");
+            return;
+        }
     $comm->setUserId($user_info[0]);
     $comm->setFriendlyName($user_info[2]);
     $comm->setIsRestaurant($isRestaurant);
     $comm->setLocation(getCurrentLocation($user_info[5])); // $user_info[5] currentTid
     $currentTransactions = getCurrentTransactions($user_info[0],$isRestaurant);
-    if (!$isRestaurant) {
+    if (!$isRestaurant) { // DRIVER
         $pendingDeliveryRequests = driverGetPendingRequests($user_info[0]);
-        if ( (count($currentTransactions) < 2 ) && (!is_null($pendingDeliveryRequests)) ) { // there is an incoming request for the driver
+        if ( ( count($currentTransactions) < 2 ) && (!is_null($pendingDeliveryRequests)) ) { // there is an incoming request for the driver
             $comm->setClientStatus(ClientStatus::INCOMING);
             $comm->setDeliveryRequestInfo($pendingDeliveryRequests);
-        } else if (count($currentTransactions) == 0 ){
+        } else if ($currentTransactions[0] == null ){
             $comm->setClientStatus(ClientStatus::IDLE);
         } else {
             $comm->setClientStatus(ClientStatus::DELIVERING);
         }
-    } else {
-        // DEAL WITH RESTAURANT PENDING TRANSACTION - LIMIT TO 1 PENDING TRANSACTION AT A TIME
+    } else { // RESTAURANT
+        $pendingDeliveryRequests = restaurnatGetPendingRequests($user_info[0]);
+        if ($pendingDeliveryRequests != null){
+            $comm->setClientStatus(ClientStatus::PENDING); // Restaurnat LIMIT TO 1 PENDING TRANSACTION AT A TIME
+        } else
+            $comm->setClientStatus(ClientStatus::IDLE);
     }
     $comm->setCurrentTransactions($currentTransactions);
-
     $comm->setStatus(CommStatus::STATUS_OK); // when everything is finished mark it STATUS_OK
 }
 ?>

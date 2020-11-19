@@ -3,11 +3,11 @@ DROP DATABASE IF EXISTS santa_clara_menus;
 CREATE DATABASE santa_clara_menus;
 USE santa_clara_menus;
 
-/* DCL
+/* DCL*/
 CREATE USER 'scmuser'@'localhost' IDENTIFIED BY 'p123456d';
 GRANT ALL PRIVILEGES ON santa_clara_menus . * TO 'scmuser'@'localhost';
 FLUSH PRIVILEGES;
-*/
+
 /* ENTITIES */
 CREATE TABLE IF NOT EXISTS user (
 	user_id	INT(10) UNSIGNED AUTO_INCREMENT,
@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS transaction (
     PRIMARY KEY (t_id)
 );
 
-/* POPULATE DEFAULT DATA */
+/* POPULATE DEFAULT DATA
 INSERT INTO Location(lat,lon,address) VALUES (0,0,'None');
 INSERT INTO transaction(t_type,start_loc) VALUES ('loc_update',1);
+ */

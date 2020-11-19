@@ -19,16 +19,16 @@ function getCurrentLocation($user_current_tid){
 
 // CHECK for v0.1 (meaning it's working but may get name changed etc.)
 function getCurrentTransactions($user_id, $isRestaurant){
-  if ($isRestaurant)
-    $transactions = dbQueryMultiRow("SELECT t_id, t_type, primary_user_id, secondary_user_id, loc1.address, 
-loc2.address, timestamp, food, price, duration, t_status 
+  if ($isRestaurant) // RESTAURANT current deliveries
+    $transactions = dbQueryMultiRow("SELECT t_id, t_type, primary_user_id, secondary_user_id, loc1.lat, loc1.lon, loc1.address, 
+loc2.lat, loc2.lon, loc2.address, timestamp, food, price, duration, t_status 
 FROM transaction 
 JOIN location AS loc1 ON (start_loc=loc1.loc_id) 
 JOIN location AS loc2 ON (end_loc=loc2.loc_id)
 WHERE secondary_user_id = '$user_id' AND t_type = 'delivery_req' AND t_status = 'in-progress'");
-  else
-    $transactions = dbQueryMultiRow("SELECT t_id, t_type, primary_user_id, secondary_user_id, loc1.address, 
-loc2.address, timestamp, food, price, duration, t_status 
+  else // DRIVER current deliveries
+    $transactions = dbQueryMultiRow("SELECT t_id, t_type, primary_user_id, secondary_user_id, loc1.lat, loc1.lon, loc1.address, 
+loc2.lat, loc2.lon, loc2.address, timestamp, food, price, duration, t_status 
 FROM transaction 
 JOIN location AS loc1 ON (start_loc=loc1.loc_id) 
 JOIN location AS loc2 ON (end_loc=loc2.loc_id)
@@ -56,6 +56,18 @@ function driverGetPendingRequests($user_id) {
       $result = $pendingRequestInfo;
   }
   return $result;
+}
+
+
+// OK for v0.1
+function restaurnatGetPendingRequests($user_id) {
+  $query = "SELECT t_id, lat, lon, address, food, price FROM 
+        (transaction JOIN Location ON transaction.end_loc=Location.loc_id) 
+        WHERE 
+        primary_user_id ='$user_id' AND
+         t_type='delivery_req' AND 
+         t_status='pending'"; // ... WHERE... secondary_user_id='$user_id'
+  return dbQuery($query); // array with lat[1], lon[2]
 }
 
 

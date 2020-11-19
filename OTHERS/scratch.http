@@ -10,7 +10,7 @@
 
 #GET http://localhost/cs160/scd/api.php/restaurant
 
-GET http://localhost/cs160/scd/api.php/driver
+#GET http://localhost/cs160/scd/api.php/driver
 
 ###
 

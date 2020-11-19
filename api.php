@@ -107,10 +107,10 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
     $currentTransactions = getCurrentTransactions($user_info[0],$isRestaurant);
     if (!$isRestaurant) {
         $pendingDeliveryRequests = driverGetPendingRequests($user_info[0]);
-        if ( (count($currentTransactions)[0] < 2 ) && (!is_null($pendingDeliveryRequests)) ) { // there is an incoming request for the driver
+        if ( ( count($currentTransactions) < 2 ) && (!is_null($pendingDeliveryRequests)) ) { // there is an incoming request for the driver
             $comm->setClientStatus(ClientStatus::INCOMING);
             $comm->setDeliveryRequestInfo($pendingDeliveryRequests);
-        } else if (count($currentTransactions) == 0 ){
+        } else if (count($currentTransactions)[0] == null ){
             $comm->setClientStatus(ClientStatus::IDLE);
         } else {
             $comm->setClientStatus(ClientStatus::DELIVERING);

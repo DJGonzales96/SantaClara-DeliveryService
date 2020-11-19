@@ -31,7 +31,7 @@ function getCurrentTransactions($user_id, $isRestaurant){
     $transactions = dbQueryMultiRow("SELECT * FROM transaction WHERE secondary_user_id='$user_id'
          AND t_type='delivery_req' AND t_status='in-progress'");
   if (is_null($transactions))
-    $transactions = array(array());
+    $transactions = array();
   return $transactions;
 }
 

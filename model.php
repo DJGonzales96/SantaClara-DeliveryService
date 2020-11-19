@@ -11,11 +11,6 @@ include 'maps.php';
 if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL)
   die("{'status':'STATUS_ERROR','error':'Not logged in'}");
 
-// JUST AN EXAMPLE OF GETTING SOMETHING FROM MAPS API - REMOVE LATER
-function getFromMapsApiDemo($friendlyName){
-  return getLatLongFromAddress($friendlyName);
-}
-
 // OK for v0.1
 function getCurrentLocation($user_current_tid){
   $currentLoc = dbQuery("SELECT start_loc FROM transaction WHERE t_id='$user_current_tid'")[0];

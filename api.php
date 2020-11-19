@@ -86,7 +86,6 @@ function setCommDriverLocation($comm){
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
-
 // builds a Communication object
 function getComm($comm, $identityString){ // gets an empty comm and sets it to valid one
     $user_info = dbUserGetByUsername($_SESSION["username"]);
@@ -99,7 +98,6 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
             $comm->setError("Calling driver\restaurant with wrong user type");
             return;
         }
-
     $comm->setUserId($user_info[0]);
     $comm->setFriendlyName($user_info[2]);
     $comm->setIsRestaurant($isRestaurant);
@@ -119,7 +117,6 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
         // DEAL WITH RESTAURANT PENDING TRANSACTION - LIMIT TO 1 PENDING TRANSACTION AT A TIME
     }
     $comm->setCurrentTransactions($currentTransactions);
-
     $comm->setStatus(CommStatus::STATUS_OK); // when everything is finished mark it STATUS_OK
 }
 ?>

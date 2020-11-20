@@ -5,7 +5,6 @@ require 'includes/conn.php';
 require 'includes/session.php';
 require 'includes/auth.php';
 include 'includes/header.php';
-var_dump($_COOKIE);
 ?>
 <style>
 @media (min-width: 576px)

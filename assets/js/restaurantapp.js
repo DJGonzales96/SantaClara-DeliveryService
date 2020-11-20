@@ -30,6 +30,9 @@ var geoLocate = function() {
 // document.getElementById("buttonLocation").addEventListener("click", geoLocate, true);
 
 // set UI updating mechanism on GET
+/*
+{"status":"STATUS_OK","user_id":"1","isRestaurant":true,"friendlyName":"yohei","location":["1","0.000000","0.000000","1 Washington Sq, San Jose, CA 95192"],"clientStatus":"PENDING","currentTransactions":[["6","delivery_req","1","1","0.000000","0.000000","1 Washington Sq, San Jose, CA 95192","37.335186","-121.881073","1 Washington Sq, San Jose, CA 95192, USA","2020-11-20 00:52:52","pizza","3.00","0","in-progress"]],"deliveryRequestInfo":null,"error":"none"}
+*/
 xhrGet.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       console.log(this.responseText);
@@ -43,7 +46,12 @@ xhrGet.onreadystatechange = function() {
             // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
             //to do
             $("#deliveries tbody").empty();
-            $('#deliveries tbody').append("<tr><th scope=\"row\">1</th> <td> </td><td> </td><td> </td></tr>"); // when real data is avaiable change this
+            if(commState.currentTransactions)
+            {
+              $.each(commState.currentTransactions, function(index,value){
+                  $('#deliveries tbody').append("<tr><th scope=\"row\">"+ (index+1) +"</th><td>"+ value[9] + "</td><td>"+ value[11]+" </td><td>"+value[12]+"</td></tr>");
+              });
+            }
             console.log("AJAX Get call");
         } else {
             console.log("Error getting JSON");
@@ -63,6 +71,7 @@ xhrPost.onreadystatechange = function() {
         if(commState.status.valueOf() == "UPDATE_OK" ) {
             // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
             //to do
+            alert("request submitted!");
 
             console.log("Update okay.");
             Object.keys(commState).forEach(key => {

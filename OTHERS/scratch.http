@@ -39,3 +39,13 @@
 #Content-Type: application/x-www-form-urlencoded
 #
 #request_ID=48
+
+
+###
+
+# RESTAURANT CANCEL REQUEST
+
+POST http://localhost/cs160/scd/api.php/restaurant/cancel
+Content-Type: application/x-www-form-urlencoded
+
+request_ID=83

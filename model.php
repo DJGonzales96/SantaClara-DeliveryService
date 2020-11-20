@@ -25,7 +25,7 @@ loc2.lat, loc2.lon, loc2.address, timestamp, food, price, duration, t_status
 FROM transaction
 JOIN location AS loc1 ON (start_loc=loc1.loc_id)
 JOIN location AS loc2 ON (end_loc=loc2.loc_id)
-WHERE primary_user_id = '$user_id' AND t_type = 'delivery_req' AND t_status = 'in-progress'");
+WHERE primary_user_id = '$user_id' AND t_type = 'delivery_req' AND (t_status = 'in-progress' OR t_status = 'pending')");
   else // DRIVER current deliveries
     $transactions = dbQueryMultiRow("SELECT t_id, t_type, primary_user_id, secondary_user_id, loc1.lat, loc1.lon, loc1.address,
 loc2.lat, loc2.lon, loc2.address, timestamp, food, price, duration, t_status
@@ -86,7 +86,14 @@ function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
   dbUserUpdate($user_id, $new_t_id);
 }
 
-// IN-PROGRESS for v0.1
+
+function restaurantCancelDelivery($user_id, $t_id) {
+    $query = "UPDATE transaction SET t_status = 'canceled' WHERE primary_user_id = '$user_id' AND t_id = '$t_id'";
+    dbInsert($query);
+}
+
+
+// TODO: THIS IS NOT FINISHED - CASE THE DISTANCE TOO FAR!!!!
 function restaurantCreateNewDelivery($user_id, $friendlyName, $food) {
   // get the restaurant's address
   $query = "SELECT start_loc FROM transaction WHERE t_id IN
@@ -117,12 +124,17 @@ function restaurantCreateNewDelivery($user_id, $friendlyName, $food) {
     //TODO: notify drivers of pending transactions
   }
   else {//TODO: (not succeed case)
-  $t_status = "failed";
+    $t_status = "failed";
   }
 }
 
 function driverAcceptDelivery($user_id, $delivery_t_id) {
   $query = "UPDATE transaction SET secondary_user_id = '$user_id', t_status = 'in-progress' WHERE t_id = '$delivery_t_id'";
+  dbInsert($query);
+}
+
+function driverDelieveredDelivery($user_id, $delivery_t_id) {
+  $query = "UPDATE transaction SET t_status = 'completed' WHERE t_id = '$delivery_t_id' AND secondary_user_id = '$user_id'";
   dbInsert($query);
 }
 

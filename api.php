@@ -119,6 +119,7 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
         $pendingDeliveryRequests = restaurnatGetPendingRequests($user_info[0]);
         if ($pendingDeliveryRequests != null){
             $comm->setClientStatus(ClientStatus::PENDING); // Restaurnat LIMIT TO 1 PENDING TRANSACTION AT A TIME
+            $comm->setDeliveryRequestInfo($pendingDeliveryRequests);
         } else
             $comm->setClientStatus(ClientStatus::IDLE);
     }

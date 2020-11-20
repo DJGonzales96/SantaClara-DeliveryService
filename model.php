@@ -25,14 +25,14 @@ loc2.lat, loc2.lon, loc2.address, timestamp, food, price, duration, t_status
 FROM transaction
 JOIN location AS loc1 ON (start_loc=loc1.loc_id)
 JOIN location AS loc2 ON (end_loc=loc2.loc_id)
-WHERE secondary_user_id = '$user_id' AND t_type = 'delivery_req' AND t_status = 'in-progress'");
+WHERE primary_user_id = '$user_id' AND t_type = 'delivery_req' AND t_status = 'in-progress'");
   else // DRIVER current deliveries
     $transactions = dbQueryMultiRow("SELECT t_id, t_type, primary_user_id, secondary_user_id, loc1.lat, loc1.lon, loc1.address,
 loc2.lat, loc2.lon, loc2.address, timestamp, food, price, duration, t_status
 FROM transaction
 JOIN location AS loc1 ON (start_loc=loc1.loc_id)
 JOIN location AS loc2 ON (end_loc=loc2.loc_id)
-WHERE primary_user_id = '$user_id' AND t_type = 'delivery_req' AND t_status = 'in-progress'");
+WHERE secondary_user_id = '$user_id' AND t_type = 'delivery_req' AND t_status = 'in-progress'");
   if (is_null($transactions))
     $transactions = array();
   return $transactions;

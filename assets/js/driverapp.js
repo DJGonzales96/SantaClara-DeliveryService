@@ -3,7 +3,6 @@ const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
 const baseUrl = "http://localhost/cs160/scd";
 var commState;
-var numOfDeliveries = 0;
 var ignore = false;
 
 // global var to hide/show map for driver
@@ -46,39 +45,49 @@ var updateDeliveryTable = function() {
         var deliveries = commState['currentTransactions'];
         var numDels = deliveries.length;
 
-        console.log(deliveries,numDels);
+        // console.log("number deliveries:",numDels);
+
 
         //Update table of deliveries
         for(i = 0; i < numDels; i++){
             var table = document.getElementById("delivery-table");
-            var tableLen = table.rows.length;
-            var currRow = table.insertRow(-1);
+            var tableLen = table.rows.length ;
+            // console.log("current table length:",tableLen);
 
-            // add addresss of delivery
-            var deliveryNum = currRow.insertCell(0);
-            var delivery = currRow.insertCell(1);
-            var cost = currRow.insertCell(2);
-            var button = currRow.insertCell(3);
+            // only updates table up to two elements
+            // table - 1 => header counts as row
+            if((tableLen - 1) < 2){
+                var currRow = table.insertRow(-1);
 
-            // delivery number
-            deliveryNum.style.fontWeight = "bold";
-            deliveryNum.innerHTML = tableLen;
+                // add addresss of delivery
+                var deliveryNum = currRow.insertCell(0);
+                var delivery = currRow.insertCell(1);
+                var cost = currRow.insertCell(2);
+                var button = currRow.insertCell(3);
 
-            // update delivery
-            delivery.innerHTML = deliveries[i];
+                // delivery number
+                deliveryNum.style.fontWeight = "bold";
+                deliveryNum.innerHTML = tableLen;
 
-            // cost
-            cost.innerHTML = "$static";
+                // update delivery
+                delivery.innerHTML = deliveries[i][5];
 
-            // button to mark delivery as done
-            button = document.createElement('input');
-            button.type = "button";
-            button.className = "markdone-btn";
-            button.onclick = function(){
-                let markdone = 1;                   //TODO: delivery id
-                doPost("done",markdone);
+                // cost
+                cost.innerHTML = deliveries[i][7];
+                var btn;
+
+                // button to mark delivery as done
+                btn = document.createElement('input');
+                btn.type = "button";
+                btn.className = "markdone-btn";
+                btn.value = "mark as done";
+                btn.onclick = function(){
+                    let markdone = 1;                   //TODO: delivery id
+                    doPost("done",markdone);
+                }
+                button.innerHTML = "<td><input id="+tableLen+" style='width:100%; background:#007bff; color:white; margin:0; border:none' type='button'value='done' onclick='markDone(this)'>";
+
             }
-            // td.appenChild(button); --> idk if i need this?
         }
     }
     else
@@ -91,11 +100,10 @@ var hideIncoming = function(){
 }
 var showIncoming = function(){
     if(commState != null){
+        document.getElementById("destAddr").innerHTML = commState.deliveryRequestInfo[3] || "not available";
+        document.getElementById("deliveryCash").innerHTML = commState.deliveryRequestInfo[5];
+
         var incoming = document.getElementById("incomingRequest");
-        // TODO:
-        // SET FIELDS:
-        // - ADDR - document.getElementById("destAddr").innerHTML;
-        // - $$ -   document.getElementById("deliveryCash").innerHTML;
         incoming.style.visibility = "visible";
 
     }
@@ -103,11 +111,6 @@ var showIncoming = function(){
 // rejects delivery
 //Post - addr rejecting
 var reject = function(){
-    // var rejAddr = document.getElementById("destAddr").innerHTML;
-    // doPost("reject",rejAddr)
-
-    // set incoming to hidden and
-    // ignore to true               -- dont even think we need var ignore ??
     ignore = true;
     hideIncoming();
 }
@@ -118,15 +121,31 @@ var accept = function(){
     let request_ID = commState.deliveryRequestInfo[0];
     let cost = commState.deliveryRequestInfo[5];
     let post = "request_ID=" + request_ID + "&cost=" + cost;
-    
+
     // send post
     doPost("accept",post);
 
     // hide message
     hideIncoming();
+    // show map
+    document.getElementById("map").style.textAlign = "center";
 
 
     console.log("accepted");
+}
+markDone = (event) => {
+    console.log("marking doneeee");
+
+    // get button id = delivery number
+    var rowId =  event.id - 1;
+    console.log(rowId);
+
+    // get transaction id from currenTransactions
+    var t_id = commState.currentTransactions[rowId][0];
+    console.log(t_id);
+
+    // send post
+    doPost("delivered",t_id);
 }
 
 // setup UI to hide some elements
@@ -172,14 +191,14 @@ xhrGet.onreadystatechange = function() {
                 console.log("waiting...");
                 document.getElementById("servicing").innerHTML = "waiting";
                 hideIncoming();
-                // visibility = "hidden" -->
+
+                // hide map so it doesnt take space on screen
                 map.style.display = "none";
             }
-                // updating status of driver
-            // MAY NEED TO CHANGE ---------------> "DELIVERING" instead of below
+            // updating status of driver
             else if(commState.clientStatus.valueOf() == "DELIVERING"){
                 document.getElementById("servicing").innerHTML = "en route";
-                map.style.display = "inline";
+                map.style.textAlign = "center";
             }
         }
         else if(commState.status.valueOf() == "UPDATE_OK"){

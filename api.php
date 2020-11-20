@@ -67,7 +67,6 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
 
 //NOTE: Cost calculation occurs here, in restaurantCreateNewDelivery()
 function setCommRestaurantRequest($comm){
-  var_dump($_POST);
     $user_info = dbUserGetByUsername($_SESSION["username"]);
     restaurantCreateNewDelivery($user_info[0], $_POST["address"], $_POST["food"]);
     getComm($comm,'driver'); // shortcut to get back all info

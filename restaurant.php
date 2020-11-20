@@ -17,8 +17,8 @@ var_dump($_COOKIE);
     <section class="clean-block clean-form dark" style="min-height: 100%">
         <div class="container">
             <div class="block-heading" style="margin-left:auto;margin-right:auto">
-              <h2 class="text-info" style="display:inline-block">Welcome</h2>
-              <h2 class="text-info" style="display:inline-block">[RestaurantUserName]</h2>
+              <h2 class="text-info" style="display:inline-block">Welcome </h2>
+              <h2 class="text-info" id="friendlyName" style="display:inline-block; margin-left: 20px">[RestaurantUserName]</h2>
             </div>
             <form style="max-width:75%">
                 <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">

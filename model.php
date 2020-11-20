@@ -91,7 +91,7 @@ function restaurantCreateNewDelivery($user_id, $friendlyName, $food) {
   // get the restaurant's address
   $query = "SELECT start_loc FROM transaction WHERE t_id IN
             (SELECT t_id FROM user WHERE user_id = '$user_id') ";
-  $start_loc = dbQuery($query)[0];
+  $start_loc = dbQuery($query)[0];//NULL
 
   $query = "SELECT * FROM location WHERE loc_id = '$start_loc'";
   $start_friendly_addr = dbQuery($query)[3];

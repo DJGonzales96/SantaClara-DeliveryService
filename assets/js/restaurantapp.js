@@ -37,14 +37,13 @@ xhrGet.onreadystatechange = function() {
 
         if(commState.status.valueOf() == "STATUS_OK" ) {
             document.getElementById("friendlyName").innerHTML = commState.friendlyName;
-            if (commState.location)
-                document.getElementById("CurrentLocation").value = commState.location[2];
+            // if (commState.location)
+            //     document.getElementById("CurrentLocation").value = commState.location[2];
 
             // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
             //to do
             $("#deliveries tbody").empty();
             $('#deliveries tbody').append("<tr><th scope=\"row\">1</th> <td> </td><td> </td><td> </td></tr>"); // when real data is avaiable change this
-            console.log(data);
             console.log("AJAX Get call");
         } else {
             console.log("Error getting JSON");
@@ -65,7 +64,6 @@ xhrPost.onreadystatechange = function() {
             // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
             //to do
 
-            console.log(data);
             console.log("Update okay.");
             Object.keys(commState).forEach(key => {
                 console.log(key, commState[key]);

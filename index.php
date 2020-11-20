@@ -7,7 +7,7 @@ require 'includes/auth.php';
 include 'includes/header.php';
 ?>
 <main class="page landing-page">
-    <section class="scm-header clean-block clean-hero" style="background-image:url(&quot;assets/img/tech/image4.jpg&quot;);color:rgba(9, 162, 255, 0.85);">
+    <section class="scm-header clean-block clean-hero" style="background-image:url(&quot;assets/img/tech/ralph.png&quot;);color:rgba(9, 162, 255, 0.25);">
         <div class="text">
             <h2>Welcome to SCM</h2>
     </section>

@@ -40,19 +40,13 @@ xhrGet.onreadystatechange = function() {
 
         if(commState.status.valueOf() == "STATUS_OK" ) {
             document.getElementById("friendlyName").innerHTML = commState.friendlyName;
-            // if (commState.location)
-            //     document.getElementById("CurrentLocation").value = commState.location[2];
-
-            // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
-            //to do
             $("#deliveries tbody").empty();
             if(commState.currentTransactions)
             {
               $.each(commState.currentTransactions, function(index,value){
-                  $('#deliveries tbody').append("<tr><th scope=\"row\">"+ (index+1) +"</th><td>"+ value[9] + "</td><td>"+ value[11]+" </td><td>"+value[12]+"</td></tr>");
+                  $('#deliveries tbody').append("<tr><th scope=\"row\">"+ value[0] +"</th><td>"+ value[9] + "</td><td>"+ value[11]+" </td><td>"+value[12]+"</td><td>"+value[14]+"</td></tr>");
               });
             }
-            console.log("AJAX Get call");
         } else {
             console.log("Error getting JSON");
             Object.keys(commState).forEach(key => {
@@ -69,14 +63,7 @@ xhrPost.onreadystatechange = function() {
         console.log(this.responseText);
         commState = JSON.parse(this.responseText);
         if(commState.status.valueOf() == "UPDATE_OK" ) {
-            // DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE DEBUG REMOVE
-            //to do
-            alert("request submitted!");
-
-            console.log("Update okay.");
-            Object.keys(commState).forEach(key => {
-                console.log(key, commState[key]);
-            });
+            doGet();
         } else {
             console.log("Error with update");
             Object.keys(commState).forEach(key => {
@@ -87,7 +74,7 @@ xhrPost.onreadystatechange = function() {
 };
 // POST request to update the model, route is the url of the request
 var doPost = function(e){
-    e.preventDefault();
+    // e.preventDefault();
     var address = document.getElementById("clientAddress").value;
     var food = document.querySelector('input[name="food"]:checked').value;
     //console.log(data);
@@ -118,6 +105,7 @@ $radio.change(function () {
         $("#request").attr("disabled", "disabled");
     }
 });
+
 var $address = $("#clientAddress");
 $address.change(function () {
     if ($address.val().length > 0 ) {

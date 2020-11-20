@@ -21,19 +21,20 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
             if ($request[0] == 'driver'){
                 if ($request[1] == 'location'){
                     setCommDriverLocation($comm);
-                } else
-                    if ($request[1] == 'accept'){
-                        setCommDriverAccepted($comm);
-                    } else {
-                        $comm->setError("not set POST operation");
-                    }
+                } else if ($request[1] == 'accept'){
+                    setCommDriverAccepted($comm);
+                } else if ($request[1] == 'delivered'){
+                    setCommDriverDelivered($comm);
+                } else {
+                    $comm->setError("not set POST operation");
+                }
             }
             // RESTAURANT
             else if ($request[0] == 'restaurant'){
                 if ($request[1] == 'request'){
                     setCommRestaurantRequest($comm);
                 } else if ($request[1] == 'cancel'){
-                    // setCommRestaurantCancel($comm); // TODO: Create a pending transaction cancellation
+                    setCommRestaurantCancel($comm); // TODO: Create a pending transaction cancellation
                 } else {
                     $comm->setError("not set POST operation"); // error no operation
                 }
@@ -69,17 +70,33 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
 function setCommRestaurantRequest($comm){
     $user_info = dbUserGetByUsername($_SESSION["username"]);
     restaurantCreateNewDelivery($user_info[0], $_POST["address"], $_POST["food"]);
-    getComm($comm,'driver'); // shortcut to get back all info
+    getComm($comm,'restaurant'); // shortcut to get back all info
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
-//TODO: test that it appears in drivers current deliveries and restaurant's active requests
+// Cancels a pending order
+function setCommRestaurantCancel($comm){
+    $user_info = dbUserGetByUsername($_SESSION["username"]);
+    restaurantCancelDelivery($user_info[0], $_POST["request_ID"]);
+    getComm($comm,'restaurant'); // shortcut to get back all info
+    $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
+}
+
 function setCommDriverAccepted($comm){
     $user_info = dbUserGetByUsername($_SESSION["username"]);
     driverAcceptDelivery($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
     getComm($comm,'driver'); // shortcut to get back all info
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
+
+
+function setCommDriverDelivered($comm){
+    $user_info = dbUserGetByUsername($_SESSION["username"]);
+    driverDelieveredDelivery($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
+    getComm($comm,'driver'); // shortcut to get back all info
+    $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
+}
+
 
 function setCommDriverLocation($comm){
     $user_info = dbUserGetByUsername($_SESSION["username"]);

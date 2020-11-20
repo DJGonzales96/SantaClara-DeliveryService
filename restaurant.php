@@ -48,6 +48,7 @@ include 'includes/header.php';
                         <th>Address</th>
                         <th>Order</th>
                         <th>Total Cost</th>
+                        <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>

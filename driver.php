@@ -15,10 +15,7 @@ include 'includes/header.php';
                 </div>
                 <!-- maps -->
                 <div id="map" style="height: 400px; margin:0; text-align:center;">
-                    <iframe width="85%"
-                            height="350"
-                            src="https://www.google.com/maps/embed/v1/directions?origin=41.43206,-81.38992&destination=41.41206,-81.32992&key=AIzaSyByH9xCzlvuJOBZkKgJgLnCn2xe9mFd-Tg"  allowfullscreen>
-                    </iframe>
+
                 </div>
                 <form style="max-width:75%">
                     <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">
@@ -50,8 +47,7 @@ include 'includes/header.php';
                     <div style="display:inline-block">
                         <span style="margin-right: 20px">Current deliveries:</span>
                     </div>
-                    <table id="delivery-table", class="table table-bordered">
-                        <!-- add table headers -->
+                    <!--table id="delivery-table", class="table table-bordered">
                         <tbody>
                         <tr>
                             <th>Delivery Number</th>
@@ -59,6 +55,32 @@ include 'includes/header.php';
                             <th>Order</th>
                             <th>Mark as done</th>
                             <!-- TODO: <th>Status</th> -->
+                        <!--/tr>
+                        </tbody>
+                    </table-->
+                    <table class="table table-bordered" id="deliveries">
+                        <thead>
+                        <tr>
+                            <th>Delivery</th>
+                            <th>From Address</th>
+                            <th>To Address</th>
+                            <th>Order</th>
+                            <th>Total Cost</th>
+                            <th>Mark Delivered</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td> </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         </tbody>
                     </table>
@@ -67,6 +89,7 @@ include 'includes/header.php';
             </div>
         </section>
     </main>
+    <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/driverapp.js"></script>
 <?php
 include 'includes/footer.php';

@@ -1,10 +1,11 @@
 <?php
 $highlight="APP";
-$title="restaurantApp - Santa Clara Menus";
+$title="restaurantApp0 - Santa Clara Menus";
 require 'includes/conn.php';
 require 'includes/session.php';
 require 'includes/auth.php';
 include 'includes/header.php';
+var_dump($_COOKIE);
 ?>
 <style>
 @media (min-width: 576px)
@@ -16,26 +17,29 @@ include 'includes/header.php';
     <section class="clean-block clean-form dark" style="min-height: 100%">
         <div class="container">
             <div class="block-heading" style="margin-left:auto;margin-right:auto">
-              <h2 class="text-info" style="display:inline-block">Welcome </h2>
-              <h2 class="text-info" id="friendlyName" style="display:inline-block; margin-left: 20px">[RestaurantUserName]</h2>
+              <h2 class="text-info" style="display:inline-block">Welcome</h2>
+              <h2 class="text-info" style="display:inline-block">[RestaurantUserName]</h2>
             </div>
             <form style="max-width:75%">
                 <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">
                   <label for="status" style="margin-right:5%">Client address:</label>
                   <input class="form-control form-control-lg" type="text" id="clientAddress" name="clientAddress" style="width: 400px">
-
-                  <button class="btn btn-primary" id="request" style=" height: calc(1.5em + .75rem + 2px); margin-left: 50px" type="submit" onclick="doPost(event)" disabled>Request</button>
+                  <button class="btn btn-primary" id="costBtn" style=" height: calc(1.5em + .75rem + 2px); margin-left: 50px" type="submit" onclick="doPost (event)" disabled>Calculate Cost</button>
                 </div>
 
-                <div>
-                  <div class="form-check form-check-inline" style="margin-bottom: 20px">
-                   <input type="radio" class="form-check-input" id="pizza" name="food" value="pizza">
-                    <label class="form-check-label" for="pizza">pizza</label>
-                  </div>
-                  <div class="form-check form-check-inline" style="margin-bottom: 20px">
-                    <input type="radio" class="form-check-input" id="hamberger" name="food" value="hamberger">
-                    <label class="form-check-label" for="pizza">hamberger</label>
-                  </div>
+                <div class="form-check form-check-inline" style="margin-bottom: 20px">
+                 <input type="radio" class="form-check-input" id="pizza" name="food" value="pizza">
+                  <label class="form-check-label" for="pizza">pizza</label>
+                </div>
+                <div class="form-check form-check-inline" style="margin-bottom: 20px">
+                  <input type="radio" class="form-check-input" id="hamberger" name="food" value="hamberger">
+                  <label class="form-check-label" for="pizza">hamberger</label>
+                </div>
+
+                <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">
+                  <label for="status" style="margin-right:5%">Cost:</label>
+                  <h6 class="status" id="cost" style="display:inline-block; color:#343a40">$0.00</h6>
+                  <button class="btn btn-primary" style=" height: calc(1.5em + .75rem + 2px); margin-left: 40px" type="submit" onclick="doDriverPost(event)" disabled>Request</button>
                 </div>
 
                 <div style="display:inline-block">
@@ -70,7 +74,7 @@ include 'includes/header.php';
     </section>
 </main>
 <script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/restaurantapp.js"></script>
+<script src="assets/js/restaurantapp0.js"></script>
 <?php
 include 'includes/footer.php';
 ?>

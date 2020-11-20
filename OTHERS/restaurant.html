@@ -84,7 +84,7 @@
             var address = document.getElementById("clientAddress").value;
             var xhttp = new XMLHttpRequest();
 
-            xhttp.open("POST", "/app/api.php/restaurant/inquiry", true);
+            xhttp.open("POST", "/cs160/scd/api.php/restaurant/inquiry", true);
             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhttp.onload= function(){
               const data = xhttp.responseText;
@@ -117,7 +117,7 @@
             }
             var xhttp = new XMLHttpRequest();
 
-            xhttp.open("GET", "/app/api.php/restaurant", true);
+            xhttp.open("GET", "/cs160/scd/api.php/restaurant", true);
 
             xhttp.onload = () => {
                 const data = xhttp.responseText;
@@ -134,7 +134,7 @@
             e.preventDefault();
             var xhttp = new XMLHttpRequest();
             var address = document.getElementById("clientAddress").value;
-            xhttp.open("POST", "/app/api.php/restaurant/request", true);
+            xhttp.open("POST", "/cs160/scd/api.php/restaurant/request", true);
             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhttp.onload= function(){
               const data = xhttp.responseText;

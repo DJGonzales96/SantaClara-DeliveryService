@@ -7,7 +7,7 @@ This is a guide to install the files, software, and applications needed to run S
 To run the database of SCM, download XAMPP at [apchefriends.org](https://www.apachefriends.org/index.html).
 Scroll down an locate the "Download" Button along with the options of the three major operating systems. **All three operating systems have similar installation process, this tutorial will follow a Windows 10 installation.**
 
-![XAMPP homepage](XAMPP_homepage.jpg)
+![XAMPP homepage](README/XAMPP_homepage.jpg)
 
 #### Windows 10
 - Select "XAMPP for windows" and an installer window will pop up.

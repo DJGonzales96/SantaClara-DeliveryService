@@ -93,13 +93,13 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
     $user_info = dbUserGetByUsername($_SESSION["username"]);
     $isRestaurant = (strcmp($user_info[4],"1") == 0);
     // Checking if restaurant <=> driver malfunction
-        if ( ($isRestaurant && strcmp($identityString,"driver") == 0) ||
-            (!$isRestaurant) && strcmp($identityString,"restaurant") == 0)
-        {
-            $comm->setIsRestaurant($isRestaurant);
-            $comm->setError("Calling driver\restaurant with wrong user type");
-            return;
-        }
+    if ( ($isRestaurant && strcmp($identityString,"driver") == 0) ||
+        (!$isRestaurant) && strcmp($identityString,"restaurant") == 0)
+    {
+        $comm->setIsRestaurant($isRestaurant);
+        $comm->setError("Calling driver\restaurant with wrong user type");
+        return;
+    }
     $comm->setUserId($user_info[0]);
     $comm->setFriendlyName($user_info[2]);
     $comm->setIsRestaurant($isRestaurant);
@@ -119,6 +119,7 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
         $pendingDeliveryRequests = restaurnatGetPendingRequests($user_info[0]);
         if ($pendingDeliveryRequests != null){
             $comm->setClientStatus(ClientStatus::PENDING); // Restaurnat LIMIT TO 1 PENDING TRANSACTION AT A TIME
+            $comm->setDeliveryRequestInfo($pendingDeliveryRequests);
         } else
             $comm->setClientStatus(ClientStatus::IDLE);
     }

@@ -145,7 +145,7 @@ markDone = (event) => {
     console.log(t_id);
 
     // send post
-    doPost("delivered",t_id);
+    doPost("delivered","request_ID="+t_id);
 }
 
 // setup UI to hide some elements

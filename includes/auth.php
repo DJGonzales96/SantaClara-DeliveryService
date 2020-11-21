@@ -12,9 +12,9 @@ if(!$result)
 elseif($result->num_rows) {
     $row = $result->fetch_array(MYSQLI_NUM);
     $result->close();
-    $password = $row[3];
+    $hashed_password = $row[3];
 }
-if (md5($password, substr(md5($password), 0, 2)) == $hashed_password) {
+if (password_verify($_SESSION['password'], $hashed_password)) {
     $_SESSION['authenticated'] = true;
     $_SESSION['username'] = $username;
 } else {

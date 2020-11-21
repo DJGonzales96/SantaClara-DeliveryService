@@ -4,8 +4,8 @@ require_once 'includes/session.php';
 require_once 'includes/auth.php';
 
 // prevent unauthorized access
-if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL)
-    die("{'status':'STATUS_ERROR','error':'Not logged in'}");
+//if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL)
+   // die("{'status':'STATUS_ERROR','error':'Not logged in'}");
 
 function dbQueryError($conn, $where){
     $dumpStr = "in db query, dump: " .  $conn->error . ", where: " . $where;

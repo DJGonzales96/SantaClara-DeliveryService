@@ -27,21 +27,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $row = $result->fetch_array(MYSQLI_NUM);
         $result->close();
         // Validate password is correct
-        if($token == $row[3])
+        if(password_verify($password, $row[3]))
         {
-        	// password is correct
-          $user_id = $row[0];
-          $isRestaurant = $row[4];
-          $_SESSION['user_id'] = $user_id;  // store ID of the signed in user
-          $_SESSION['isRestaurant'] = $isRestaurant;
-          $_SESSION['authenticated'] = true;
-          $salt = substr (md5($password), 0, 2);
-          $cookie = base64_encode ("$username:" . md5 ($token, $salt));
-          setcookie ('scd-secret-cookie', $cookie, time() + (86400 * 30), '/');
-        	// Redirect to main page
-          header("location: index.php");
+            // password is correct
+            $user_id = $row[0];
+            $isRestaurant = $row[4];
+            $_SESSION['password'] = $password;
+            $_SESSION['user_id'] = $user_id;  // store ID of the signed in user
+            $_SESSION['isRestaurant'] = $isRestaurant;
+            $_SESSION['authenticated'] = true;
+            $salt = substr (md5($password), 0, 2);
+            $cookie = base64_encode ("$username:" . md5 ($token, $salt));
+            setcookie ('scd-secret-cookie', $cookie, time() + (86400 * 30), '/');
+            // Redirect to main page
+            header("location: index.php");
         }
-         else
+        else
         {
             die("Invalid username/password combination.");
         }
@@ -52,10 +53,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     }
 }
 else {
-  if($_SESSION['authenticated'] == true)
-  {
-      header("location: index.php");
-  }
+    if($_SESSION['authenticated'] == true)
+    {
+        header("location: index.php");
+    }
 }
 $highlight="LOGIN";
 include 'includes/header.php';
@@ -75,8 +76,8 @@ include 'includes/header.php';
                     <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox"><label class="form-check-label" for="checkbox">Remember me</label></div>
                 </div><button class="btn btn-primary btn-block" type="submit" value="Login">Log In</button><br>
                 <div class="etc-login-form">
-                   <p>forgot your password? <a href="#">click here</a></p>
-                   <p>new user? <a href="signup.php">create new account</a></p>
+                    <p>forgot your password? <a href="#">click here</a></p>
+                    <p>new user? <a href="signup.php">create new account</a></p>
                 </div></form>
         </div>
     </section>

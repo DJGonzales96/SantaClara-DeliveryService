@@ -1,7 +1,7 @@
 <?php
 // make sure no unauthorized access
-if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL)
-    die("{'status':'STATUS_ERROR','error':'Not logged in'}");
+//if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL)
+//    die("{'status':'STATUS_ERROR','error':'Not logged in'}");
 
 // This is Maps API GeoCoding service
 function getMapsLocationFromFriendlyAddress(String $address)

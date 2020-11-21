@@ -8,8 +8,8 @@ include 'db.php';
 include 'maps.php';
 
 // prevent unauthorized access
-if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL)
-  die("{'status':'STATUS_ERROR','error':'Not logged in'}");
+//if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL)
+ // die("{'status':'STATUS_ERROR','error':'Not logged in'}");
 
 // OK for v0.1
 function getCurrentLocation($user_current_tid){

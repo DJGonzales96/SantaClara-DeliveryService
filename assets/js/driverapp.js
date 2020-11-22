@@ -197,4 +197,4 @@ var intervalGet = setInterval(doGet, 5000);
 // call doGet first time
 doGet();
 
-window.onload = geoLocate();
+//window.onload = geoLocate();

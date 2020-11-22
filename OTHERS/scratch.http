@@ -2,7 +2,7 @@
 #POST http://localhost/cs160/scd/login.php
 #Content-Type: application/x-www-form-urlencoded
 #
-#username=iland&password=123456
+#username=testd&password=123456
 
 ###
 
@@ -10,7 +10,7 @@
 
 #GET http://localhost/cs160/scd/api.php/restaurant
 
-#GET http://localhost/cs160/scd/api.php/driver
+GET http://localhost/cs160/scd/api.php/driver
 
 ###
 

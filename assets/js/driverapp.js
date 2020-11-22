@@ -115,7 +115,7 @@ xhrGet.onreadystatechange = function() {
         if(commState.status.valueOf() == "STATUS_OK" ) {
             document.getElementById("friendlyName").innerHTML = commState.friendlyName;
             // show wallet
-            document.getElementById("driver-wallet").innerHTML = commState.wallet; // should be wallet
+            document.getElementById("driver-wallet").innerHTML = commState.wallet || "$0";
 
             if (commState.location){
                 // update addr if there

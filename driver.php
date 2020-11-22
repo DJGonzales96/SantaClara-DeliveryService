@@ -23,12 +23,12 @@ include 'includes/header.php';
                 </div>
                 <form style="max-width:100%; position:flex">
                     <div class="form-group" style="display:flex; flex-flow: row wrap;">
-                        <label for="status" style="float:left; text-align:left; position:relative">Status:</label>
+                        <label for="status" style="margin-right:3%; float:left; text-align:left; position:relative">Status:</label>
                         <h6 id="servicing" class="status" style="display:inline; color:#007bff">--</h6>
                         <!-- for driver's wallet -->
-                        <div id="dwallet" style="float:right; position:relative; margin-left:75%; margin-top:0">
-                            <label for="driver-wallet" style="display:inline;">Wallet: $</label>
-                            <h6 id="driver-wallet" class="driver-wallet" style="display:inline-block; color:green"> $0</h6> 
+                        <div id="dwallet" style="float:right; position:relative; margin-left:70%; margin-top:0;">
+                            <label for="driver-wallet" style="display:inline; margin-right:0;">Wallet:</label>
+                            <h6 id="driver-wallet" class="driver-wallet" style="display:inline-block; color:green">$0</h6> 
                         </div>
                     </div>
 
@@ -56,43 +56,35 @@ include 'includes/header.php';
                     <div style="display:inline-block">
                         <span style="margin-right: 20px">Current deliveries:</span>
                     </div>
-                    <!--table id="delivery-table", class="table table-bordered">
-                        <tbody>
-                        <tr>
-                            <th>Delivery Number</th>
-                            <th>Delivery Address</th>
-                            <th>Order</th>
-                            <th>Mark as done</th>
-                            <!-- TODO: <th>Status</th> -->
-                        <!--/tr>
-                        </tbody>
-                    </table-->
-                    <table class="table table-bordered" id="deliveries">
-                        <thead>
-                        <tr>
-                            <th>Delivery</th>
-                            <th>From Address</th>
-                            <th>To Address</th>
-                            <th>Order</th>
-                            <th>Total Cost</th>
-                            <th>Mark Delivered</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td> </td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <!-- responsive / scrollable table -->
+                    <div style="overflow-x:auto">
+                        <table class="table table-bordered" id="deliveries">
+                            <thead>
+                            <tr>
+                                <th>Delivery</th>
+                                <th>From Address</th>
+                                <th>To Address</th>
+                                <th>Order</th>
+                                <th>Total Cost</th>
+                                <th>Mark Delivered</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td> </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </form>
             </div>
             </div>

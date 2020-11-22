@@ -64,9 +64,11 @@ include 'includes/header.php';
                     <td> </td>
                     <td></td>
                     <td></td>
+                    <td></td>
                   </tr>
                   <tr>
                     <th scope="row">2</th>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

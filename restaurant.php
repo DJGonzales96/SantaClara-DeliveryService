@@ -35,7 +35,7 @@ include 'includes/header.php';
                   <label for="status" style="margin-right:5%">Client address:</label>
                   <input class="form-control form-control-lg" type="text" id="clientAddress" name="clientAddress" style="width: 400px">
 
-                  <button class="btn btn-primary" id="request" style=" height: calc(1.5em + .75rem + 2px); margin-left: 50px" type="submit" onclick="doPost(event)" disabled>Request</button>
+                  <button class="btn btn-primary" id="request" style=" height: calc(1.5em + .75rem + 2px); margin-left: 50px" type="submit"  disabled>Request</button>
                 </div>
 
                 <div>
@@ -91,7 +91,7 @@ include 'includes/header.php';
            <p>Please wait for a driver.</p>
            <p>Thank you very much for your patience.</p>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="cancelbtn" onclick="doCancel()">Cancel Order</button>
+            <button type="button" class="btn btn-primary" id="cancelbtn">Cancel Order</button>
           </div>
         </div>
       </div>

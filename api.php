@@ -69,8 +69,11 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
 //NOTE: Cost calculation occurs here, in restaurantCreateNewDelivery()
 function setCommRestaurantRequest($comm){
     $user_info = dbUserGetByUsername($_SESSION["username"]);
-    restaurantCreateNewDelivery($user_info[0], $_POST["address"], $_POST["food"]);
+    $result = restaurantCreateNewDelivery($user_info[0], $_POST["address"], $_POST["food"]);
     getComm($comm,'restaurant'); // shortcut to get back all info
+    if ($result != 0)
+        $comm->setStatus(CommStatus::UPDATE_FAILED); // the transaction could not be made
+    else
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
@@ -84,12 +87,9 @@ function setCommRestaurantCancel($comm){
 
 function setCommDriverAccepted($comm){
     $user_info = dbUserGetByUsername($_SESSION["username"]);
-    $result = driverAcceptDelivery($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
+    driverAcceptDelivery($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
     getComm($comm,'driver'); // shortcut to get back all info
-    if ($result != 0)
-        $comm->setStatus(CommStatus::UPDATE_FAILED); // the transaction could not be made
-    else
-        $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
+    $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
 

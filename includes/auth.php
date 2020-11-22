@@ -1,5 +1,5 @@
 <?php
-
+// authentication solution was partly taken from StackOverflow
 require_once 'session.php';
 $cookie = $_COOKIE['scd-secret-cookie'];
 $content = base64_decode ($cookie);

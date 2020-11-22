@@ -1,34 +1,36 @@
 // globals
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
-const xhrCancel = new XMLHttpRequest();
-const baseUrl = "http://localhost/cs160/scd";
+const baseUrl = window.location.protocol + "//" + window.location.host + "/cs160/scd";
 // const baseUrl = "http://localhost:8080/cs160/scd";
 var commState;
 var requestInfo;
-var geoLocate = function() {
-    function success(position) {
-        const latitude  = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        let inputLocation = document.getElementById("CurrentLocation").value || "NULL";
-        let postRequest = "lat=" + latitude + "&long=" + longitude
-            + "&address=" + encodeURIComponent(inputLocation);
-        doPost("location", postRequest);
-        console.log(latitude + " " + longitude);
-    }
-    function error() {
-        console.log("Unable to retrieve your location");
-    }
-    if(!navigator.geolocation) {
-        console.log("Geolocation is not supported by your browser");
-    } else {
-        console.log("Locating…");
-        navigator.geolocation.getCurrentPosition(success, error);
-    }
+var modalopen = false;
+
+// bind UI elements
+$('#request').click(function(e){
+    e.preventDefault();
+    sendRequest();
+});
+
+$('#cancelbtn').click(function(e){
+    e.preventDefault();
+    cancelOrder();
+});
+
+// Request a delivery
+var sendRequest = function() {
+        let address = document.getElementById("clientAddress").value;
+        let food = document.getElementById('food').value;
+        doPost("request", "address=" + encodeURIComponent(address) +"&food=" +  food);
 }
 
+// Cancel request for the user
+var cancelOrder = function() {
+    doPost("cancel", "request_ID=" + requestInfo[0]);
 
-var modalopen = false;
+}
+
 xhrGet.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         commState = JSON.parse(this.responseText);
@@ -43,16 +45,13 @@ xhrGet.onreadystatechange = function() {
                   $('#deliveries tbody').append("<tr><th scope=\"row\">"+ value[0] +"</th><td>"+ value[9] + "</td><td>"+ value[11]+" </td><td>"+value[12]+"</td><td>"+value[14]+"</td></tr>");
               });
             }
-            if(commState.location)
-            {
+            if(commState.location) {
                 document.getElementById("restAddr").innerHTML = commState.location[3];
-
                 // update the wallet
                 document.getElementById("money").innerHTML = commState.wallet;
             }
 
-            if(commState.deliveryRequestInfo && commState.deliveryRequestInfo.length > 0)
-            {
+            if(commState.deliveryRequestInfo && commState.deliveryRequestInfo.length > 0) {
                 if(!modalopen)
                 {
                   modalopen=true;
@@ -87,7 +86,7 @@ xhrPost.onreadystatechange = function() {
         if(commState.status.valueOf() == "UPDATE_OK" ) {
             doGet();
         } else if(commState.status.valueOf() == "UPDATE_FAILED" ) {
-            alert("Couldn't");
+            alert("Sorry. We currently support only deliveries that are less than 40 minutes away.");
         } else {
             console.log("Error with update");
             Object.keys(commState).forEach(key => {
@@ -97,29 +96,11 @@ xhrPost.onreadystatechange = function() {
     }
 };
 
-// Cancel order
-xhrCancel.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        console.log(this.responseText);
-        commState = JSON.parse(this.responseText);
-        if(commState.status.valueOf() == "UPDATE_OK" ) {
-            doGet();
-        } else {
-            console.log("Error with update");
-            Object.keys(commState).forEach(key => {
-                console.log(key, commState[key]);
-            });
-        }
-    }
-};
-
-// POST request to update the model, route is the url of the request
-var doPost = function(e){
-    var address = document.getElementById("clientAddress").value;
-    var food = document.getElementById('food').value;
-    xhrPost.open("POST", baseUrl + "/api.php/restaurant/request" ,true);
+// POST request to update the model, url is the routing of the request
+var doPost = function(url, data){
+    xhrPost.open("POST", baseUrl + "/api.php/restaurant/" + url ,true);
     xhrPost.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhrPost.send("address=" + encodeURIComponent(address) +"&food="+food);
+    xhrPost.send(data);
 }
 
 // GET request for the Table
@@ -128,34 +109,29 @@ var doGet = function(){
     xhrGet.send();
 }
 
-// Cancel request for the user
-var doCancel = function(){
-    xhrCancel.open("POST", baseUrl + "/api.php/restaurant/cancel", true);
-    xhrCancel.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhrCancel.send("request_ID="+requestInfo[0]);
-}
+var $food = $("#food");
+$food.change(function () {
+    if ($food.val().length > 0 ) {
+        if($address.val().length > 0 ){
+            $("#request").removeAttr("disabled");
+        }
+    } else {
+        $("#request").attr("disabled", "disabled");
+    }
+});
+
+var $address = $("#clientAddress");
+$address.change(function () {
+    if ($address.val().length > 0 ) {
+        if($food.val().length > 0 ){
+            $("#request").removeAttr("disabled");
+        }
+    } else {
+        $("#request").attr("disabled", "disabled");
+    }
+});
+
 // call doGet update every 5 seconds
 var intervalGet = setInterval(doGet, 5000);
 // call doGet first time
 doGet();
-
-var $food = $("#food");
-$food.change(function () {
-    if ($food.val().length > 0 ) {
-      if($address.val().length > 0 ){
-        $("#request").removeAttr("disabled");
-      }
-    } else {
-        $("#request").attr("disabled", "disabled");
-    }
-});
-var $address = $("#clientAddress");
-$address.change(function () {
-    if ($address.val().length > 0 ) {
-      if($food.val().length > 0 ){
-        $("#request").removeAttr("disabled");
-      }
-    } else {
-        $("#request").attr("disabled", "disabled");
-    }
-});

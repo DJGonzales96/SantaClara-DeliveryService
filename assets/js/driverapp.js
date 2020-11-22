@@ -1,7 +1,7 @@
 // globals
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
-const baseUrl = "http://localhost/cs160/scd";
+const baseUrl = window.location.protocol + "//" + window.location.host + "/cs160/scd";
 // const baseUrl = "http://localhost/SantaClara-DeliveryService";
 var commState;
 var ignoreRequest = false;

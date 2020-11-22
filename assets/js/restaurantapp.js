@@ -1,8 +1,8 @@
 // globals
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
-const baseUrl = window.location.protocol + "//" + window.location.host + "/cs160/scd";
-// const baseUrl = "http://localhost:8080/cs160/scd";
+//const baseUrl = window.location.protocol + "//" + window.location.host + "/cs160/scd";
+const baseUrl = "http://localhost:8080/cs160/scd";
 var commState;
 var requestInfo;
 var modalopen = false;

@@ -60,7 +60,7 @@ include 'includes/header.php';
 
 <html>
 <main class="page registration-page" style= "height: 100%;">
-    <section class="clean-block clean-form dark" style="height: 100%;">
+    <section class="clean-block clean-form dark">
         <div class="container">
             <div class="block-heading">
                 <h2 class="text-info">Sign Up</h2>
@@ -104,4 +104,3 @@ include 'includes/header.php';
     });
 </script>
 </html>
-

@@ -84,9 +84,12 @@ function setCommRestaurantCancel($comm){
 
 function setCommDriverAccepted($comm){
     $user_info = dbUserGetByUsername($_SESSION["username"]);
-    driverAcceptDelivery($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
+    $result = driverAcceptDelivery($user_info[0],$_POST['request_ID']); // request ID could be similar to t_id
     getComm($comm,'driver'); // shortcut to get back all info
-    $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
+    if ($result != 0)
+        $comm->setStatus(CommStatus::UPDATE_FAILED); // the transaction could not be made
+    else
+        $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
 
@@ -141,6 +144,7 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
             $comm->setClientStatus(ClientStatus::IDLE);
     }
     $comm->setCurrentTransactions($currentTransactions);
+    $comm->setWallet($user_info[6]);
     $comm->setStatus(CommStatus::STATUS_OK); // when everything is finished mark it STATUS_OK
 }
 ?>

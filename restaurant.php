@@ -29,7 +29,7 @@ include 'includes/header.php';
             <form style="max-width:75%">
               <label for="status" style="margin-right:5%">Restaurant Address:</label>
               <h6 class="status" id="restAddr" style="display:inline-block; color:#343a40">Restaurant Address</h6>
-              <h6 class="status" id="wallet" style="display:inline-block; color:#343a40; margin-left: 100px">Wallet: </h6>
+              <h6 class="status" id="wallet" style="display:inline-block; color:#343a40; margin-left: 100px">Wallet: $</h6>
               <h6 class="status" id="money" style="display:inline-block; color:#343a40;">$0.00</h6>
                 <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">
                   <label for="status" style="margin-right:5%">Client address:</label>

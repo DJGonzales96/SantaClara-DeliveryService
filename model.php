@@ -119,12 +119,10 @@ function restaurantCreateNewDelivery($user_id, $friendlyName, $food) {
     $query = "INSERT INTO transaction(t_type, primary_user_id, start_loc, end_loc, food, price, duration, t_status)
           VALUES('delivery_req', '$user_id', '$start_loc', '$end_loc_id', '$food', '$price' , '$duration' ,'pending')";
     $new_t_id = dbInsert($query);
-
-    // 4. Get list of drivers within range
-    //TODO: notify drivers of pending transactions
+    return 0;
   }
-  else {//TODO: (not succeed case)
-    $t_status = "failed";
+  else {
+    return -1;
   }
 }
 
@@ -135,6 +133,14 @@ function driverAcceptDelivery($user_id, $delivery_t_id) {
 
 function driverDelieveredDelivery($user_id, $delivery_t_id) {
   $query = "UPDATE transaction SET t_status = 'completed' WHERE t_id = '$delivery_t_id' AND secondary_user_id = '$user_id'";
+  dbInsert($query);
+  $query = "SELECT primary_user_id FROM transaction WHERE t_id = '$delivery_t_id'";
+  $restaurantId = dbQuery($query)[0];
+  $query = "SELECT price FROM transaction WHERE t_id = '$delivery_t_id'";
+  $cost = dbQuery($query)[0];
+  $query = "UPDATE user SET wallet = wallet - '$cost' WHERE user_id = '$restaurantId'";
+  dbInsert($query);
+  $query = "UPDATE user SET wallet = wallet + '$cost' WHERE user_id = '$user_id'";
   dbInsert($query);
 }
 

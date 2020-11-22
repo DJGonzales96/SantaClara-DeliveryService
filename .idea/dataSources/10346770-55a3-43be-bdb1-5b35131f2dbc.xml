@@ -936,61 +936,70 @@
       <Position>7</Position>
       <DataType>timestamp|0s</DataType>
     </column>
-    <column id="292" parent="278" name="duration">
+    <column id="292" parent="278" name="food">
       <Position>8</Position>
-      <DataType>bigint|0s</DataType>
+      <DataType>varchar(30)|0s</DataType>
     </column>
     <column id="293" parent="278" name="price">
       <Position>9</Position>
       <DataType>decimal(5,2 digit)|0s</DataType>
     </column>
-    <column id="294" parent="278" name="t_status">
+    <column id="294" parent="278" name="duration">
       <Position>10</Position>
+      <DataType>decimal(10)|0s</DataType>
+    </column>
+    <column id="295" parent="278" name="t_status">
+      <Position>11</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <key id="295" parent="278" name="PRIMARY">
+    <key id="296" parent="278" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>t_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="296" parent="279" name="user_id">
+    <column id="297" parent="279" name="user_id">
       <Position>1</Position>
       <DataType>int unsigned|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="297" parent="279" name="username">
+    <column id="298" parent="279" name="username">
       <Position>2</Position>
       <DataType>varchar(64)|0s</DataType>
     </column>
-    <column id="298" parent="279" name="name">
+    <column id="299" parent="279" name="name">
       <Position>3</Position>
       <DataType>varchar(64)|0s</DataType>
     </column>
-    <column id="299" parent="279" name="encrypted_password">
+    <column id="300" parent="279" name="encrypted_password">
       <Position>4</Position>
       <DataType>varchar(64)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="300" parent="279" name="isRestaurant">
+    <column id="301" parent="279" name="isRestaurant">
       <Position>5</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="301" parent="279" name="t_id">
+    <column id="302" parent="279" name="t_id">
       <Position>6</Position>
       <DataType>int unsigned|0s</DataType>
     </column>
-    <index id="302" parent="279" name="username">
+    <column id="303" parent="279" name="wallet">
+      <Position>7</Position>
+      <DataType>float(10,2 digit)|0s</DataType>
+      <DefaultExpression>0.00</DefaultExpression>
+    </column>
+    <index id="304" parent="279" name="username">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="303" parent="279" name="PRIMARY">
+    <key id="305" parent="279" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="304" parent="279" name="username">
+    <key id="306" parent="279" name="username">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>username</UnderlyingIndexName>
     </key>

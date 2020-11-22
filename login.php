@@ -76,7 +76,6 @@ include 'includes/header.php';
                     <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox"><label class="form-check-label" for="checkbox">Remember me</label></div>
                 </div><button class="btn btn-primary btn-block" type="submit" value="Login">Log In</button><br>
                 <div class="etc-login-form">
-                    <p>forgot your password? <a href="#">click here</a></p>
                     <p>new user? <a href="signup.php">create new account</a></p>
                 </div></form>
         </div>

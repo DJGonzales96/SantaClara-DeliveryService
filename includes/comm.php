@@ -20,6 +20,7 @@ trait JsonSerializeTrait
 abstract class CommStatus {
     const INVALID = 'INVALID';
     const UPDATE_OK = 'UPDATE_OK';
+    const UPDATE_FAILED = 'UPDATE_FAILED';
     const STATUS_OK = 'STATUS_OK';
     const STATUS_ERROR = 'STATUS_ERROR';
 }
@@ -45,6 +46,7 @@ class Comm implements JsonSerializable {
     private $clientStatus;
     private $currentTransactions;
     private $deliveryRequestInfo;
+    private $wallet;
 
     private $error;
 
@@ -83,6 +85,10 @@ class Comm implements JsonSerializable {
 
     function setDeliveryRequestInfo($deliveryRequestInfoArr){
         $this->deliveryRequestInfo = $deliveryRequestInfoArr;
+    }
+
+    function setWallet($amount){
+        $this->wallet = $amount;
     }
 
     function setError($errorStr){

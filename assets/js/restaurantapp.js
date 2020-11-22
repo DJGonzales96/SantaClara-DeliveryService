@@ -2,8 +2,8 @@
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
 const xhrCancel = new XMLHttpRequest();
-//const baseUrl = "http://localhost/cs160/scd";
-const baseUrl = "http://localhost:8080/cs160/scd";
+const baseUrl = "http://localhost/cs160/scd";
+// const baseUrl = "http://localhost:8080/cs160/scd";
 var commState;
 var requestInfo;
 var geoLocate = function() {
@@ -27,18 +27,10 @@ var geoLocate = function() {
     }
 }
 
-// // bind buttons of the UI to functions
-// document.getElementById("buttonLocation").addEventListener("click", geoLocate, true);
-
-// set UI updating mechanism on GET
-/*
-{"status":"STATUS_OK","user_id":"1","isRestaurant":true,"friendlyName":"yohei","location":["1","0.000000","0.000000","1 Washington Sq, San Jose, CA 95192"],"clientStatus":"PENDING","currentTransactions":[["6","delivery_req","1","1","0.000000","0.000000","1 Washington Sq, San Jose, CA 95192","37.335186","-121.881073","1 Washington Sq, San Jose, CA 95192, USA","2020-11-20 00:52:52","pizza","3.00","0","in-progress"]],"deliveryRequestInfo":null,"error":"none"}
-*/
 
 var modalopen = false;
 xhrGet.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
         commState = JSON.parse(this.responseText);
 
         if(commState.status.valueOf() == "STATUS_OK" ) {
@@ -55,14 +47,10 @@ xhrGet.onreadystatechange = function() {
             {
                 document.getElementById("restAddr").innerHTML = commState.location[3];
 
-                //This is temporary
-                document.getElementById("money").innerHTML = commState.friendlyName;
+                // update the wallet
+                document.getElementById("money").innerHTML = commState.wallet;
             }
 
-            // if(commState.wallet)
-            // {
-            //     document.getElementById("money").innerHTML = commState.wallet[?];
-            // }
             if(commState.deliveryRequestInfo && commState.deliveryRequestInfo.length > 0)
             {
                 if(!modalopen)
@@ -95,10 +83,11 @@ xhrGet.onreadystatechange = function() {
 // POST result
 xhrPost.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-        console.log(this.responseText);
         commState = JSON.parse(this.responseText);
         if(commState.status.valueOf() == "UPDATE_OK" ) {
             doGet();
+        } else if(commState.status.valueOf() == "UPDATE_FAILED" ) {
+            alert("Couldn't");
         } else {
             console.log("Error with update");
             Object.keys(commState).forEach(key => {

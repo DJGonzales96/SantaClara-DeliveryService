@@ -1,7 +1,7 @@
 // globals
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
-const baseUrl = "http://localhost/cs160/scd";
+const baseUrl = "http://localhost/SantaClara-DeliveryService";
 var commState;
 var ignoreRequest = false;
 var isMapChange = true;
@@ -104,7 +104,8 @@ document.getElementById("buttonAccept").addEventListener("click", accept);
 document.getElementById("buttonReject").addEventListener("click", reject);
 //get driver curr location
 document.getElementById("buttonLocation").addEventListener("click", geoLocate, true);
-
+// hide map initially
+document.getElementById("map").style.display = "none";
 
 // set UI updating mechanism on GET
 xhrGet.onreadystatechange = function() {
@@ -113,7 +114,8 @@ xhrGet.onreadystatechange = function() {
         updateDeliveryTable();
         if(commState.status.valueOf() == "STATUS_OK" ) {
             document.getElementById("friendlyName").innerHTML = commState.friendlyName;
-            // show incoming message
+            // show wallet
+            document.getElementById("driver-wallet").innerHTML = commState.friendlyName; // should be wallet
 
             if (commState.location){
                 // update addr if there

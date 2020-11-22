@@ -82,4 +82,7 @@ include 'includes/header.php';
         </div>
     </section>
 </main>
+<!-- for responsive menu -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </html>

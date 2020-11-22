@@ -14,20 +14,18 @@ include 'includes/header.php';
         <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     </head>
     <main class="page landing-page;" style="width:100%;">
-        <section class="scm-header clean-block clean-hero" style="background-image:url(&quot;assets/img/tech/ralph.png&quot;);color:rgba(9, 162, 255, 0.25);">
+        <section class="scm-header clean-block clean-hero" style="background-image:url(&quot;assets/img/tech/ralph.png&quot;);color:rgba(9, 162, 255, 0.0);">
             <div class="text">
-                <h2>Welcome to SCM</h2>
+                <h2>Welcome to SCM <?php
+                    if ($_SESSION['authenticated'] == true){
+                        echo $username;
+                    }
+                    ?></h2>
         </section>
         <section class="clean-block clean-info dark">
             <div class="container">
                 <div class="block-heading">
-                    <?php
-                    if ($_SESSION['authenticated'] == true){
-                        echo "Welcome " . $username;
-                    } else {
-                        echo '<p>The best UBER-for-restaurant like software. Sign up today and start working with us.</p>';
-                    }
-                    ?>
+                        <p>The best UBER-for-restaurant like software. Sign up today and start working with us.</p>
                 </div>
             </div>
         </section>

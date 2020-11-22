@@ -13,6 +13,7 @@ include 'includes/header.php';
         <section class="clean-block clean-form dark" style="height:100%; width:100%;">
             <div class="container">
                 <div class="block-heading" style="margin-left:auto;margin-right:auto">
+                    <br/><br/>
                     <h2 class="text-info" style="display:inline-block">Welcome </h2>
                     <h2 id="friendlyName" class="text-info" style="display:inline-block"></h2>
                 </div>
@@ -26,7 +27,7 @@ include 'includes/header.php';
                         <h6 id="servicing" class="status" style="display:inline; color:#007bff">--</h6>
                         <!-- for driver's wallet -->
                         <div id="dwallet" style="float:right; position:relative; margin-left:75%; margin-top:0">
-                            <label for="driver-wallet" style="display:inline;">Wallet:</label>
+                            <label for="driver-wallet" style="display:inline;">Wallet: $</label>
                             <h6 id="driver-wallet" class="driver-wallet" style="display:inline-block; color:green"> $0</h6> 
                         </div>
                     </div>

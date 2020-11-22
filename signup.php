@@ -26,7 +26,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     if(isset($_POST["role"]))
     {
         $role = $_POST['role'];
-        $isRestaurant = $role == 'restaurant';
+        $isRestaurant = ($role == 'restaurant' ? "1": "0");
     }
 
     if(isset($_POST["restaurantAddr"]))

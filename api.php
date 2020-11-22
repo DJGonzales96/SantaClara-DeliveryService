@@ -69,8 +69,11 @@ if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL){
 //NOTE: Cost calculation occurs here, in restaurantCreateNewDelivery()
 function setCommRestaurantRequest($comm){
     $user_info = dbUserGetByUsername($_SESSION["username"]);
-    restaurantCreateNewDelivery($user_info[0], $_POST["address"], $_POST["food"]);
+    $result = restaurantCreateNewDelivery($user_info[0], $_POST["address"], $_POST["food"]);
     getComm($comm,'restaurant'); // shortcut to get back all info
+    if ($result != 0)
+        $comm->setStatus(CommStatus::UPDATE_FAILED); // the transaction could not be made
+    else
     $comm->setStatus(CommStatus::UPDATE_OK); // when everything is finished mark it UPDATE_OK
 }
 
@@ -141,6 +144,7 @@ function getComm($comm, $identityString){ // gets an empty comm and sets it to v
             $comm->setClientStatus(ClientStatus::IDLE);
     }
     $comm->setCurrentTransactions($currentTransactions);
+    $comm->setWallet($user_info[6]);
     $comm->setStatus(CommStatus::STATUS_OK); // when everything is finished mark it STATUS_OK
 }
 ?>

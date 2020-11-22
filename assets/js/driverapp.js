@@ -1,7 +1,8 @@
 // globals
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
-const baseUrl = "http://localhost/SantaClara-DeliveryService";
+const baseUrl = window.location.protocol + "//" + window.location.host + "/cs160/scd";
+// const baseUrl = "http://localhost/SantaClara-DeliveryService";
 var commState;
 var ignoreRequest = false;
 var isMapChange = true;
@@ -29,7 +30,6 @@ var geoLocate = function() {
     if(!navigator.geolocation) {
         console.log("Geolocation is not supported by your browser");
     } else {
-        console.log("Locating…");
         navigator.geolocation.getCurrentPosition(success, error);
     }
 }
@@ -85,7 +85,7 @@ var markDone = function(t_id){
 
 var refreshMap = function(){
     document.getElementById("map").innerHTML =
-        " <iframe width=\"75%\"\n" +
+        " <iframe width=\"100%\"\n" +
         "                            height=\"350\"\n" +
         "                            src=\"https://www.google.com/maps/embed/v1/directions?origin="+
         commState.location[1] + "," + commState.location[2] +
@@ -98,7 +98,7 @@ var refreshMap = function(){
 }
 
 // setup UI button elements and visibility
-document.getElementById("incomingRequest").style.visibility = "hidden";
+
 //accept/reject a delivery to your route
 document.getElementById("buttonAccept").addEventListener("click", accept);
 document.getElementById("buttonReject").addEventListener("click", reject);
@@ -115,7 +115,7 @@ xhrGet.onreadystatechange = function() {
         if(commState.status.valueOf() == "STATUS_OK" ) {
             document.getElementById("friendlyName").innerHTML = commState.friendlyName;
             // show wallet
-            document.getElementById("driver-wallet").innerHTML = commState.friendlyName; // should be wallet
+            document.getElementById("driver-wallet").innerHTML = commState.wallet; // should be wallet
 
             if (commState.location){
                 // update addr if there
@@ -133,10 +133,13 @@ xhrGet.onreadystatechange = function() {
                 }
             }
             else if(commState.clientStatus.valueOf() == "IDLE"){
+                // hide request and set not to ignore requests
                 ignoreRequest = false;
-                document.getElementById("servicing").innerHTML = "waiting";
+                document.getElementById("incomingRequest").style.visibility = "hidden";
                 // hide map so it doesnt take space on screen
                 document.getElementById("map").style.display = "none";
+                // show status
+                document.getElementById("servicing").innerHTML = "waiting";
             }
             // updating status of driver
             else if(commState.clientStatus.valueOf() == "DELIVERING"){
@@ -193,3 +196,5 @@ var doGet = function(){
 var intervalGet = setInterval(doGet, 5000);
 // call doGet first time
 doGet();
+
+window.onload = geoLocate();

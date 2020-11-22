@@ -3,10 +3,11 @@ DROP DATABASE IF EXISTS santa_clara_menus;
 CREATE DATABASE santa_clara_menus;
 USE santa_clara_menus;
 
-/* DCL*/
+/* DCL
 CREATE USER 'scmuser'@'localhost' IDENTIFIED BY 'p123456d';
 GRANT ALL PRIVILEGES ON santa_clara_menus . * TO 'scmuser'@'localhost';
 FLUSH PRIVILEGES;
+ */
 
 /* ENTITIES */
 CREATE TABLE IF NOT EXISTS user (
@@ -16,6 +17,7 @@ CREATE TABLE IF NOT EXISTS user (
     encrypted_password VARCHAR(64) NOT NULL,
     isRestaurant BOOLEAN,
     t_id INT(10) UNSIGNED,
+    wallet FLOAT( 10, 2 ) DEFAULT 0.00,
     PRIMARY KEY (user_id)
 );
 

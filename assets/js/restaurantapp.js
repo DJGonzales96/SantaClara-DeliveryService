@@ -54,7 +54,11 @@ xhrGet.onreadystatechange = function() {
             if(commState.location)
             {
                 document.getElementById("restAddr").innerHTML = commState.location[3];
+
+                //This is temporary
+                document.getElementById("money").innerHTML = commState.friendlyName;
             }
+
             // if(commState.wallet)
             // {
             //     document.getElementById("money").innerHTML = commState.wallet[?];

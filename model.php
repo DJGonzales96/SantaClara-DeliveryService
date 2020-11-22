@@ -1,6 +1,6 @@
 <?php
 
-const MAXIMUM_DISTANCE_FROM_RESTAURANT = 15; // max. distance allowed between driver & restaurant
+const MAXIMUM_DISTANCE_FROM_RESTAURANT = 5; // max. distance allowed between driver & restaurant
 require_once 'includes/conn.php';
 require_once 'includes/session.php';
 require_once 'includes/auth.php';
@@ -9,7 +9,7 @@ include 'maps.php';
 
 // prevent unauthorized access
 //if ($_SESSION['authenticated'] != true || $_SESSION["username"] == NULL)
- // die("{'status':'STATUS_ERROR','error':'Not logged in'}");
+// die("{'status':'STATUS_ERROR','error':'Not logged in'}");
 
 // OK for v0.1
 function getCurrentLocation($user_current_tid){
@@ -42,16 +42,19 @@ WHERE secondary_user_id = '$user_id' AND t_type = 'delivery_req' AND t_status = 
 // OK for v0.1
 function driverGetPendingRequests($user_id) {
   $result = null;
-  $query = "SELECT t_id, lat, lon, address, food, price FROM
+  $query = "SELECT t_id, lat, lon, address, food, price, primary_user_id FROM
         (transaction JOIN location ON transaction.end_loc=location.loc_id)
         WHERE
          t_type='delivery_req' AND t_status='pending'"; // ... WHERE... secondary_user_id='$user_id'
   $pendingRequestInfo = dbQuery($query); // array with lat[1], lon[2]
+  $restaurnatLocationTid = dbQuery("SELECT t_id FROM user WHERE user_id='$pendingRequestInfo[6]'")[0];
+  $restaurantAddress = getCurrentLocation($restaurnatLocationTid);
+
   if (!is_null($pendingRequestInfo)){
     $currentUserTid = dbQuery("SELECT t_id From user WHERE user_id='$user_id'");
     $currentUserLocation = getCurrentLocation($currentUserTid[0]); // array with lat[1],lon[2]
     $mapsMatrixData = getMapsDistanceDurationTwoPts($currentUserLocation[1],$currentUserLocation[2],
-        $pendingRequestInfo[1],$pendingRequestInfo[2]);
+        $restaurantAddress[1],$restaurantAddress[2]);//$pendingRequestInfo[1],$pendingRequestInfo[2]
     if ($mapsMatrixData[0] <= MAXIMUM_DISTANCE_FROM_RESTAURANT) // $mapsMatrixData -> [0] distance Mi, [1] time min.
       $result = $pendingRequestInfo;
   }
@@ -88,8 +91,8 @@ function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
 
 
 function restaurantCancelDelivery($user_id, $t_id) {
-    $query = "UPDATE transaction SET t_status = 'canceled' WHERE primary_user_id = '$user_id' AND t_id = '$t_id'";
-    dbInsert($query);
+  $query = "UPDATE transaction SET t_status = 'canceled' WHERE primary_user_id = '$user_id' AND t_id = '$t_id'";
+  dbInsert($query);
 }
 
 

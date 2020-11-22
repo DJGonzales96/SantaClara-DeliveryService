@@ -9,3 +9,9 @@ $_SESSION['authenticated'] = false;
 // redirect to home page
 header("location: index.php");
 ?>
+<!DOCTYPE html>
+<html>
+    <!-- for responsive menu -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</html>

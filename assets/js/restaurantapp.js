@@ -110,7 +110,7 @@ var doGet = function(){
 }
 
 var $food = $("#food");
-$food.change(function () {
+$food.keyup(function () {
     if ($food.val().length > 0 ) {
         if($address.val().length > 0 ){
             $("#request").removeAttr("disabled");
@@ -121,7 +121,7 @@ $food.change(function () {
 });
 
 var $address = $("#clientAddress");
-$address.change(function () {
+$address.keyup(function () {
     if ($address.val().length > 0 ) {
         if($food.val().length > 0 ){
             $("#request").removeAttr("disabled");

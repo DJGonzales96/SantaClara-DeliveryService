@@ -2,7 +2,7 @@
 $title="Login - Santa Clara Menus";
 require 'includes/conn.php';
 require 'includes/session.php';
-
+$invalid=false;
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
 
@@ -44,12 +44,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         }
         else
         {
-            die("Invalid username/password combination.");
+            $invalid = true;
+            //die("Invalid username/password combination.");
         }
     }
     else
     {
-        die("Invalid username/password combination.");
+        $invalid = true;
+        //die("Invalid username/password combination.");
     }
 }
 else {
@@ -71,7 +73,11 @@ include 'includes/header.php';
             </div>
             <form method="post" action="login.php" enctype="multipart/form-data">
                 <div class="form-group"><label for="username">User Name</label><input class="form-control item" type="text" name="username"></div>
-                <div class="form-group"><label for="password">Password</label><input class="form-control" type="password" name="password"></div>
+
+                <div class="form-group"><label for="password">Password</label>
+                  <?php if($invalid) echo "<div><h6 style= 'color:red;'> *Incorrect Password </h6></div>";?>
+                  <input class="form-control" type="password" name="password"></div>
+
                 <div class="form-group">
                     <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox"><label class="form-check-label" for="checkbox">Remember me</label></div>
                 </div><button class="btn btn-primary btn-block" type="submit" value="Login">Log In</button><br>

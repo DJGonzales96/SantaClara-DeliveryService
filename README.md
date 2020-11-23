@@ -3,13 +3,16 @@ An on-demand food delivery service serving Santa Clara County, developed by (gro
 
 
 ## Installation Tutorial
+
 This is a guide to install the files, software, and applications needed to run our On-Demand Food Delivery Software.
 It will require the items below prior installation of the SCM Software:
 1. Computer running windows 10, MacOS, or Linux
 2. Source code folder (given)
 3. Chrome (reccomended), Firefox, or Safari with access to localhost
 
+
 ## 1. Download XAMPP
+
 To run the database of SCM, download XAMPP at [apchefriends.org](https://www.apachefriends.org/index.html).
 Scroll down an locate the "Download" Button along with the options of the three major operating systems. **All three operating systems have similar installation process, this tutorial will follow a Windows 10 installation.**
 
@@ -55,7 +58,6 @@ Scroll down an locate the "Download" Button along with the options of the three 
 
 
 ## 2. Running XAMPP
----
 
 After the installation of XAMPP, we will go through on running the application.
 

@@ -131,8 +131,12 @@ xhrGet.onreadystatechange = function() {
                 if(!ignoreRequest){
                     showIncoming();
                 }
+                else{
+                    hideIncoming();
+                }
             }
             else if(commState.clientStatus.valueOf() == "IDLE"){
+                hideIncoming();
                 // hide request and set not to ignore requests
                 ignoreRequest = false;
                 document.getElementById("incomingRequest").style.visibility = "hidden";

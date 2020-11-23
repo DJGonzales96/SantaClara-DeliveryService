@@ -1,14 +1,13 @@
-# SantaClara-DeliveryService
+# Santa Clara-DeliveryService
 An on-demand food delivery service serving Santa Clara County, developed by (group members &amp; profile links here).
 
 
-# Installation Tutorial
+## Installation Tutorial
 This is a guide to install the files, software, and applications needed to run our On-Demand Food Delivery Software.
-It will require the items below:
+It will require the items below prior installation of the SCM Software:
 1. Computer running windows 10, MacOS, or Linux
 2. Source code folder (given)
 3. Chrome (reccomended), Firefox, or Safari with access to localhost
-4. XAMPP
 
 ## 1. Download XAMPP
 To run the database of SCM, download XAMPP at [apchefriends.org](https://www.apachefriends.org/index.html).

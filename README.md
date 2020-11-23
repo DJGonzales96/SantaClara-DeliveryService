@@ -1,7 +1,14 @@
 # SantaClara-DeliveryService
 An on-demand food delivery service serving Santa Clara County, developed by (group members &amp; profile links here).
+
+
 # Installation Tutorial
-This is a guide to install the files, software, and applications needed to run SCM.
+This is a guide to install the files, software, and applications needed to run our On-Demand Food Delivery Software.
+It will require the items below:
+1. Computer running windows 10, MacOS, or Linux
+2. Source code folder (given)
+3. Chrome (reccomended), Firefox, or Safari with access to localhost
+4. XAMPP
 
 ## 1. Download XAMPP
 To run the database of SCM, download XAMPP at [apchefriends.org](https://www.apachefriends.org/index.html).
@@ -9,7 +16,6 @@ Scroll down an locate the "Download" Button along with the options of the three 
 
 ![XAMPP homepage](README/XAMPP_homepage.jpg)
 
-#### Windows 10
 - Select "XAMPP for windows" and an installer window will pop up.
 ![windows installation window](README/xampp_windows_installer.jpg)
 
@@ -50,7 +56,7 @@ After the installation of XAMPP, we will go through on running the application.
 
 - Back on the Control Panel, activate the shell command to the list of buttons onto the right of the window. Console shell will appear. Change the directory into `\xampp\mysql\bin` and enter the code below:
 ```
-mysql -u -p santa_clara_menus < database_init.sql
+mysql -u root -p santa_clara_menus < database_init.sql
 ```
 It may ask for a password, but hit enter regardless. The shell command will look like this:
 ![command prompt](README/DB_cmnd.jpg)

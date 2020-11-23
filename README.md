@@ -13,7 +13,7 @@ The written guide is below the video:
 
 https://youtu.be/a7D3i_YPILc
 
-![Demo Video](https://www.youtube.com/watch?v=Ny8Ht_w4Rko&feature=youtu.be&ab_channel=DevinGonzales)
+https://www.youtube.com/watch?v=Ny8Ht_w4Rko&feature=youtu.be&ab_channel=DevinGonzales
 
 ## 1. Download XAMPP
 

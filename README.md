@@ -15,6 +15,10 @@ https://youtu.be/a7D3i_YPILc
 
 https://www.youtube.com/watch?v=Ny8Ht_w4Rko&feature=youtu.be&ab_channel=DevinGonzales
 
+Demo video:
+
+https://youtu.be/Ny8Ht_w4Rko
+
 ## 1. Download XAMPP
 
 To run the database of SCM, download XAMPP at [apchefriends.org](https://www.apachefriends.org/index.html).

@@ -1,7 +1,6 @@
 # Santa Clara-DeliveryService
 An on-demand food delivery service serving Santa Clara County, developed by (group members &amp; profile links here).
 
-
 ## Installation Tutorial
 
 This is a guide to install the files, software, and applications needed to run our On-Demand Food Delivery Software.
@@ -10,6 +9,9 @@ It will require the items below prior installation of the SCM Software:
 2. Source code folder (given)
 3. Chrome (reccomended), Firefox, or Safari with access to localhost
 
+The written guide is below the video:
+
+[Installation](https://youtu.be/a7D3i_YPILc)
 
 ## 1. Download XAMPP
 

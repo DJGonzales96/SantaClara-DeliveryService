@@ -12,6 +12,7 @@ It will require the items below prior installation of the SCM Software:
 The written guide is below the video:
 
 ![Installation Guide](https://youtu.be/a7D3i_YPILc)
+
 ![Demo Video](https://www.youtube.com/watch?v=Ny8Ht_w4Rko&feature=youtu.be&ab_channel=DevinGonzales)
 
 ## 1. Download XAMPP

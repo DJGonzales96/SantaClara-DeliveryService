@@ -76,6 +76,7 @@ var accept = function(){
     // send post
     doPost("accept",post);
     // hide message
+    ignore = true;
     hideIncoming();
 }
 

@@ -68,11 +68,16 @@ include 'includes/header.php';
             <form method="post" action="signup.php" enctype="multipart form-data">
                 <div class="form-group"><label for="name">Enter Your Name</label><input class="form-control item" type="text" name="name" id ="name"></div>
 
-                <div class="form-group" id ="restaurantAddr" style="display:none;"><label for="restaurantAddr">Enter Your Address</label><input class="form-control item"  type="text" name="restaurantAddr" id ="userAddr"></div>
+                <div class="form-group" id ="restaurantAddr" style="display:none; margin-bottom:0"><label for="restaurantAddr">Enter Your Address</label><input class="form-control item"  type="text" name="restaurantAddr" id ="userAddr">
+                <p style="color:#6c757d; margin-top:0"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> No non-address symbols (‘!’, ‘?’, ‘$’, ‘^’, etc.)</p>
+                </div>
 
-                <div class="form-group"><label for="username">Choose User Name</label><input class="form-control item"type="text" name="username" id ="userName"></div>
+                <div class="form-group" style="margin-bottom:0"><label for="username">Choose User Name</label><input class="form-control item"type="text" name="username" id ="userName"></div>
+                <p style="color:#6c757d; margin-top:0"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Alpha-numeric symbols only</p>
 
-                <div class="form-group"><label for="password">Choose Password</label><input class="form-control item" type="password" name="password" id ="password"></div>
+                <div class="form-group" style="margin-bottom:0"><label for="password">Choose Password</label><input class="form-control item" type="password" name="password" id ="password"></div>
+                <p style="color:#6c757d; margin-top:0; margin-bottom:0"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Alpha-numeric symbols only</p>
+                <p style="color:#6c757d; margin-top:0"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Password must be more than 8 characters</p>
 
                 Are you a restaurant or a driver?<br>
                 <div class="form-check form-check-inline">
@@ -94,6 +99,7 @@ include 'includes/header.php';
 <!-- for responsive menu -->
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/9d89888b17.js" crossorigin="anonymous"></script>
 <script>
     var $radio=$("input:radio");
     var userType=null;
@@ -111,8 +117,6 @@ include 'includes/header.php';
         checkstate();
     });
 
-
-
     var $name = $("#name");
     $name.keyup(checkstate);
     var $address = $("#userAddr");
@@ -123,7 +127,6 @@ include 'includes/header.php';
     $password.keyup(checkstate);
 
     function checkstate(){
-       console.log($address.val());
         if(userType=="restaurant")
         {
             if($name.val().length > 0 && $address.val().length>0&&$username.val().length>0&&$password.val().length>0){
@@ -151,6 +154,5 @@ include 'includes/header.php';
           }
         }
     }
-
 </script>
 </html>

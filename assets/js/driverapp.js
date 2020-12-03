@@ -1,7 +1,7 @@
 // globals
 const xhrGet = new XMLHttpRequest();
 const xhrPost = new XMLHttpRequest();
-const baseUrl = window.location.protocol + "//" + window.location.host + "/SantaClara-DeliveryService";//"/cs160/scd";
+const baseUrl = window.location.protocol + "//" + window.location.host + "//SantaClara-DeliveryService";//"/cs160/scd";
 // const baseUrl = "http://localhost/SantaClara-DeliveryService";
 var commState;
 var ignoreRequest = false;
@@ -76,7 +76,6 @@ var accept = function(){
     // send post
     doPost("accept",post);
     // hide message
-    ignoreRequest = true;
     hideIncoming();
 }
 
@@ -114,9 +113,6 @@ xhrGet.onreadystatechange = function() {
         commState = JSON.parse(this.responseText);
         updateDeliveryTable();
         if(commState.status.valueOf() == "STATUS_OK" ) {
-            if(ignoreRequest){
-                hideIncoming();
-            }
             document.getElementById("friendlyName").innerHTML = commState.friendlyName;
             // show wallet
             document.getElementById("driver-wallet").innerHTML = commState.wallet || "$0";
@@ -135,12 +131,8 @@ xhrGet.onreadystatechange = function() {
                 if(!ignoreRequest){
                     showIncoming();
                 }
-                else{
-                    hideIncoming();
-                }
             }
             else if(commState.clientStatus.valueOf() == "IDLE"){
-                hideIncoming();
                 // hide request and set not to ignore requests
                 ignoreRequest = false;
                 document.getElementById("incomingRequest").style.visibility = "hidden";
@@ -154,10 +146,6 @@ xhrGet.onreadystatechange = function() {
                 document.getElementById("servicing").innerHTML = "en route";
                 // show map
                 document.getElementById("map").style.display = "block";
-                // if no incoming or ignore is true
-                if(ignoreRequest){
-                    hideIncoming();
-                }
                 // to prevent heavy loading of google map in iframe
                 if (isMapChange)
                     refreshMap();

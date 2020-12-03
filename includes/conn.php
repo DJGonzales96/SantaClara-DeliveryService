@@ -1,4 +1,5 @@
 <?php
+error_reporting(0); // turns off all error reporting
 $hn = 'localhost';
 $un = 'scmuser';  // Change this to the username you use for your DB
 $pw = 'p123456d'; // Change this to the password you use for your DB

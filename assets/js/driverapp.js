@@ -93,7 +93,7 @@ var refreshMap = function(){
         "," + commState.currentTransactions[0][8] +
         "&waypoints=" + commState.currentTransactions[0][4] +
         "," + commState.currentTransactions[0][5] +
-        "&key=AIzaSyByH9xCzlvuJOBZkKgJgLnCn2xe9mFd-Tg\"  allowfullscreen>" +
+        "&key=AIzaSyCLChbLR2rzmhtM57m-MB0nXAVxjn--9so\"  allowfullscreen>" +
         "</iframe>"
 }
 

@@ -66,18 +66,18 @@ include 'includes/header.php';
                 <h2 class="text-info">Sign Up</h2>
             </div>
             <form method="post" action="signup.php" enctype="multipart form-data">
-                <div class="form-group"><label for="name">Enter Your Name</label><input class="form-control item" type="text" name="name" id ="name"></div>
+                <div class="form-group"><label for="name">Enter Your Name</label><input placeholder="name"class="form-control item" type="text" name="name" id ="name"></div>
 
-                <div class="form-group" id ="restaurantAddr" style="display:none; margin-bottom:0"><label for="restaurantAddr">Enter Your Address</label><input class="form-control item"  type="text" name="restaurantAddr" id ="userAddr">
-                <p style="color:#6c757d; margin-top:0"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> No non-address symbols (‘!’, ‘?’, ‘$’, ‘^’, etc.)</p>
+                <div class="form-group" id ="restaurantAddr" style="display:none; margin-bottom:0"><label for="restaurantAddr">Enter Your Address</label><input placeholder="e.g. 1 Washington Sq, San Jose, CA 95192" class="form-control item"  type="text" name="restaurantAddr" id ="userAddr">
+                <p style="color:#6c757d; margin-top:0;font-size:12px"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> No non-address symbols (‘!’, ‘?’, ‘$’, ‘^’, etc.)</p>
                 </div>
 
-                <div class="form-group" style="margin-bottom:0"><label for="username">Choose User Name</label><input class="form-control item"type="text" name="username" id ="userName"></div>
-                <p style="color:#6c757d; margin-top:0"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Alpha-numeric symbols only</p>
+                <div class="form-group" style="margin-bottom:0"><label for="username">Choose User Name</label><input placeholder="e.g. happyhummus160"class="form-control item"type="text" name="username" id ="userName"></div>
+                <p style="color:#6c757d; margin-top:0; font-size:12px"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Alpha-numeric symbols only</p>
 
-                <div class="form-group" style="margin-bottom:0"><label for="password">Choose Password</label><input class="form-control item" type="password" name="password" id ="password"></div>
-                <p style="color:#6c757d; margin-top:0; margin-bottom:0"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Alpha-numeric symbols only</p>
-                <p style="color:#6c757d; margin-top:0"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Password must be more than 8 characters</p>
+                <div class="form-group" style="margin-bottom:0"><label for="password">Choose Password</label><input placeholder="password" class="form-control item" type="password" name="password" id ="password"></div>
+                <p style="color:#6c757d; margin-top:0; margin-bottom:0 ;font-size:12px"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Alpha-numeric symbols only</p>
+                <p style="color:#6c757d; margin-top:0 ;font-size:12px"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Password must be more than 8 characters</p>
 
                 Are you a restaurant or a driver?<br>
                 <div class="form-check form-check-inline">

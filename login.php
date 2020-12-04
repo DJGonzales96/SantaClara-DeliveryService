@@ -69,11 +69,11 @@ include 'includes/header.php';
                 <h2 class="text-info">Welcome! Login with your credentials below.</h2>
             </div>
             <form method="post" action="login.php" enctype="multipart/form-data">
-                <div class="form-group"><label for="username">User Name</label><input class="form-control item" type="text" name="username" id="username"></div>
+                <div class="form-group"><label for="username">User Name</label><input placeholder="username"class="form-control item" type="text" name="username" id="username"></div>
 
                 <div class="form-group"><label for="password">Password</label>
                   <?php if($invalid) echo "<div><h6 style= 'color:red;'> *Incorrect Password </h6></div>";?>
-                  <input class="form-control" type="password" name="password" id="password"></div>
+                  <input placeholder="password" class="form-control" type="password" name="password" id="password"></div>
 
                 <div class="form-group">
                     <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox"><label class="form-check-label" for="checkbox">Remember me</label></div>

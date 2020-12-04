@@ -38,7 +38,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     if(isset($_POST["restaurantAddr"]))
     {
         $address = $_POST["restaurantAddr"];
-        if(preg_match('/[\w #,-.:;\']/', $address))
+        if(!preg_match('/[\w #,\-.:;\']/', $address))
             die("Invalid address. Please enter a valid address.");
         $mapsArray = getMapsLocationFromFriendlyAddress($address);
         $lat = $mapsArray[0];

@@ -5,7 +5,6 @@ require 'includes/session.php';
 $invalid=false;
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-
     if(isset($_POST["username"]))
     {
         $username = $_POST['username'];
@@ -45,13 +44,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         else
         {
             $invalid = true;
-            //die("Invalid username/password combination.");
         }
     }
     else
     {
         $invalid = true;
-        //die("Invalid username/password combination.");
     }
 }
 else {
@@ -72,15 +69,15 @@ include 'includes/header.php';
                 <h2 class="text-info">Welcome! Login with your credentials below.</h2>
             </div>
             <form method="post" action="login.php" enctype="multipart/form-data">
-                <div class="form-group"><label for="username">User Name</label><input class="form-control item" type="text" name="username"></div>
+                <div class="form-group"><label for="username">User Name</label><input placeholder="username"class="form-control item" type="text" name="username" id="username"></div>
 
                 <div class="form-group"><label for="password">Password</label>
                   <?php if($invalid) echo "<div><h6 style= 'color:red;'> *Incorrect Password </h6></div>";?>
-                  <input class="form-control" type="password" name="password"></div>
+                  <input placeholder="password" class="form-control" type="password" name="password" id="password"></div>
 
                 <div class="form-group">
                     <div class="form-check"><input class="form-check-input" type="checkbox" id="checkbox"><label class="form-check-label" for="checkbox">Remember me</label></div>
-                </div><button class="btn btn-primary btn-block" type="submit" value="Login">Log In</button><br>
+                </div><button class="btn btn-primary btn-block" type="submit" value="Login" id="login" disabled>Log In</button><br>
                 <div class="etc-login-form">
                     <p>new user? <a href="signup.php">create new account</a></p>
                 </div></form>
@@ -90,4 +87,17 @@ include 'includes/header.php';
 <!-- for responsive menu -->
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script>
+  var $username = $("#username");
+  $username.keyup(checkstate);
+  var $password = $("#password");
+  $password.keyup(checkstate);
+  function checkstate(){
+    if ($username.val().length > 0  && $password.val().length > 0 ) {
+        $("#login").removeAttr("disabled");
+    } else {
+        $("#login").attr("disabled", "disabled");
+    }
+  }
+</script>
 </html>

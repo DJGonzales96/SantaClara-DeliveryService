@@ -33,7 +33,7 @@ include 'includes/header.php';
               <h6 class="status" id="money" style="display:inline-block; color:#343a40;">$0.00</h6>
                 <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">
                   <label for="status" style="margin-right:5%">Client address:</label>
-                  <input class="form-control form-control-lg" type="text" id="clientAddress" name="clientAddress" style="width: 400px">
+                  <input placeholder="e.g. 1 Washington Sq, San Jose, CA 95192" class="form-control form-control-lg" type="text" id="clientAddress" name="clientAddress" style="width: 400px; font-size:16px">
 
                   <button class="btn btn-primary" id="request" style=" height: calc(1.5em + .75rem + 2px); margin-left: 50px" type="submit"  disabled>Request</button>
                 </div>
@@ -41,7 +41,7 @@ include 'includes/header.php';
                 <div>
                   <div class="form-group" style="display:flex; flex-flow: row warp; align-items: center">
                     <label for="status" style="margin-right:5%">Food Ordered:</label>
-                    <input class="form-control form-control-lg" type="text" id="food" name="food" style="width: 400px">
+                    <input placeholder="e.g. hummus" class="form-control form-control-lg" type="text" id="food" name="food" style="width: 400px; font-size:16px">
                     </div>
                 </div>
 

@@ -66,10 +66,19 @@ include 'includes/header.php';
                 <h2 class="text-info">Sign Up</h2>
             </div>
             <form method="post" action="signup.php" enctype="multipart form-data">
-                <div class="form-group"><label for="name">Enter Your Name</label><input class="form-control item" type="text" name="name"></div>
-                <div class="form-group" id ="restaurantAddr" style="display:none;"><label for="restaurantAddr">Enter Your Address</label><input class="form-control item"  type="text" name="restaurantAddr"/></div>
-                <div class="form-group"><label for="username">Choose User Name</label><input class="form-control item"type="text" name="username"></div>
-                <div class="form-group"><label for="password">Choose Password</label><input class="form-control item" type="password" name="password"></div>
+                <div class="form-group"><label for="name">Enter Your Name</label><input placeholder="name"class="form-control item" type="text" name="name" id ="name"></div>
+
+                <div class="form-group" id ="restaurantAddr" style="display:none; margin-bottom:0"><label for="restaurantAddr">Enter Your Address</label><input placeholder="e.g. 1 Washington Sq, San Jose, CA 95192" class="form-control item"  type="text" name="restaurantAddr" id ="userAddr">
+                <p style="color:#6c757d; margin-top:0;font-size:12px"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> No non-address symbols (‘!’, ‘?’, ‘$’, ‘^’, etc.)</p>
+                </div>
+
+                <div class="form-group" style="margin-bottom:0"><label for="username">Choose User Name</label><input placeholder="e.g. happyhummus160"class="form-control item"type="text" name="username" id ="userName"></div>
+                <p style="color:#6c757d; margin-top:0; font-size:12px"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Alpha-numeric symbols only</p>
+
+                <div class="form-group" style="margin-bottom:0"><label for="password">Choose Password</label><input placeholder="password" class="form-control item" type="password" name="password" id ="password"></div>
+                <p style="color:#6c757d; margin-top:0; margin-bottom:0 ;font-size:12px"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Alpha-numeric symbols only</p>
+                <p style="color:#6c757d; margin-top:0 ;font-size:12px"><i class="fas fa-lightbulb" style="color:#6c757d;"></i> Password must be more than 8 characters</p>
+
                 Are you a restaurant or a driver?<br>
                 <div class="form-check form-check-inline">
                     <input type="radio" class="form-check-input" id="restaurant" name="role" value="restaurant">
@@ -79,7 +88,7 @@ include 'includes/header.php';
                     <input type="radio" class="form-check-input" id="driver" name="role" value="driver">
                     <label class="form-check-label" for="driver">Driver</label>
                 </div>
-                <button class="btn btn-primary btn-block" type="submit" value="Submit">Submit</button>
+                <button class="btn btn-primary btn-block" type="submit" value="Submit" id="submit" disabled>Submit</button>
                 <div class="etc-login-form">
                     <p>Already have an account?  <a href="login.php">Login here</a></p>
                 </div>
@@ -90,17 +99,60 @@ include 'includes/header.php';
 <!-- for responsive menu -->
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/9d89888b17.js" crossorigin="anonymous"></script>
 <script>
     var $radio=$("input:radio");
+    var userType=null;
     $radio.change(function(){
         if($(this).val()=="restaurant")
         {
             $("#restaurantAddr").css("display","block");
+            userType="restaurant";
         }
         else
         {
             $("#restaurantAddr").css("display","none");
+            userType="driver";
         }
+        checkstate();
     });
+
+    var $name = $("#name");
+    $name.keyup(checkstate);
+    var $address = $("#userAddr");
+    $address.keyup(checkstate);
+    var $username = $("#userName");
+    $username.keyup(checkstate);
+    var $password = $("#password");
+    $password.keyup(checkstate);
+
+    function checkstate(){
+        if(userType=="restaurant")
+        {
+            if($name.val().length > 0 && $address.val().length>0&&$username.val().length>0&&$password.val().length>0){
+              $("#submit").removeAttr("disabled");
+            }
+            else {
+              $("#submit").attr("disabled", "disabled");
+            }
+        }
+        else if(userType=="driver")
+        {
+            if($name.val().length > 0 && $username.val().length>0&&$password.val().length>0)
+            {
+                $("#submit").removeAttr("disabled");
+            }
+            else {
+              {
+                  $("#submit").attr("disabled", "disabled");
+              }
+            }
+        }
+        else {
+          {
+              $("#submit").attr("disabled", "disabled");
+          }
+        }
+    }
 </script>
 </html>

@@ -10,15 +10,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     if(isset($_POST["name"]))
     {   // Sanitize name eventually
         $name = $_POST['name'];
+        if(!ctype_alpha($name))
+            die("Invalid name. Please enter a valid alphabetical name.");
     }
     if(isset($_POST["username"]))
     {   // Sanitize username eventually
         $username = $_POST['username'];
+        if(!ctype_alnum($username))
+            die("Invalid username. Please choose an alphanumeric username.");
     }
 
     if(isset($_POST["password"]))
     {   // Sanitize, salt & hash password eventually
         $password = $_POST['password'];
+        if(!ctype_alnum($password) || length($password) < 8)
+            die("Invalid password. Please enter an 8+ character, alphanumeric password.");
         //$password = 'saltstring' . $password;
         $token = password_hash("$password", PASSWORD_DEFAULT);
     }
@@ -32,6 +38,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     if(isset($_POST["restaurantAddr"]))
     {
         $address = $_POST["restaurantAddr"];
+        if(preg_match('/[\w #,-.:;\']/', $address))
+            die("Invalid address. Please enter a valid address.");
         $mapsArray = getMapsLocationFromFriendlyAddress($address);
         $lat = $mapsArray[0];
         $long = $mapsArray[1];

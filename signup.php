@@ -23,7 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     if(isset($_POST["password"]))
     {   // Sanitize, salt & hash password eventually
         $password = $_POST['password'];
-        if(!ctype_alnum($password) || length($password) < 8)
+        if(!ctype_alnum($password) || strlen($password) < 8)
             die("Invalid password. Please enter an 8+ character, alphanumeric password.");
         //$password = 'saltstring' . $password;
         $token = password_hash("$password", PASSWORD_DEFAULT);

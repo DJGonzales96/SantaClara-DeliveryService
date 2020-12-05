@@ -43,6 +43,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $mapsArray = getMapsLocationFromFriendlyAddress($address);
         $lat = $mapsArray[0];
         $long = $mapsArray[1];
+        // Error Checking for Address
+        if($lat == 0.000000 && $long == 0.000000)
+            $address = "Invalid Address";
     }
 
     // TODO: For now, username is used in place of name

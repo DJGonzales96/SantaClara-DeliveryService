@@ -83,6 +83,10 @@ function driverUpdateLocation($user_id, $newLat, $newLong, $newAddr) {
     $newLong = $mapsArray[1];
   }
   $newAddr = getMapsFriendlyAddressFromLatLng($newLat, $newLong);
+  // Case: invalid location is given
+  if($newLat == 0.000000 && $newLong == 0.000000)
+    $newAddr = "Invalid Location, consider setting a valid address before continuing.";
+
   $new_loc_id = dbInsert("INSERT INTO location(lat,lon,address) VALUES ('$newLat',' $newLong',' $newAddr')");
   $new_t_id = dbInsert("INSERT INTO transaction(t_type, primary_user_id, start_loc)
                 VALUES ('loc_update', '$user_id',$new_loc_id )");
@@ -163,8 +167,13 @@ function deliveryInRange($time_in_mins) {
 // Calculate cost for delivery
 function calculateCost($distance_in_miles, $time_in_mins) {
   $min_cost = 5;
-  // First mile is free, 25c per min
-  $cost = $min_cost + 2*($distance_in_miles - 1) + 0.25*$time_in_mins;
+  // Case: 0 mile delivery
+  if($distance_in_miles == 0)
+    $cost = $min_cost + 0.25+$time_in_mins;
+  else
+    // First mile is free, 25c per min
+    $cost = $min_cost + 2*($distance_in_miles - 1) + 0.25*$time_in_mins;
+
   return $cost;
 }
 

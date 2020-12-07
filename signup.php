@@ -33,20 +33,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         $role = $_POST['role'];
         $isRestaurant = ($role == 'restaurant' ? "1": "0");
+
+        if($isRestaurant && isset($_POST["restaurantAddr"]))
+        {
+            $address = $_POST["restaurantAddr"];
+            if(!preg_match('/[\w #,\-.:;\']/', $address))
+                die("Invalid address. Please enter a valid address.");
+            $mapsArray = getMapsLocationFromFriendlyAddress($address);
+            $lat = $mapsArray[0];
+            $long = $mapsArray[1];
+            // Error Checking for Address
+            if($lat == 0.000000 && $long == 0.000000)
+                $address = "Invalid Address";
+        }
     }
 
-    if(isset($_POST["restaurantAddr"]))
-    {
-        $address = $_POST["restaurantAddr"];
-        if(!preg_match('/[\w #,\-.:;\']/', $address))
-            die("Invalid address. Please enter a valid address.");
-        $mapsArray = getMapsLocationFromFriendlyAddress($address);
-        $lat = $mapsArray[0];
-        $long = $mapsArray[1];
-        // Error Checking for Address
-        if($lat == 0.000000 && $long == 0.000000)
-            $address = "Invalid Address";
-    }
+
 
     // TODO: For now, username is used in place of name
     // Attempt to insert

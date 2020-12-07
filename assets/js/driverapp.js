@@ -77,6 +77,9 @@ var accept = function(){
     doPost("accept",post);
     // hide message
     hideIncoming();
+
+    // set ignore incoming resquests to false after accept
+    ignoreRequest = false;
 }
 
 var markDone = function(t_id){
@@ -106,6 +109,8 @@ document.getElementById("buttonReject").addEventListener("click", reject);
 document.getElementById("buttonLocation").addEventListener("click", geoLocate, true);
 // hide map initially
 document.getElementById("map").style.display = "none";
+// initial driver status is waiting
+document.getElementById("servicing").innerHTML = "waiting";
 
 // set UI updating mechanism on GET
 xhrGet.onreadystatechange = function() {
@@ -131,6 +136,14 @@ xhrGet.onreadystatechange = function() {
                 if(!ignoreRequest){
                     showIncoming();
                 }
+                // if no current transactions - dont show map && status==waiting
+                if(commState.currentTransactions.length == 0){
+                    // get currect status
+                    document.getElementById("servicing").innerHTML = "waiting";
+                    // close map
+                    document.getElementById("map").style.display = "none";
+                    
+                }
             }
             else if(commState.clientStatus.valueOf() == "IDLE"){
                 // hide request and set not to ignore requests
@@ -143,6 +156,15 @@ xhrGet.onreadystatechange = function() {
             }
             // updating status of driver
             else if(commState.clientStatus.valueOf() == "DELIVERING"){
+                // only show incoming if there is valid a delivery req.                 
+                if(!ignoreRequest){
+                    if(commState.deliveryRequestInfo != null){
+                        showIncoming();
+                    }
+                    else{
+                        hideIncoming();
+                    }
+                }
                 document.getElementById("servicing").innerHTML = "en route";
                 // show map
                 document.getElementById("map").style.display = "block";

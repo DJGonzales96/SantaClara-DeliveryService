@@ -33,7 +33,7 @@ XAMPP and MySQL CE Workbench are the only two external applications needed to ru
  2. Follow the installation guide, keeping all options default, however make sure to have XAMPP file directory inside the `C:\` drive
  4. Finish and download
 
-  ![XAMPP](XAMPP_homepage.png)
+  ![XAMPP](README/Installation_Guide.md)
 
 #### MySQL Workbench
 

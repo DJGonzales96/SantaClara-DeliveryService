@@ -1,3 +1,11 @@
+
+# Santa Clara-DeliveryService
+An on-demand food delivery service serving Santa Clara County, developed by:
+* [Devin Gonzales](https://github.com/DJGonzales96) 
+* [Ilan Granot](https://github.com/ilangranot) 
+* [Nathan Zadkovsky](https://github.com/nathanmarzzz)
+* [Yohei Ochiai](https://github.com/yochiaigithub)
+* [Ralph Orteza](https://github.com/ralphorteza)
 # SCM Installation Guide
 This is the installation guide to run the software in a Windows 10 computer. MacOS and Linux OS distros installation may differ, but this guide may help as a reference.
 

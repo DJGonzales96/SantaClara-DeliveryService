@@ -167,8 +167,8 @@ function deliveryInRange($time_in_mins) {
 // Calculate cost for delivery
 function calculateCost($distance_in_miles, $time_in_mins) {
   $min_cost = 5;
-  // Case: 0 mile delivery
-  if($distance_in_miles == 0)
+  // Case: 0 mile or <1 mile delivery, first mile is free
+  if($distance_in_miles < 1)
     $cost = $min_cost + 0.25+$time_in_mins;
   else
     // First mile is free, 25c per min

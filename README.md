@@ -1,5 +1,10 @@
 # Santa Clara-DeliveryService
-An on-demand food delivery service serving Santa Clara County, developed by (group members &amp; profile links here).
+An on-demand food delivery service serving Santa Clara County, developed by:
+* [Devin Gonzales](https://github.com/DJGonzales96) 
+* [Ilan Granot](https://github.com/ilangranot) 
+* [Nathan Zadkovsky](https://github.com/nathanmarzzz)
+* [Yohei Ochiai](https://github.com/yochiaigithub)
+* [Ralph Orteza](https://github.com/ralphorteza)
 
 ## Installation Tutorial
 

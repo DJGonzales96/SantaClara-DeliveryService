@@ -1,11 +1,3 @@
-
-# Santa Clara-DeliveryService
-An on-demand food delivery service serving Santa Clara County, developed by:
-* [Devin Gonzales](https://github.com/DJGonzales96) 
-* [Ilan Granot](https://github.com/ilangranot) 
-* [Nathan Zadkovsky](https://github.com/nathanmarzzz)
-* [Yohei Ochiai](https://github.com/yochiaigithub)
-* [Ralph Orteza](https://github.com/ralphorteza)
 # SCM Installation Guide
 This is the installation guide to run the software in a Windows 10 computer. MacOS and Linux OS distros installation may differ, but this guide may help as a reference.
 
@@ -33,7 +25,7 @@ XAMPP and MySQL CE Workbench are the only two external applications needed to ru
  2. Follow the installation guide, keeping all options default, however make sure to have XAMPP file directory inside the `C:\` drive
  4. Finish and download
 
-  ![XAMPP](README/Installation_Guide.md)
+  ![XAMPP](XAMPP_homepage.png)
 
 #### MySQL Workbench
 

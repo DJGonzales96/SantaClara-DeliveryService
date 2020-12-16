@@ -1,6 +1,0 @@
-curl --data "username=ilan&password=123456" http://localhost/cs160/scd/login.php
-
-curl --cookie "scd-secret-cookie=aWxhbjrH5NfC4EyDMbBUKyFemHSV" --data "lat=1.1&long=-2.2&address=1 Washington Square SJ" http://localhost/cs160/scd/api.php/driver/location
-
-
-curl --cookie "scd-secret-cookie=aWxhbjrH5NfC4EyDMbBUKyFemHSV" --data "address=1 Washington Square SJ&food=pizza" http://localhost/cs160/scd/api.php/restaurant/request

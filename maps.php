@@ -7,7 +7,7 @@
 function getMapsLocationFromFriendlyAddress(String $address)
 {
     $base_url = "https://maps.googleapis.com/maps/api/geocode/json";
-    $api_key = "AIzaSyCLChbLR2rzmhtM57m-MB0nXAVxjn--9so";
+    $api_key = "#########"; // Fill this in with your API key for functionality
     $curl = curl_init();
     $data = ["address" => $address,"key" => $api_key];
     $url = sprintf("%s?%s", $base_url, http_build_query($data));
@@ -30,7 +30,7 @@ function getMapsLocationFromFriendlyAddress(String $address)
 function getMapsDistanceDurationTwoPts($o_lat,$o_lon,$d_lat,$d_lon)
 {
     $base_url = "https://maps.googleapis.com/maps/api/distancematrix/json";
-    $api_key = "AIzaSyCLChbLR2rzmhtM57m-MB0nXAVxjn--9so";
+    $api_key = "#########"; // Fill this in with your API key for functionality
     $curl = curl_init();
     $data = ["units" => "imperial","origins" => $o_lat.','.$o_lon,
         "destinations" => $d_lat.','.$d_lon ,"key" => $api_key];
@@ -53,7 +53,7 @@ function getMapsDistanceDurationTwoPts($o_lat,$o_lon,$d_lat,$d_lon)
 function getMapsFriendlyAddressFromLatLng($lat, $lon)
 {
     $base_url = "https://maps.googleapis.com/maps/api/geocode/json";
-    $api_key = "AIzaSyCLChbLR2rzmhtM57m-MB0nXAVxjn--9so";
+    $api_key = "##########"; // Fill this in with your API key for functionality
     $curl = curl_init();
     $data = ["latlng" => $lat.','.$lon,"key" => $api_key];
     $url = sprintf("%s?%s", $base_url, http_build_query($data));
